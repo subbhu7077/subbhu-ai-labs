@@ -2,7 +2,7 @@
  * Main Application Initializer & Supabase Bridge
  */
 let currentSelectedFile = null;
-let currentToolId = "v-enhancer";
+let currentToolId = "face-enhancer";
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Render Main Tools Tray
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // 3. Setup Upload & Preview Listeners
+  // 3. Setup Upload Listeners
   const dropZone = document.getElementById('uploadBox');
   const fileInput = document.getElementById('fileInput');
   const previewContainer = document.getElementById('previewContainer');
@@ -105,34 +105,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         processBtn.disabled = true;
         processingState.style.display = 'block';
-        statusText.innerText = "1/3 Uploading to secure Supabase storage...";
+        statusText.innerText = "1/2 Uploading to secure Supabase storage...";
 
         // Real Storage Upload
         const storagePath = await window.BackendAPI.uploadMedia(currentSelectedFile, user.id);
 
-        statusText.innerText = "2/3 Deducting credits and queueing job...";
+        statusText.innerText = "2/2 Deducting credit & queuing job in database...";
         const isVideo = currentSelectedFile.type.startsWith('video');
-        const toolType = isVideo ? 'video-enhancer' : 'photo-enhancer';
+        const toolType = isVideo ? 'video-enhancer' : 'face-enhancer';
 
-        // Call Edge Function
+        // Server-side deduction and job creation
         const genRes = await window.BackendAPI.startGeneration(toolType, storagePath);
 
-        statusText.innerText = "3/3 Calling AI Engine...";
-        const processRes = await window.BackendAPI.triggerProcessing(genRes.generation_id, isVideo);
-
-        if (processRes.error) {
-          alert(processRes.error);
-          noticeMsg.innerText = processRes.error;
-        } else {
-          noticeMsg.innerText = "Job processed successfully!";
-          if (processRes.output_url) {
-            if (isVideo && videoPlayer) {
-              videoPlayer.src = processRes.output_url;
-            } else {
-              document.getElementById('sliderAfterImg').src = processRes.output_url;
-            }
-          }
+        // Update credits badge in real-time
+        const count = document.getElementById('headerCreditCount');
+        if (count && genRes.remaining_credits !== undefined) {
+          count.innerText = genRes.remaining_credits;
         }
+
+        // Truthful notice: Real backend task queued, awaiting AI provider key
+        noticeMsg.innerHTML = `✅ Job queued (ID: ${genRes.generation_id.substring(0,8)}...).<br>AI Provider configuration missing: please set AI_API_KEY in Part 3.`;
+        alert(`Job queued successfully! 1 Credit deducted. Remaining credits: ${genRes.remaining_credits}.\nAI processing will be connected in Part 3.`);
 
       } catch (err) {
         alert(err.message);
@@ -144,7 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 5. Comparison Slider Init
+  // 5. Init Comparison Slider
   document.querySelectorAll('.comparison-wrapper').forEach(slider => {
     window.UIController.setupComparisonSlider(slider);
   });

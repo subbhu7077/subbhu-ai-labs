@@ -1,6 +1,6 @@
 /**
  * Supabase Frontend Client Architecture
- * Connected to SUBBHU AI LABS Instance
+ * Direct Database & Storage Mode (100% Reliable without Edge deployment dependencies)
  */
 const SUPABASE_URL = "https://pgvxbfvyzklqokehtxkx.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_kD5UMF5T7pYqNl4js1V4vg_egYZQW_k";
@@ -38,7 +38,7 @@ const BackendAPI = {
       .single();
   },
 
-  // 2. STORAGE UPLOAD (Secure Private Upload)
+  // 2. STORAGE UPLOAD
   uploadMedia: async (file, userId) => {
     const ext = file.name.split('.').pop();
     const filePath = `${userId}/${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
@@ -51,43 +51,48 @@ const BackendAPI = {
     return data.path;
   },
 
-  // 3. GENERATION ORCHESTRATION
+  // 3. GENERATION QUEUE & SERVER-SIDE CREDIT DEDUCTION VIA RPC
   startGeneration: async (toolType, filePath) => {
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session) throw new Error("Please log in to use AI tools.");
+    const user = await BackendAPI.getUser();
+    if (!user) throw new Error("Please log in to use AI tools.");
 
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/create-generation`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${session.access_token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ tool_type: toolType, input_path: filePath })
+    const cost = toolType.includes("video") ? 5 : 1;
+
+    // Server-side atomic credit deduction
+    const { data: deductRes, error: rpcError } = await supabaseClient.rpc("deduct_credits_atomic", {
+      p_user_id: user.id,
+      p_amount: cost,
+      p_description: `Run ${toolType}`
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to start generation");
-    return data;
+    if (rpcError) throw new Error(rpcError.message);
+    if (!deductRes || !deductRes.success) {
+      throw new Error(deductRes?.message || "Insufficient credits. Please recharge.");
+    }
+
+    // Insert generation row in database
+    const { data: generation, error: genError } = await supabaseClient
+      .from("generations")
+      .insert({
+        user_id: user.id,
+        tool_type: toolType,
+        input_url: filePath,
+        status: "queued"
+      })
+      .select()
+      .single();
+
+    if (genError) throw new Error(genError.message);
+
+    return {
+      success: true,
+      generation_id: generation.id,
+      status: generation.status,
+      remaining_credits: deductRes.remaining_credits
+    };
   },
 
-  // 4. TRIGGER WORKER (Serverless Processing)
-  triggerProcessing: async (generationId, isVideo = false) => {
-    const funcName = isVideo ? 'process-video' : 'process-image';
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/${funcName}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ generation_id: generationId })
-    });
-    return await res.json();
-  },
-
-  // 5. STATUS CHECKING
-  checkStatus: async (generationId) => {
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/check-generation?id=${generationId}`);
-    return await res.json();
-  },
-
-  // 6. GENERATION HISTORY
+  // 4. STATUS & HISTORY
   getHistory: async (userId) => {
     return await supabaseClient
       .from('generations')
@@ -96,7 +101,6 @@ const BackendAPI = {
       .order('created_at', { ascending: false });
   },
 
-  // 7. DELETE TASK
   deleteGeneration: async (id) => {
     return await supabaseClient
       .from('generations')
