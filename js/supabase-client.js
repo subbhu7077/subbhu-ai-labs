@@ -21,6 +21,32 @@ const BackendAPI = {
     return data.path;
   },
 
+  uploadOutputToStorage: async (blob, userId, toolType) => {
+    try {
+      const isPng = toolType === 'bg-remove' || toolType.includes('bg');
+      const ext = isPng ? 'png' : 'jpg';
+      const filePath = `${userId}/enhanced_${Date.now()}.${ext}`;
+      
+      const { data, error } = await supabaseClient.storage
+        .from('outputs')
+        .upload(filePath, blob, {
+          contentType: isPng ? 'image/png' : 'image/jpeg',
+          cacheControl: '3600',
+          upsert: true
+        });
+
+      if (error) {
+        console.warn("Storage upload warn:", error);
+        return null;
+      }
+      const { data: publicData } = supabaseClient.storage.from('outputs').getPublicUrl(filePath);
+      return publicData?.publicUrl || filePath;
+    } catch (e) {
+      console.warn("Upload output failed gracefully:", e);
+      return null;
+    }
+  },
+
   startGeneration: async (toolType, filePath) => {
     const user = await BackendAPI.getUser();
     if (!user) throw new Error("Please sign in to run AI workflows.");
@@ -53,50 +79,40 @@ const BackendAPI = {
     };
   },
 
-  // Real Background Removal & Image Enhancement Processor
   enhanceImageLocal: async (file, toolType) => {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = "anonymous";
-      img.onload = async () => {
+      img.onload = () => {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = img.width;
         canvas.height = img.height;
 
-        // REAL BACKGROUND REMOVER (SelfieSegmentation Neural Network)
         if (toolType === 'bg-remove' || toolType.includes('bg')) {
-          try {
-            if (window.SelfieSegmentation) {
-              const segmenter = new window.SelfieSegmentation({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
-              });
+          ctx.drawImage(img, 0, 0);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imgData.data;
 
-              segmenter.setOptions({ modelSelection: 1 });
+          // Corner sample for background reference
+          const bgR = d[0], bgG = d[1], bgB = d[2];
+          const threshold = 65;
 
-              segmenter.onResults((results) => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // Draw mask
-                ctx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
-                // Composite mode to clip original photo
-                ctx.globalCompositeOperation = 'source-in';
-                ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
-                ctx.globalCompositeOperation = 'source-over';
-
-                canvas.toBlob((blob) => {
-                  resolve({ blob, outputUrl: URL.createObjectURL(blob) });
-                }, 'image/png');
-              });
-
-              await segmenter.send({ image: img });
-              return;
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i+1], b = d[i+2];
+            const dist = Math.sqrt((r - bgR)**2 + (g - bgG)**2 + (b - bgB)**2);
+            if (dist < threshold || (r > 215 && g > 215 && b > 215)) {
+              d[i+3] = 0; // Cut out background
             }
-          } catch (e) {
-            console.warn("Segmentation engine fallback:", e);
           }
+          ctx.putImageData(imgData, 0, 0);
+
+          canvas.toBlob((blob) => {
+            resolve({ blob, outputUrl: URL.createObjectURL(blob) });
+          }, 'image/png');
+          return;
         }
 
-        // Standard Photo Enhancements
         if (toolType.includes('color')) {
           ctx.filter = 'contrast(130%) saturate(150%) brightness(105%)';
         } else if (toolType.includes('restore') || toolType.includes('denoise')) {
@@ -122,12 +138,6 @@ const BackendAPI = {
       output_url: outputUrl,
       completed_at: new Date().toISOString()
     }).eq("id", generationId);
-  },
-
-  claimReward: async (userId) => {
-    const { data, error } = await supabaseClient.rpc("claim_reward_credits", { p_user_id: userId });
-    if (error) throw error;
-    return data;
   }
 };
 
