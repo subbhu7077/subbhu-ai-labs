@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Account & Plans | SUBBHU AI LABS</title>
-  <link rel="stylesheet" href="css/style.css?v=4.0">
-  <link rel="stylesheet" href="css/responsive.css?v=4.0">
-  <link rel="stylesheet" href="css/animations.css?v=4.0">
+  <link rel="stylesheet" href="css/style.css?v=5.0">
+  <link rel="stylesheet" href="css/responsive.css?v=5.0">
+  <link rel="stylesheet" href="css/animations.css?v=5.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
@@ -41,6 +41,12 @@
       </div>
     </div>
 
+    <!-- Supported UPI Badges -->
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 1px solid var(--border-glass); margin-bottom: 16px;">
+      <span style="font-size: 0.75rem; color: var(--text-muted);">Instant UPI Auto-Pay:</span>
+      <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary-cyan);">GPay • PhonePe • Paytm • BHIM</span>
+    </div>
+
     <!-- Monetization Plans -->
     <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px;">Upgrade Subscription</div>
     <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
@@ -52,7 +58,7 @@
           <div style="font-size: 0.9rem; font-weight: 800;">₹499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
         </div>
         <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">100 Monthly Fast Credits • 4K Photo Upscaling • Fast Queue</p>
-        <button id="buyPlusBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px;">UPGRADE VIA UPI / CARD (₹499)</button>
+        <button id="buyPlusBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px;">PAY VIA UPI / GPAY / PHONEPE (₹499)</button>
       </div>
 
       <!-- PRO TIER -->
@@ -62,7 +68,7 @@
           <div style="font-size: 0.9rem; font-weight: 800;">₹1,499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
         </div>
         <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">500 Monthly Fast Credits • High Priority GPU Engine</p>
-        <button id="buyProBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px; background: linear-gradient(135deg, var(--primary-purple), #7928ca);">UPGRADE VIA UPI / CARD (₹1,499)</button>
+        <button id="buyProBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px; background: linear-gradient(135deg, var(--primary-purple), #7928ca);">PAY VIA UPI / GPAY / PHONEPE (₹1,499)</button>
       </div>
     </div>
 
@@ -95,7 +101,7 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js?v=4.0"></script>
+  <script src="js/supabase-client.js?v=5.0"></script>
   <script>
     const RAZORPAY_KEY_ID = "rzp_test_TRAinkK2e0I691";
     let currentUser = null;
@@ -160,7 +166,35 @@
         description: `Upgrade to ${plan} Plan`,
         image: "https://subbhu7077.github.io/subbhu-ai-labs/icons/icon-192.png",
         prefill: {
-          email: currentUser.email
+          email: currentUser.email,
+          method: "upi" // Defaults directly to UPI mode
+        },
+        config: {
+          display: {
+            blocks: {
+              upi: {
+                name: "Pay via UPI Apps & QR",
+                instruments: [
+                  {
+                    method: "upi",
+                    flows: ["intent", "qr", "collect"],
+                    apps: ["google_pay", "phonepe", "paytm", "bhim"]
+                  }
+                ]
+              },
+              other: {
+                name: "Cards & NetBanking",
+                instruments: [
+                  { method: "card" },
+                  { method: "netbanking" }
+                ]
+              }
+            },
+            sequence: ["block.upi", "block.other"],
+            preferences: {
+              show_default_blocks: true
+            }
+          }
         },
         theme: {
           color: "#00d2ff"
@@ -185,7 +219,7 @@
         },
         modal: {
           ondismiss: function () {
-            console.log("Checkout window closed.");
+            console.log("Checkout closed");
           }
         }
       };
