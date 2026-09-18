@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SUBBHU AI LABS | Neural Creative Suite</title>
-  <link rel="stylesheet" href="css/style.css?v=95.0">
-  <link rel="stylesheet" href="css/animations.css?v=95.0">
+  <title>SUBBHU AI LABS | 12 Neural Engines</title>
+  <link rel="stylesheet" href="css/style.css?v=99.0">
+  <link rel="stylesheet" href="css/animations.css?v=99.0">
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap");
 
@@ -14,16 +14,15 @@
       background: radial-gradient(circle at 50% 0%, #0d1a36 0%, #060913 100%);
       color: #fff;
       margin: 0;
-      padding-bottom: 90px;
+      padding-bottom: 95px;
       overflow-x: hidden;
     }
 
-    /* 3D Brand Title with Neon Loading Stream */
     .neon-brand-title {
       font-family: "Orbitron", sans-serif !important;
       font-size: 1.15rem !important;
       font-weight: 900 !important;
-      letter-spacing: 2.5px !important;
+      letter-spacing: 2px !important;
       text-transform: uppercase;
       background: linear-gradient(90deg, #00f2fe 0%, #ffffff 30%, #4facfe 60%, #00f2fe 100%);
       background-size: 200% auto;
@@ -31,20 +30,18 @@
       -webkit-background-clip: text !important;
       background-clip: text !important;
       display: inline-block;
-      animation: neonStream 2.8s linear infinite, neonAura 2s ease-in-out infinite alternate;
+      animation: neonStream 2.5s linear infinite, neonAura 2s ease-in-out infinite alternate;
     }
 
     @keyframes neonStream {
       0% { background-position: 0% center; }
       100% { background-position: 200% center; }
     }
-
     @keyframes neonAura {
-      0% { filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.7)) drop-shadow(0 0 14px rgba(0, 242, 254, 0.4)); }
-      100% { filter: drop-shadow(0 0 12px rgba(0, 242, 254, 1)) drop-shadow(0 0 25px rgba(79, 172, 254, 0.9)); }
+      0% { filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.7)) drop-shadow(0 0 12px rgba(0, 242, 254, 0.4)); }
+      100% { filter: drop-shadow(0 0 12px rgba(0, 242, 254, 1)) drop-shadow(0 0 24px rgba(79, 172, 254, 0.85)); }
     }
 
-    /* 3D Elevated App Header */
     .brand-avatar-3d {
       width: 38px;
       height: 38px;
@@ -58,10 +55,8 @@
       color: #050b18;
       font-size: 1.1rem;
       box-shadow: 0 6px 14px rgba(0, 242, 254, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.6);
-      transform: perspective(400px) translateZ(10px);
     }
 
-    /* 3D Filter Pills */
     .pills-scroll {
       display: flex;
       gap: 10px;
@@ -72,50 +67,44 @@
     .pills-scroll::-webkit-scrollbar { display: none; }
 
     .pill-3d {
-      display: flex;
-      align-items: center;
-      gap: 7px;
       padding: 8px 14px;
       border-radius: 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+      background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
       color: #cbd5e1;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 700;
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.25s ease;
     }
     .pill-3d.active {
-      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
       color: #050b18;
       border-color: #00f2fe;
-      box-shadow: 0 0 16px rgba(0, 242, 254, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.6);
-      transform: translateY(-2px);
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.6);
     }
 
-    /* 3D Cards Grid */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      padding: 10px 16px;
+      padding: 8px 16px;
     }
 
     .card-3d {
-      background: linear-gradient(165deg, rgba(20, 32, 60, 0.7) 0%, rgba(10, 18, 36, 0.9) 100%);
+      background: linear-gradient(165deg, rgba(20, 32, 60, 0.75) 0%, rgba(10, 18, 36, 0.95) 100%);
       border: 1px solid rgba(0, 242, 254, 0.18);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
       position: relative;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
     }
     .card-3d:active {
-      transform: scale(0.96);
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+      transform: scale(0.97);
+      border-color: #00f2fe;
+      box-shadow: 0 0 18px rgba(0, 242, 254, 0.5);
     }
 
     .card-media {
@@ -129,31 +118,35 @@
       position: absolute;
       top: 8px;
       left: 8px;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 800;
-      padding: 3px 8px;
+      padding: 3px 7px;
       border-radius: 6px;
-      background: rgba(5, 11, 24, 0.8);
+      background: rgba(5, 11, 24, 0.85);
       backdrop-filter: blur(8px);
       color: #00f2fe;
       border: 1px solid rgba(0, 242, 254, 0.3);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
     .card-body {
       padding: 10px;
     }
     .card-title {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: #fff;
       margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .card-desc {
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       color: #94a3b8;
       line-height: 1.25;
       margin-bottom: 8px;
+      height: 28px;
+      overflow: hidden;
     }
     .card-footer {
       display: flex;
@@ -162,54 +155,54 @@
       font-size: 0.7rem;
       font-weight: 800;
     }
-    .cost-badge {
-      color: #fbbf24;
-      display: flex;
-      align-items: center;
-      gap: 3px;
+
+    /* Modal Bottom Sheet */
+    .tool-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 11, 24, 0.8);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: none;
+      align-items: flex-end;
     }
-    .enhance-action {
-      color: #00f2fe;
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      font-size: 0.7rem;
+    .modal-content {
+      background: #0d1427;
+      border-top: 1px solid rgba(0, 242, 254, 0.4);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      padding: 20px 18px 30px 18px;
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
-    /* 3D Floating Bottom Navigation */
+    /* 3D Bottom Nav */
     .nav-3d {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       height: 70px;
-      background: rgba(8, 14, 28, 0.85);
+      background: rgba(8, 14, 28, 0.9);
       backdrop-filter: blur(20px);
       border-top: 1px solid rgba(0, 242, 254, 0.2);
-      box-shadow: 0 -8px 30px rgba(0,0,0,0.6);
       display: flex;
       justify-content: space-around;
       align-items: center;
       z-index: 1000;
     }
-
     .nav-btn-3d {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-decoration: none;
       color: #64748b;
       font-size: 0.68rem;
       font-weight: 700;
       gap: 4px;
-      transition: all 0.2s ease;
-      position: relative;
     }
-    .nav-btn-3d.active {
-      color: #00f2fe;
-    }
-
+    .nav-btn-3d.active { color: #00f2fe; }
     .icon-cube-3d {
       width: 32px;
       height: 32px;
@@ -217,217 +210,311 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+      background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.15);
-      transition: all 0.25s ease;
     }
     .nav-btn-3d.active .icon-cube-3d {
       background: linear-gradient(135deg, #00f2fe, #4facfe);
-      border-color: #00f2fe;
-      box-shadow: 0 0 18px rgba(0, 242, 254, 0.7), inset 0 2px 4px rgba(255,255,255,0.7);
       color: #050b18;
-      transform: translateY(-4px);
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.7);
     }
-    .nav-btn-3d.active .icon-cube-3d svg {
-      fill: #050b18;
-    }
-    .icon-cube-3d svg {
-      width: 17px;
-      height: 17px;
-      fill: currentColor;
-    }
-
-    /* Screen Opening Loader Animation Overlay */
-    #actionLoaderOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(5, 11, 24, 0.85);
-      backdrop-filter: blur(15px);
-      z-index: 9999;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: fadeIn 0.2s ease forwards;
-    }
-    .pulsing-ring {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 3px solid rgba(0, 242, 254, 0.2);
-      border-top-color: #00f2fe;
-      border-bottom-color: #4facfe;
-      animation: spin 0.8s linear infinite;
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    .nav-btn-3d.active .icon-cube-3d svg { fill: #050b18; }
+    .icon-cube-3d svg { width: 17px; height: 17px; fill: currentColor; }
   </style>
 </head>
 <body>
 
-  <!-- Opening Animation Screen Overlay -->
-  <div id="actionLoaderOverlay">
-    <div class="pulsing-ring"></div>
-    <div id="loaderText" style="margin-top: 16px; font-weight: 800; font-size: 0.85rem; color: #00f2fe; letter-spacing: 1px;">
-      LAUNCHING ENGINE...
-    </div>
-  </div>
-
-  <!-- Header -->
-  <header class="app-header glass" style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+  <!-- Top App Header -->
+  <header style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05);">
     <div style="display: flex; align-items: center; gap: 10px;">
       <div class="brand-avatar-3d">S</div>
       <span class="neon-brand-title">SUBBHU AI LABS</span>
     </div>
-    <div style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 20px; padding: 4px 12px; font-size: 0.75rem; font-weight: 800; color: #00f2fe; box-shadow: 0 0 10px rgba(0,242,254,0.2);">
+    <div style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 20px; padding: 4px 12px; font-size: 0.75rem; font-weight: 800; color: #00f2fe;">
       ⚡ Credits: 9950
     </div>
   </header>
 
-  <!-- Hero Banner -->
-  <div style="padding: 14px 16px 6px 16px;">
-    <span style="font-size: 0.68rem; font-weight: 800; color: #00f2fe; text-transform: uppercase; letter-spacing: 1px;">⚡ Hardware GPU Accelerated</span>
-    <h1 style="font-size: 1.45rem; font-weight: 900; margin: 4px 0 2px 0;">Create Better</h1>
-    <h2 style="font-size: 1.45rem; font-weight: 900; margin: 0; background: linear-gradient(90deg, #00f2fe, #ff007f); -webkit-background-clip: text; color: transparent;">With Generative AI</h2>
+  <!-- Banner -->
+  <div style="padding: 12px 16px 4px 16px;">
+    <span style="font-size: 0.65rem; font-weight: 800; color: #00f2fe; letter-spacing: 1px;">⚡ HARDWARE GPU ACCELERATED</span>
+    <h1 style="font-size: 1.4rem; font-weight: 900; margin: 3px 0 2px 0;">Create Better</h1>
+    <h2 style="font-size: 1.4rem; font-weight: 900; margin: 0; background: linear-gradient(90deg, #00f2fe, #ff007f); -webkit-background-clip: text; color: transparent;">With Generative AI</h2>
   </div>
 
-  <!-- Video Banner Box -->
+  <!-- Dubbing Box -->
   <div style="padding: 10px 16px;">
-    <div onclick="launchWithLoading('dubbing.html', 'INITIALIZING AI DUBBING ENGINE...')" style="cursor: pointer; background: linear-gradient(135deg, rgba(88,28,135,0.5), rgba(30,27,75,0.7)); border: 1px solid rgba(168,85,247,0.4); border-radius: 16px; padding: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(168,85,247,0.2);">
+    <div onclick="window.location.href='dubbing.html'" style="cursor: pointer; background: linear-gradient(135deg, rgba(88,28,135,0.5), rgba(30,27,75,0.7)); border: 1px solid rgba(168,85,247,0.4); border-radius: 16px; padding: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 25px rgba(168,85,247,0.2);">
       <div>
-        <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">🎙️ ElevenLabs Video Dubber</div>
-        <div style="font-size: 0.7rem; color: #cbd5e1; margin-top: 2px;">Multi-Speaker Voice Cloning & Audio Sync</div>
+        <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">🎙️ ElevenLabs AI Dubbing</div>
+        <div style="font-size: 0.7rem; color: #cbd5e1;">Multi-Speaker Voice Cloning & Audio Sync</div>
       </div>
-      <div style="background: linear-gradient(135deg, #a855f7, #ec4899); padding: 7px 14px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; color: #fff; box-shadow: 0 4px 15px rgba(236,72,153,0.4);">
-        START DUB
+      <div style="background: linear-gradient(135deg, #a855f7, #ec4899); padding: 7px 14px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; color: #fff;">
+        LAUNCH
       </div>
     </div>
   </div>
 
-  <!-- 3D Filter Pills -->
+  <!-- Filter Pills -->
   <div class="pills-scroll">
-    <div class="pill-3d active" onclick="filterCategory(this)">⚡ All Engines (25+)</div>
-    <div class="pill-3d" onclick="filterCategory(this)">📸 Photos</div>
-    <div class="pill-3d" onclick="filterCategory(this)">🎬 4K Videos</div>
-    <div class="pill-3d" onclick="filterCategory(this)">👤 Portraits</div>
+    <div class="pill-3d active" onclick="filterItems('all', this)">⚡ All Engines (12)</div>
+    <div class="pill-3d" onclick="filterItems('portraits', this)">👤 Portraits</div>
+    <div class="pill-3d" onclick="filterItems('art', this)">🎨 Creative Art</div>
+    <div class="pill-3d" onclick="filterItems('commercial', this)">📦 Commercial</div>
   </div>
 
-  <!-- 3D Grid Tools -->
-  <div class="grid-container">
+  <!-- Grid: Complete 12 Working Tools -->
+  <div class="grid-container" id="toolsGrid">
 
-    <!-- Tool 1 -->
-    <div class="card-3d" onclick="launchWithLoading('studio.html', 'LOADING 4K UPSCALE ENGINE...')">
+    <!-- 1 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('4K Clarity Upscaler', 'ultra detailed 4k photograph, crisp sharp edges, masterwork resolution, fine textures, authentic details')">
       <span class="card-tag">Super-Res</span>
       <img class="card-media" src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80">
       <div class="card-body">
         <div class="card-title">4K Clarity Upscaler</div>
-        <div class="card-desc">2x-4x neural super resolution & crisp edges</div>
-        <div class="card-footer">
-          <span class="cost-badge">⚡ 1 credit</span>
-          <span class="enhance-action">ENHANCE →</span>
-        </div>
+        <div class="card-desc">Super resolution & edge crispness</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
       </div>
     </div>
 
-    <!-- Tool 2 -->
-    <div class="card-3d" onclick="launchWithLoading('studio.html', 'INITIALIZING BACKGROUND REMOVER...')">
+    <!-- 2 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Background Remover', 'isolated subject against clean pure solid minimalist studio background, high contrast cutout studio portrait')">
       <span class="card-tag">Alpha Cut</span>
       <img class="card-media" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80">
       <div class="card-body">
         <div class="card-title">Background Remover</div>
-        <div class="card-desc">100% hair-accurate transparent PNG cutout</div>
-        <div class="card-footer">
-          <span class="cost-badge">⚡ 1 credit</span>
-          <span class="enhance-action">ENHANCE →</span>
-        </div>
+        <div class="card-desc">Accurate cutout & crisp subject isolate</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
       </div>
     </div>
 
-    <!-- Tool 3 -->
-    <div class="card-3d" onclick="launchWithLoading('create.html', 'LOADING DSLR PORTRAIT STUDIO...')">
+    <!-- 3 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('Master Portrait 35mm', 'authentic candid 35mm film photograph of a person, 85mm f1.8 lens, natural skin pores, soft bokeh, daylight')">
       <span class="card-tag">Cinematic</span>
       <img class="card-media" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80">
       <div class="card-body">
         <div class="card-title">Master Portrait 35mm</div>
-        <div class="card-desc">Kodak warm tone & authentic skin texture</div>
-        <div class="card-footer">
-          <span class="cost-badge">⚡ 1 credit</span>
-          <span class="enhance-action">ENHANCE →</span>
-        </div>
+        <div class="card-desc">Kodak warm tone & genuine skin texture</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
       </div>
     </div>
 
-    <!-- Tool 4 -->
-    <div class="card-3d" onclick="launchWithLoading('create.html', 'LOADING STUDIO LIGHTING RIG...')">
+    <!-- 4 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('Studio Pro Lighting', 'dramatic high-end studio portrait, volumetric softbox rim lighting, deep contrast shadows, commercial photography')">
       <span class="card-tag">Studio Rim</span>
       <img class="card-media" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80">
       <div class="card-body">
         <div class="card-title">Studio Pro Lighting</div>
         <div class="card-desc">Volumetric softbox & edge rim lights</div>
-        <div class="card-footer">
-          <span class="cost-badge">⚡ 1 credit</span>
-          <span class="enhance-action">ENHANCE →</span>
-        </div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Anime Cel-Shaded', 'Makoto Shinkai style vibrant anime character portrait, cel shaded, breathtaking detailed anime landscape, ghibli aesthetics, 8k')">
+      <span class="card-tag">Stylize</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Anime Cel-Shaded</div>
+        <div class="card-desc">Japanese anime aesthetic & sharp ink art</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Cyberpunk Neon', 'cyberpunk night portrait, rain wet asphalt reflections, neon magenta and cyan backlights, blade runner aesthetic')">
+      <span class="card-tag">Neon FX</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Cyberpunk Neon</div>
+        <div class="card-desc">Futuristic cyber glow & rainy reflections</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('3D Pixar Animation', 'charming 3D animated character, pixar disney animation style, expressive big eyes, unreal engine 5 raytraced subsurface scattering')">
+      <span class="card-tag">3D Pixar</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">3D Pixar Character</div>
+        <div class="card-desc">Disney animated 3D character render</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('Vintage 90s Kodak', 'authentic 1990s vintage 35mm photograph, Kodak Portra 400 color tones, natural film grain, nostalgia aesthetic')">
+      <span class="card-tag">Retro 90s</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Vintage 90s Kodak</div>
+        <div class="card-desc">Warm film grain & authentic nostalgic tone</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Commercial Product Ad', 'commercial luxury product photography, floating clean water droplets, marble podium, crisp soft studio lights, 8k render')">
+      <span class="card-tag">Product Ad</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Product Studio Ad</div>
+        <div class="card-desc">Commercial showcase with marble podium</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Dark Fantasy Art', 'epic dark fantasy concept art, Elden Ring aesthetic, gothic atmospheric fog, cinematic mystical lighting, matte painting, 8k')">
+      <span class="card-tag">Dark Fantasy</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Dark Fantasy Art</div>
+        <div class="card-desc">Epic mythic landscape & gothic knights</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('Fashion Editorial', 'high fashion magazine editorial cover, Vogue photography style, dramatic high key lighting, crisp makeup details')">
+      <span class="card-tag">Runway</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Fashion Editorial</div>
+        <div class="card-desc">Vogue magazine luxury studio cover</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Superbike & Automotive', 'custom matte black sports motorcycle parked on wet city asphalt at night, dramatic rim light, raytraced metal reflections, 8k')">
+      <span class="card-tag">Motorsport</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Superbike & Hypercar</div>
+        <div class="card-desc">Raytraced automotive lighting & metal shine</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
       </div>
     </div>
 
   </div>
 
-  <!-- 3D Bottom Navigation -->
+  <!-- Interactive Generation Modal Sheet -->
+  <div id="engineModal" class="tool-modal">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div>
+          <div id="modalEngineTitle" style="font-size: 1.1rem; font-weight: 800; color: #fff;">Tool Name</div>
+          <span style="font-size: 0.7rem; color: #00f2fe; font-weight: 700;">FLUX Neural Engine Active</span>
+        </div>
+        <button onclick="closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">✕</button>
+      </div>
+
+      <label style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">Subject Description (Optional):</label>
+      <input id="customSubject" type="text" placeholder="e.g. young Indian man in black jacket / sports bike" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(0,242,254,0.3); border-radius: 10px; color: #fff; margin-top: 6px; outline: none; box-sizing: border-box;">
+
+      <button id="runBtn" class="btn-primary" onclick="renderArtwork()" style="width: 100%; padding: 14px; border-radius: 12px; margin-top: 14px; font-weight: 800;">
+        ⚡ GENERATE CREATIVE
+      </button>
+
+      <!-- Shimmer Progress -->
+      <div id="renderLoader" style="display: none; margin-top: 16px; text-align: center; color: #00f2fe; font-weight: 800; font-size: 0.85rem;">
+        Rendering High-Resolution Output...
+      </div>
+
+      <!-- Result Image & Download -->
+      <div id="renderResult" style="display: none; margin-top: 16px;">
+        <img id="renderImg" src="" style="width: 100%; max-height: 380px; object-fit: cover; border-radius: 12px; border: 1px solid #00f2fe;">
+        <a id="downloadLink" href="#" download="subbhu_ai.jpg" class="btn-primary" style="display: block; text-align: center; text-decoration: none; padding: 12px; margin-top: 10px; border-radius: 10px; font-weight: 800;">
+          💾 SAVE HIGH RESOLUTION
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
   <nav class="nav-3d">
     <a href="index.html" class="nav-btn-3d active">
-      <div class="icon-cube-3d">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      </div>
+      <div class="icon-cube-3d"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
       <span>Home</span>
     </a>
-    <a href="create.html" class="nav-btn-3d" onclick="launchWithLoading('create.html', 'LAUNCHING CREATIVE STUDIO...')">
-      <div class="icon-cube-3d">
-        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-      </div>
+    <a href="create.html" class="nav-btn-3d">
+      <div class="icon-cube-3d"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
       <span>Create</span>
     </a>
-    <a href="studio.html" class="nav-btn-3d" onclick="launchWithLoading('studio.html', 'LAUNCHING AI STUDIO...')">
-      <div class="icon-cube-3d">
-        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/></svg>
-      </div>
-      <span>Studio</span>
+    <a href="dubbing.html" class="nav-btn-3d">
+      <div class="icon-cube-3d"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/></svg></div>
+      <span>Dubbing</span>
     </a>
-    <a href="history.html" class="nav-btn-3d" onclick="launchWithLoading('history.html', 'SYNCING GENERATION HISTORY...')">
-      <div class="icon-cube-3d">
-        <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-      </div>
-      <span>History</span>
-    </a>
-    <a href="profile.html" class="nav-btn-3d" onclick="launchWithLoading('profile.html', 'OPENING USER PROFILE...')">
-      <div class="icon-cube-3d">
-        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      </div>
+    <a href="profile.html" class="nav-btn-3d">
+      <div class="icon-cube-3d"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
       <span>Profile</span>
     </a>
   </nav>
 
   <script>
-    function launchWithLoading(targetUrl, message) {
-      if (event) event.preventDefault();
-      const overlay = document.getElementById('actionLoaderOverlay');
-      const text = document.getElementById('loaderText');
-      text.innerText = message || 'LAUNCHING AI ENGINE...';
-      overlay.style.display = 'flex';
-      setTimeout(() => {
-        window.location.href = targetUrl;
-      }, 450);
+    let currentEnginePrompt = '';
+
+    function openStudioEngine(title, defaultPrompt) {
+      document.getElementById('modalEngineTitle').innerText = title;
+      currentEnginePrompt = defaultPrompt;
+      document.getElementById('customSubject').value = '';
+      document.getElementById('renderResult').style.display = 'none';
+      document.getElementById('renderLoader').style.display = 'none';
+      document.getElementById('engineModal').style.display = 'flex';
     }
 
-    function filterCategory(btn) {
+    function closeModal() {
+      document.getElementById('engineModal').style.display = 'none';
+    }
+
+    async function renderArtwork() {
+      const subject = document.getElementById('customSubject').value.trim();
+      const prompt = subject ? `${subject}, ${currentEnginePrompt}` : currentEnginePrompt;
+      const cleanPrompt = `${prompt}, authentic photography, natural color balance, high resolution, sharp focus, 8k`;
+      const negativePrompt = `oversaturated, red tint, cartoon, blurry, deformed`;
+
+      const btn = document.getElementById('runBtn');
+      const loader = document.getElementById('renderLoader');
+      const resultBox = document.getElementById('renderResult');
+      const img = document.getElementById('renderImg');
+      const dl = document.getElementById('downloadLink');
+
+      btn.disabled = true;
+      loader.style.display = 'block';
+      resultBox.style.display = 'none';
+
+      const seed = Math.floor(Math.random() * 9999999);
+      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=768&height=1024&seed=${seed}&model=flux&nologo=true&negative=${encodeURIComponent(negativePrompt)}`;
+
+      try {
+        const res = await fetch(url);
+        const blob = await res.blob();
+        const objUrl = URL.createObjectURL(blob);
+        img.src = objUrl;
+        dl.href = objUrl;
+      } catch (err) {
+        img.src = url;
+        dl.href = url;
+      } finally {
+        loader.style.display = 'none';
+        resultBox.style.display = 'block';
+        btn.disabled = false;
+      }
+    }
+
+    function filterItems(cat, btn) {
       document.querySelectorAll('.pill-3d').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
+      const cards = document.querySelectorAll('.card-3d');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
   </script>
 </body>
