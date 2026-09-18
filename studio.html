@@ -3,319 +3,242 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>KapKap AI Studio | SUBBHU AI LABS</title>
-  <link rel="stylesheet" href="css/style.css?v=17.0">
-  <link rel="stylesheet" href="css/responsive.css?v=17.0">
-  <link rel="stylesheet" href="css/animations.css?v=17.0">
+  <title>AI Creative Studio | SUBBHU AI LABS</title>
+  <link rel="stylesheet" href="css/style.css?v=75.0">
+  <link rel="stylesheet" href="css/animations.css?v=75.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=75.0"></script>
   <style>
-    body {
-      background: #000;
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    .studio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 16px 16px 90px 16px;
     }
-    .studio-header {
-      position: absolute;
-      top: 0;
+    .tool-card {
+      background: rgba(13, 20, 39, 0.85);
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .tool-thumb {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+    .tool-info {
+      padding: 10px;
+    }
+    .tool-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #00f2fe;
+      background: rgba(0, 242, 254, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .modal-sheet {
+      position: fixed;
+      bottom: 0;
       left: 0;
       right: 0;
-      z-index: 50;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%);
-    }
-    .viewfinder {
-      position: relative;
-      width: 100vw;
-      height: 72vh;
-      background: #0d1117;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #cameraStream {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scaleX(-1); /* Mirror mode like front camera */
-    }
-    /* Teleprompter Overlay */
-    .teleprompter-box {
-      position: absolute;
-      top: 70px;
-      left: 16px;
-      right: 16px;
-      height: 140px;
-      overflow-y: scroll;
-      background: rgba(4, 8, 23, 0.65);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 210, 255, 0.4);
-      border-radius: 16px;
-      padding: 14px 18px;
-      z-index: 40;
-      box-shadow: 0 0 25px rgba(0, 210, 255, 0.2);
-    }
-    .teleprompter-text {
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.6;
-      color: #fff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
-      transition: all 0.3s;
-    }
-    .studio-controls {
-      position: relative;
-      background: #050814;
-      padding: 16px 20px 80px 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .studio-tabs {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      margin-bottom: 14px;
-      scrollbar-width: none;
-    }
-    .studio-tab-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.05);
-      color: #fff;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-    .studio-tab-btn.active {
-      background: linear-gradient(135deg, #00d2ff, #7928ca);
-      border-color: #00d2ff;
-      box-shadow: 0 0 14px rgba(0, 210, 255, 0.5);
-    }
-    .rec-btn {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: #ff0055;
-      border: 4px solid #fff;
-      box-shadow: 0 0 25px rgba(255, 0, 85, 0.7);
-      margin: 10px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .rec-btn.recording {
-      border-radius: 16px;
-      width: 45px;
-      height: 45px;
-      animation: neonPulse 1s infinite alternate;
+      background: #0d1427;
+      border-top: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Studio Bar -->
-  <div class="studio-header">
-    <a href="index.html" style="color: #fff; text-decoration: none; font-size: 1.2rem; font-weight: bold;">← Back</a>
-    <div style="font-size: 0.95rem; font-weight: 800; color: #00d2ff;">KAPKAP AI STUDIO</div>
-    <button id="switchCamBtn" style="background: none; border: none; font-size: 1.4rem; color: #fff;">🔄</button>
-  </div>
+  <header class="app-header glass">
+    <div class="brand-wrap">
+      <a href="index.html" style="color: #fff; text-decoration: none; font-size: 1.2rem;">←</a>
+      <div class="brand-name">CREATIVE STUDIO</div>
+    </div>
+    <span class="hero-badge">⚡ 6 Tools Active</span>
+  </header>
 
-  <!-- Camera & Teleprompter Stage -->
-  <div class="viewfinder">
-    <video id="cameraStream" autoplay playsinline muted></video>
+  <div class="studio-grid">
+    <!-- Tool 1 -->
+    <div class="tool-card" onclick="openToolModal('Anime Cel-Shaded', 'Stylize', 'Makoto Shinkai style anime cel-shaded character, vibrant colors, studio ghibli anime portrait, 8k')">
+      <img class="tool-thumb" src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&q=80">
+      <div class="tool-info">
+        <span class="tool-badge">Stylize</span>
+        <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">Anime Cel-Shaded</div>
+      </div>
+    </div>
 
-    <!-- Scrolling Teleprompter -->
-    <div class="teleprompter-box" id="prompterBox">
-      <div class="teleprompter-text" id="prompterContent">
-        Welcome to KapKap Studio! Type your script below or tap "AI Script" to generate viral content automatically. Look right at the camera and read smoothly!
+    <!-- Tool 2 -->
+    <div class="tool-card" onclick="openToolModal('DSLR Photorealism', 'Enhance', 'ultra-realistic candid portrait, authentic skin pores, 85mm f1.8 lens bokeh, crisp eyes, natural daylight')">
+      <img class="tool-thumb" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80">
+      <div class="tool-info">
+        <span class="tool-badge">Enhance</span>
+        <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">DSLR Portrait</div>
+      </div>
+    </div>
+
+    <!-- Tool 3 -->
+    <div class="tool-card" onclick="openToolModal('Cyberpunk Neon', 'FX', 'cyberpunk portrait, neon cyan magenta rim lighting, dark rain street reflections, futuristic octane render')">
+      <img class="tool-thumb" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80">
+      <div class="tool-info">
+        <span class="tool-badge">FX</span>
+        <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">Cyberpunk Neon</div>
+      </div>
+    </div>
+
+    <!-- Tool 4 -->
+    <div class="tool-card" onclick="openToolModal('3D Pixar Render', 'Animation', 'cute 3D animated character portrait, pixar style, disney lighting, unreal engine 5 render, raytraced')">
+      <img class="tool-thumb" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80">
+      <div class="tool-info">
+        <span class="tool-badge">3D Render</span>
+        <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">3D Character</div>
+      </div>
+    </div>
+
+    <!-- Tool 5 -->
+    <div class="tool-card" onclick="openToolModal('Vintage 35mm Film', 'Retro', 'vintage 1990s 35mm kodak portra photograph, warm film grain, retro aesthetic, authentic nostagia')">
+      <img class="tool-thumb" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80">
+      <div class="tool-info">
+        <span class="tool-badge">Retro</span>
+        <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">Vintage Film</div>
+      </div>
+    </div>
+
+    <!-- Tool 6 -->
+    <div class="tool-card" onclick="openToolModal('Commercial Product', 'Ads', 'commercial product advertising shot, pristine reflection, studio lighting, hyperrealistic 8k')">
+      <img class="tool-thumb" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80">
+      <div class="tool-info">
+        <span class="tool-badge">Commercial</span>
+        <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">Product Studio</div>
       </div>
     </div>
   </div>
 
-  <!-- Studio Deck & AI Control Panels -->
-  <div class="studio-controls">
-    <!-- Feature Selectors -->
-    <div class="studio-tabs">
-      <button class="studio-tab-btn active" onclick="switchPanel('prompter')">📜 Teleprompter</button>
-      <button class="studio-tab-btn" onclick="switchPanel('ai-script')">✨ AI Script</button>
-      <button class="studio-tab-btn" onclick="switchPanel('talking-photo')">🗣️ Talking Head</button>
-      <button class="studio-tab-btn" onclick="switchPanel('captions')">💬 Auto Captions</button>
-    </div>
-
-    <!-- Panel 1: Prompter Controls -->
-    <div id="panel-prompter">
-      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 6px;">
-        <span>Prompter Speed</span>
-        <span id="speedVal">Normal (30wpm)</span>
+  <!-- Bottom Sheet Modal -->
+  <div id="actionModal" class="modal-sheet">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <div>
+        <div id="modalTitle" style="font-size: 1.1rem; font-weight: 800; color: #fff;">Tool Name</div>
+        <span id="modalBadge" class="tool-badge">Category</span>
       </div>
-      <input type="range" id="scrollSpeed" min="1" max="10" value="4" style="width: 100%; margin-bottom: 12px;">
-      <textarea id="scriptInput" rows="2" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 8px; font-size: 0.85rem;" placeholder="Paste or type script to display on teleprompter..."></textarea>
+      <button onclick="closeToolModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.4rem;">✕</button>
     </div>
 
-    <!-- Panel 2: AI Script Generator -->
-    <div id="panel-ai-script" style="display: none;">
-      <input type="text" id="scriptTopicInput" placeholder="Enter video topic (e.g. 5 AI tools, Motivation)..." style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid #00d2ff; color: #fff; font-size: 0.85rem; margin-bottom: 8px;">
-      <button id="generateScriptBtn" class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 0.8rem;">⚡ GENERATE VIRAL REEL SCRIPT</button>
+    <div style="margin: 12px 0;">
+      <label style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">Subject Description (Optional):</label>
+      <input id="subjectInput" type="text" placeholder="e.g. young woman with camera / sports bike" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(0,242,254,0.25); border-radius: 8px; color: #fff; margin-top: 6px; outline: none; box-sizing: border-box;">
     </div>
 
-    <!-- Panel 3: Talking Photo / Head -->
-    <div id="panel-talking-photo" style="display: none;">
-      <p style="font-size: 0.75rem; color: #aaa; margin: 0 0 8px 0;">Upload any portrait photo to generate lip-synced talking video:</p>
-      <input type="file" id="talkingPhotoInput" accept="image/*" style="font-size: 0.8rem; margin-bottom: 8px;">
-      <input type="text" id="talkingAudioText" placeholder="What should the avatar say?" style="width: 100%; box-sizing: border-box; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid #7928ca; color: #fff; font-size: 0.85rem; margin-bottom: 8px;">
-      <button id="runTalkingHeadBtn" class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 0.8rem; background: linear-gradient(135deg, #7928ca, #ff007f);">🎬 GENERATE TALKING AVATAR</button>
+    <button id="processBtn" class="btn-primary" onclick="executeTool()" style="width: 100%; padding: 12px; border-radius: 10px; font-weight: 700;">
+      PROCESS NOW
+    </button>
+
+    <!-- Result preview -->
+    <div id="modalLoader" style="display: none; text-align: center; margin-top: 14px; color: #00f2fe; font-size: 0.85rem; font-weight: 700;">
+      ⚡ Processing with Neural Model...
     </div>
 
-    <!-- Panel 4: Auto Captions / Eye Contact -->
-    <div id="panel-captions" style="display: none;">
-      <label style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem; margin-bottom: 10px;">
-        <input type="checkbox" checked id="toggleSubtitles"> 🔤 Dynamic Neon TikTok Subtitles
-      </label>
-      <label style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem;">
-        <input type="checkbox" checked id="toggleEyeContact"> 👁️ AI Direct Eye-Contact Lock
-      </label>
+    <div id="toolResultCard" style="display: none; margin-top: 14px;">
+      <img id="toolResultImg" src="" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 10px; border: 1px solid #00f2fe;">
+      <a id="toolDownloadBtn" href="#" download="subbhu_studio.jpg" class="btn-primary" style="display: block; text-align: center; text-decoration: none; padding: 10px; margin-top: 8px; border-radius: 8px;">
+        💾 SAVE IMAGE
+      </a>
     </div>
-
-    <!-- Big Center Record Button -->
-    <div style="text-align: center; margin-top: 14px;">
-      <div id="recordBtn" class="rec-btn"></div>
-      <div id="recordLabel" style="font-size: 0.72rem; color: #aaa; margin-top: 4px;">TAP TO RECORD VIDEO</div>
-    </div>
-    <div id="studioStatus" style="text-align: center; font-size: 0.8rem; color: #00d2ff; margin-top: 6px; font-weight: bold;"></div>
   </div>
 
-  <script src="js/supabase-client.js?v=17.0"></script>
+  <nav class="bottom-nav glass">
+    <a href="index.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="create.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      <span>Create</span>
+    </a>
+    <a href="studio.html" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/></svg>
+      <span>Studio</span>
+    </a>
+    <a href="history.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+      <span>History</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
   <script>
-    let stream = null;
-    let mediaRecorder = null;
-    let recordedChunks = [];
-    let isRecording = false;
-    let scrollTimer = null;
-    let facingMode = "user";
+    let activeToolStyle = '';
 
-    // 1. Camera Initialization
-    async function startCamera() {
-      try {
-        if (stream) stream.getTracks().forEach(t => t.stop());
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: facingMode, width: { ideal: 1920 }, height: { ideal: 1080 } },
-          audio: true
-        });
-        document.getElementById('cameraStream').srcObject = stream;
-      } catch (err) {
-        alert("Camera permission required: " + err.message);
-      }
+    function openToolModal(title, badge, stylePrompt) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalBadge').innerText = badge;
+      activeToolStyle = stylePrompt;
+      document.getElementById('toolResultCard').style.display = 'none';
+      document.getElementById('actionModal').style.display = 'block';
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      startCamera();
+    function closeToolModal() {
+      document.getElementById('actionModal').style.display = 'none';
+    }
 
-      document.getElementById('switchCamBtn').addEventListener('click', () => {
-        facingMode = facingMode === "user" ? "environment" : "user";
-        startCamera();
-      });
+    async function executeTool() {
+      const subject = document.getElementById('subjectInput').value.trim() || "portrait person";
+      const fullPrompt = `${subject}, ${activeToolStyle}`;
+      const btn = document.getElementById('processBtn');
+      const loader = document.getElementById('modalLoader');
+      const resCard = document.getElementById('toolResultCard');
+      const img = document.getElementById('toolResultImg');
+      const dl = document.getElementById('toolDownloadBtn');
 
-      // Script live update
-      const scriptInput = document.getElementById('scriptInput');
-      scriptInput.addEventListener('input', (e) => {
-        document.getElementById('prompterContent').innerText = e.target.value || "Your teleprompter script...";
-      });
+      btn.disabled = true;
+      loader.style.display = 'block';
+      resCard.style.display = 'none';
 
-      // AI Script Generator
-      document.getElementById('generateScriptBtn').addEventListener('click', () => {
-        const topic = document.getElementById('scriptTopicInput').value.trim();
-        if (!topic) return alert("Please enter a topic!");
-        const scripts = [
-          `Did you know that ${topic} is changing the entire creator economy? In the next 30 seconds, I'll reveal 3 secret techniques nobody is talking about. First, save this video right now!`,
-          `Stop doing ${topic} the old way! Here is the exact step-by-step formula top creators use in 2026 to get 10x faster results. Step 1: Automate everything with AI!`,
-          `If you want to master ${topic} this month, here is the ultimate cheat sheet. Watch till the very end for the special bonus prompt!`
-        ];
-        const chosen = scripts[Math.floor(Math.random() * scripts.length)];
-        scriptInput.value = chosen;
-        document.getElementById('prompterContent').innerText = chosen;
-        switchPanel('prompter');
-        alert("✨ AI Script generated and loaded into Teleprompter!");
-      });
-
-      // Talking Head Avatar
-      document.getElementById('runTalkingHeadBtn').addEventListener('click', () => {
-        const file = document.getElementById('talkingPhotoInput').files[0];
-        const text = document.getElementById('talkingAudioText').value.trim();
-        if (!file || !text) return alert("Please upload a photo and write speech text!");
-        
-        const status = document.getElementById('studioStatus');
-        status.innerText = "⏳ Generating AI Lip-Sync Talking Head video...";
-        
-        setTimeout(() => {
-          status.innerText = "🎉 Talking Head Video ready! Check history or camera roll.";
-          alert("Success! Your AI Talking Head avatar video has been created.");
-        }, 3000);
-      });
-
-      // Record Flow
-      const recBtn = document.getElementById('recordBtn');
-      const recLabel = document.getElementById('recordLabel');
-
-      recBtn.addEventListener('click', () => {
-        if (!isRecording) {
-          // START RECORDING
-          recordedChunks = [];
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
-          mediaRecorder.onstop = () => {
-            const blob = new Blob(recordedChunks, { type: 'video/mp4' });
-            const url = URL.createObjectURL(blob);
-            
-            // Auto download file to device
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `kapkap_recording_${Date.now()}.mp4`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            alert("💾 Video recorded in 4K HDR and saved directly to your phone!");
-          };
-
-          mediaRecorder.start();
-          isRecording = true;
-          recBtn.classList.add('recording');
-          recLabel.innerText = "STOP RECORDING";
-
-          // Start teleprompter scroll
-          const box = document.getElementById('prompterBox');
-          const speed = parseInt(document.getElementById('scrollSpeed').value) || 4;
-          box.scrollTop = 0;
-          scrollTimer = setInterval(() => {
-            box.scrollTop += speed * 0.4;
-          }, 50);
-
-        } else {
-          // STOP RECORDING
-          mediaRecorder.stop();
-          isRecording = false;
-          recBtn.classList.remove('recording');
-          recLabel.innerText = "TAP TO RECORD VIDEO";
-          clearInterval(scrollTimer);
+      // Safe Credit Deduction RPC call
+      try {
+        if (window.sbClient) {
+          const { data: { session } } = await window.sbClient.auth.getSession();
+          if (session && session.user) {
+            await window.sbClient.rpc('deduct_credits_atomic', {
+              p_user_id: session.user.id,
+              p_amount: 5,
+              p_description: `Used ${document.getElementById('modalTitle').innerText}`
+            });
+          }
         }
-      });
-    });
+      } catch (e) {
+        console.warn('Credits bypassed safely:', e);
+      }
 
-    function switchPanel(panelId) {
-      ['prompter', 'ai-script', 'talking-photo', 'captions'].forEach(id => {
-        const el = document.getElementById('panel-' + id);
-        if (el) el.style.display = (id === panelId) ? 'block' : 'none';
-      });
-      document.querySelectorAll('.studio-tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.innerText.toLowerCase().includes(panelId.replace('-', ' ')));
-      });
+      const seed = Math.floor(Math.random() * 999999);
+      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=1024&height=1024&seed=${seed}&model=flux&nologo=true`;
+
+      try {
+        const res = await fetch(url);
+        const blob = await res.blob();
+        const objUrl = URL.createObjectURL(blob);
+        img.src = objUrl;
+        dl.href = objUrl;
+      } catch (err) {
+        img.src = url;
+        dl.href = url;
+      } finally {
+        loader.style.display = 'none';
+        resCard.style.display = 'block';
+        btn.disabled = false;
+      }
     }
   </script>
 </body>
