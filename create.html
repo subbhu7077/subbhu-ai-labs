@@ -215,7 +215,10 @@
       // Safe seed and URL construction
       const seed = Math.floor(Math.random() * 999999);
       const encodedPrompt = encodeURIComponent(promptText);
-      const targetUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${currentDimensions.width}&height=${currentDimensions.height}&seed=${seed}&model=flux&nologo=true`;
+      // Auto inject high-end DSLR realism tokens
+      const photoRealisticPrompt = `${promptText}, ultra-realistic raw photo, authentic portrait, 85mm f/1.8 lens, natural human skin texture, visible pores, cinematic rim lighting, shallow depth of field, award-winning photography, highly detailed, no plastic smooth skin, 8k`;
+      const finalEncoded = encodeURIComponent(photoRealisticPrompt);
+      const targetUrl = `https://image.pollinations.ai/prompt/${finalEncoded}?width=${currentDimensions.width}&height=${currentDimensions.height}&seed=${seed}&model=flux-realism&nologo=true`;
 
       try {
         const response = await fetch(targetUrl);
