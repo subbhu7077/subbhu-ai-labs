@@ -3,39 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Studio | SUBBHU AI LABS</title>
+  <title>Creation Studio | SUBBHU AI LABS</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/animations.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <header class="app-header glass">
     <div class="brand-wrap">
       <a href="index.html" class="btn-icon" style="margin-right: 8px;">←</a>
-      <div class="brand-name">Create Studio</div>
+      <div class="brand-name">AI Creative Studio</div>
     </div>
   </header>
 
   <main style="padding: 16px;">
-    <div class="section-title" style="margin-bottom: 12px;">Choose Generation Type</div>
-    <div style="display: flex; flex-direction: column; gap: 12px;">
-      <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-md);" onclick="alert('AI processing will be connected in the backend.')">
-        <h3 style="color: var(--primary-cyan); font-size: 1.1rem; margin-bottom: 4px;">Text to Image Studio</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Transform written text prompts into high-resolution cinematic renders.</p>
-        <button class="btn btn-secondary" style="width: 100%;">Open Studio</button>
+    <!-- Studio Workflow Card -->
+    <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-lg); margin-bottom: 16px;">
+      <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 6px;">Prompt Engine</div>
+      <textarea id="promptInput" placeholder="Describe the image or video scene (e.g. Cinematic product ad of luxury perfume bottle on wet black obsidian rock, neon cyan rim lights, 8k render...)" style="width: 100%; height: 90px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0,0,0,0.5); color: #fff; font-size: 0.8rem; margin-bottom: 12px; resize: none;"></textarea>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('promptInput').value='Cyberpunk cityscape at rainy midnight, volumetric neon lights, photorealistic 8K render'" style="font-size: 0.7rem; padding: 6px 8px;">🌆 Cyberpunk</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('promptInput').value='Minimalist luxury skincare serum bottle, studio softbox illumination, macro lens shot'" style="font-size: 0.7rem; padding: 6px 8px;">🧴 Product Ad</button>
       </div>
 
-      <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-md);" onclick="alert('AI processing will be connected in the backend.')">
-        <h3 style="color: var(--primary-purple); font-size: 1.1rem; margin-bottom: 4px;">Image to Video Animator</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Animate static photos with fluid physics and 3D camera pan effects.</p>
-        <button class="btn btn-secondary" style="width: 100%;">Open Studio</button>
-      </div>
+      <button id="generateCreativeBtn" class="btn btn-primary" style="width: 100%;">⚡ GENERATE CREATIVE</button>
+    </div>
 
-      <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-md);" onclick="alert('AI processing will be connected in the backend.')">
-        <h3 style="color: var(--primary-cyan); font-size: 1.1rem; margin-bottom: 4px;">Universal Media Upscaler</h3>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Upscale any photo or video directly to 4K resolution.</p>
-        <button class="btn btn-secondary" style="width: 100%;">Open Studio</button>
-      </div>
+    <!-- Output Display Panel -->
+    <div id="creativeResultBox" class="glass" style="padding: 16px; border-radius: var(--radius-md); display: none;">
+      <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;">Generation Result</div>
+      <div id="creativeNotice" style="font-size: 0.75rem; color: #f59e0b;"></div>
     </div>
   </main>
 
@@ -60,5 +59,34 @@
       <span>Profile</span>
     </a>
   </nav>
+
+  <script src="js/supabase-client.js"></script>
+  <script>
+    document.getElementById('generateCreativeBtn').addEventListener('click', async () => {
+      const prompt = document.getElementById('promptInput').value.trim();
+      if (!prompt) {
+        alert("Please enter a prompt description.");
+        return;
+      }
+
+      const user = await window.BackendAPI.getUser();
+      if (!user) {
+        alert("Please sign in first via Profile.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+        const genRes = await window.BackendAPI.startGeneration('text2img', `prompt://${encodeURIComponent(prompt)}`);
+        const resultBox = document.getElementById('creativeResultBox');
+        const notice = document.getElementById('creativeNotice');
+        resultBox.style.display = 'block';
+        notice.innerHTML = `✅ Generation task queued (ID: ${genRes.generation_id.substring(0,8)}...).<br>AI Provider: NOT CONFIGURED. Backend keys required for raw inference weights.`;
+        alert(`Job queued! Credits remaining: ${genRes.remaining_credits}\nAI Provider: NOT CONFIGURED.`);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  </script>
 </body>
 </html>

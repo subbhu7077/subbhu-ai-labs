@@ -21,6 +21,8 @@ const UIController = {
     const tool = window.AI_TOOLS.find(t => t.id === toolId);
     if (!tool) return;
 
+    window.currentToolId = tool.id;
+
     const modal = document.getElementById('toolModal');
     const title = document.getElementById('modalToolTitle');
     const badge = document.getElementById('modalToolBadge');
@@ -33,11 +35,16 @@ const UIController = {
   closeModal: function() {
     const modal = document.getElementById('toolModal');
     if (modal) modal.classList.remove('active');
-    // Clean up previews if active
+    
     const previewContainer = document.getElementById('previewContainer');
     const uploadBox = document.getElementById('uploadBox');
+    const videoPreview = document.getElementById('videoPreviewContainer');
+    const photoSlider = document.getElementById('photoSliderContainer');
+
     if (previewContainer) previewContainer.classList.remove('active');
     if (uploadBox) uploadBox.style.display = 'block';
+    if (videoPreview) videoPreview.style.display = 'none';
+    if (photoSlider) photoSlider.style.display = 'block';
   },
 
   setupComparisonSlider: function(containerElement) {

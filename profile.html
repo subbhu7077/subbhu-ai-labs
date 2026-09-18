@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account | SUBBHU AI LABS</title>
+  <title>Account & Plans | SUBBHU AI LABS</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/animations.css">
@@ -13,34 +13,59 @@
   <header class="app-header glass">
     <div class="brand-wrap">
       <a href="index.html" class="btn-icon" style="margin-right: 8px;">←</a>
-      <div class="brand-name">Profile & Settings</div>
+      <div class="brand-name">Account & Subscriptions</div>
     </div>
   </header>
 
   <main style="padding: 16px;">
     <!-- Profile Card -->
-    <div class="glass-elevated" style="padding: 20px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-      <div id="avatarBadge" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: bold; color: #040817;">
+    <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+      <div id="avatarBadge" style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold; color: #040817;">
         U
       </div>
       <div>
-        <div id="profileUsername" style="font-size: 1.1rem; font-weight: 700;">AI Creator</div>
-        <div id="profileEmail" style="font-size: 0.8rem; color: var(--text-muted);">Guest Session (Unlinked)</div>
+        <div id="profileUsername" style="font-size: 1rem; font-weight: 700;">AI Creator</div>
+        <div id="profileEmail" style="font-size: 0.75rem; color: var(--text-muted);">Guest Session (Unlinked)</div>
       </div>
     </div>
 
-    <!-- Credits Card -->
-    <div class="glass" style="padding: 16px; border-radius: var(--radius-md); margin-bottom: 16px; border-color: var(--border-highlight);">
+    <!-- Credits Meter -->
+    <div class="glass" style="padding: 14px; border-radius: var(--radius-md); margin-bottom: 20px; border-color: var(--border-highlight);">
       <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-        <span style="font-size: 0.85rem; font-weight: 600;">Available Credits</span>
-        <span id="creditsValue" style="font-size: 0.85rem; color: var(--primary-cyan); font-weight: 700;">-- / --</span>
+        <span style="font-size: 0.8rem; font-weight: 600;">Available Fast Credits</span>
+        <span id="creditsValue" style="font-size: 0.85rem; color: var(--primary-cyan); font-weight: 700;">--</span>
       </div>
       <div style="height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.1); overflow: hidden;">
-        <div id="creditProgressBar" style="width: 100%; height: 100%; background: var(--primary-cyan);"></div>
+        <div style="width: 100%; height: 100%; background: var(--primary-cyan);"></div>
+      </div>
+    </div>
+
+    <!-- Monetization Plans (Truthful Gateway Validation) -->
+    <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px;">Upgrade Subscription</div>
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+      <!-- PLUS TIER -->
+      <div class="glass" style="padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--primary-cyan);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <div style="font-weight: 700; color: var(--primary-cyan);">PLUS CREATOR</div>
+          <div style="font-size: 0.9rem; font-weight: 800;">₹499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
+        </div>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">100 Monthly Fast Credits • 4K Photo Upscaling • Standard Queue</p>
+        <button onclick="upgradePlan('PLUS')" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px;">UPGRADE TO PLUS</button>
+      </div>
+
+      <!-- PRO TIER -->
+      <div class="glass-elevated" style="padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--primary-purple);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <div style="font-weight: 700; color: var(--primary-purple);">PRO ENTERPRISE</div>
+          <div style="font-size: 0.9rem; font-weight: 800;">₹1,499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
+        </div>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">500 Monthly Fast Credits • 4K/60FPS Video Enhancer • Priority GPU Node</p>
+        <button onclick="upgradePlan('PRO')" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px; background: linear-gradient(135deg, var(--primary-purple), #7928ca);">UPGRADE TO PRO</button>
       </div>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a id="adminLinkBtn" href="admin.html" class="btn btn-secondary" style="justify-content: flex-start; display: none; border-color: var(--primary-cyan);">🛡️ Administrator Console</a>
       <a id="authActionBtn" href="login.html" class="btn btn-secondary" style="justify-content: flex-start;">🔐 Sign In / Sync Account</a>
       <button id="logoutBtn" class="btn btn-secondary" style="justify-content: flex-start; display: none; color: var(--danger);">🚪 Sign Out</button>
     </div>
@@ -74,6 +99,7 @@
       const user = await window.BackendAPI.getUser();
       const authBtn = document.getElementById('authActionBtn');
       const logoutBtn = document.getElementById('logoutBtn');
+      const adminBtn = document.getElementById('adminLinkBtn');
       const usernameEl = document.getElementById('profileUsername');
       const emailEl = document.getElementById('profileEmail');
       const creditsVal = document.getElementById('creditsValue');
@@ -89,6 +115,10 @@
           usernameEl.innerText = profile.username || 'Creator';
           creditsVal.innerText = `${profile.credits} Credits (${profile.plan})`;
           avatarBadge.innerText = (profile.username || user.email)[0].toUpperCase();
+
+          if (profile.role === 'admin') {
+            adminBtn.style.display = 'flex';
+          }
         }
       } else {
         creditsVal.innerText = '0 (Sign in required)';
@@ -99,6 +129,14 @@
         window.location.reload();
       });
     });
+
+    async function upgradePlan(plan) {
+      try {
+        await window.BackendAPI.createCheckout(plan);
+      } catch (err) {
+        alert(err.message);
+      }
+    }
   </script>
 </body>
 </html>

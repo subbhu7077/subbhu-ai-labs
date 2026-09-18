@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Console | SUBBHU AI LABS</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="padding-bottom: 20px;">
+  <header class="app-header glass">
+    <div class="brand-wrap">
+      <a href="index.html" class="btn-icon" style="margin-right: 8px;">←</a>
+      <div class="brand-name">Admin Operations</div>
+    </div>
+  </header>
+
+  <main style="padding: 16px;">
+    <!-- Access Check Loader -->
+    <div id="adminAuthCheck" style="text-align: center; padding: 40px 0;">
+      <div class="skeleton" style="width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 12px;"></div>
+      <div style="font-size: 0.85rem; color: var(--text-muted);">Verifying server-side administrator credentials...</div>
+    </div>
+
+    <!-- Admin Content (Only revealed if authorized) -->
+    <div id="adminContent" style="display: none;">
+      <div style="font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-cyan);">Live Platform Telemetry</div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+        <div class="glass" style="padding: 14px; border-radius: var(--radius-md);">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Total Users</div>
+          <div id="metricTotalUsers" style="font-size: 1.4rem; font-weight: 800;">--</div>
+        </div>
+        <div class="glass" style="padding: 14px; border-radius: var(--radius-md);">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Total Generations</div>
+          <div id="metricTotalGen" style="font-size: 1.4rem; font-weight: 800;">--</div>
+        </div>
+        <div class="glass" style="padding: 14px; border-radius: var(--radius-md);">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Failed Jobs</div>
+          <div id="metricFailedGen" style="font-size: 1.4rem; font-weight: 800; color: var(--danger);">--</div>
+        </div>
+        <div class="glass" style="padding: 14px; border-radius: var(--radius-md);">
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Credits Burned</div>
+          <div id="metricCreditsBurned" style="font-size: 1.4rem; font-weight: 800; color: var(--primary-purple);">--</div>
+        </div>
+      </div>
+
+      <!-- Quick Administration Actions -->
+      <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-lg); margin-bottom: 16px;">
+        <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;">Credit Dispenser</div>
+        <input type="text" id="targetUserId" placeholder="User UUID" style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0,0,0,0.5); color: #fff; font-size: 0.75rem; margin-bottom: 8px;">
+        <input type="number" id="grantAmount" placeholder="Credits (+50)" style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0,0,0,0.5); color: #fff; font-size: 0.75rem; margin-bottom: 8px;">
+        <button id="grantCreditsBtn" class="btn btn-primary" style="width: 100%; font-size: 0.8rem;">Grant Credits</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/supabase-client.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const loader = document.getElementById('adminAuthCheck');
+      const content = document.getElementById('adminContent');
+
+      const user = await window.BackendAPI.getUser();
+      if (!user) {
+        alert("Unauthorized. Sign in as admin.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const isAdmin = await window.BackendAPI.checkIsAdmin(user.id);
+      if (!isAdmin) {
+        loader.innerHTML = `
+          <div style="color: var(--danger); font-size: 1.5rem; margin-bottom: 8px;">🚫</div>
+          <div style="font-weight: 700; margin-bottom: 4px;">Access Denied (403 Forbidden)</div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 16px;">This page requires verified server-side administrator clearance.</p>
+          <a href="index.html" class="btn btn-secondary" style="display: inline-flex;">Return Home</a>
+        `;
+        return;
+      }
+
+      // If authorized, load live database metrics
+      loader.style.display = 'none';
+      content.style.display = 'block';
+
+      try {
+        const metrics = await window.BackendAPI.getAdminMetrics(user.id);
+        document.getElementById('metricTotalUsers').innerText = metrics.total_users;
+        document.getElementById('metricTotalGen').innerText = metrics.total_generations;
+        document.getElementById('metricFailedGen').innerText = metrics.failed_generations;
+        document.getElementById('metricCreditsBurned').innerText = metrics.total_credits_used;
+      } catch (err) {
+        alert("Failed to load metrics: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SUBBHU AI LABS | Create Better With AI</title>
-  <link rel="manifest" href="manifest.json">
+  <title>SUBBHU AI LABS | Next-Gen AI Media Platform</title>
+  <meta name="description" content="Enhance, upscale, and transform your photos and videos with SUBBHU AI LABS. 25+ cutting-edge generative AI models.">
+  
+  <!-- Open Graph / SEO -->
+  <meta property="og:title" content="SUBBHU AI LABS | Create Better With AI">
+  <meta property="og:description" content="Enhance, restore, denoise, and create media with state-of-the-art AI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://subbhu7077.github.io/subbhu-ai-labs/">
   <meta name="theme-color" content="#00d2ff">
+
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/animations.css">
-  <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-  <!-- Top Header -->
+  <!-- Top Navigation Header -->
   <header class="app-header glass">
     <div class="brand-wrap">
       <div class="brand-icon">S</div>
@@ -22,71 +29,85 @@
     </div>
     <div class="header-actions">
       <span id="headerCreditBadge" class="hero-badge" style="margin: 0; display: none;">Credits: <b id="headerCreditCount">0</b></span>
-      <a href="create.html" class="btn-icon" aria-label="Create Plus">＋</a>
+      <a href="create.html" class="btn-icon" aria-label="Create">＋</a>
       <a href="profile.html" class="btn-icon" aria-label="Profile">👤</a>
     </div>
   </header>
 
   <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-badge">⚡ Next-Gen AI Engine</div>
+    <div class="hero-badge">⚡ 25+ Generative Production Models</div>
     <h1>Create Better<br>With AI</h1>
-    <p class="hero-subtitle">Enhance, create and transform your photos and videos with AI.</p>
+    <p class="hero-subtitle">Enhance, create, and transform photos and videos with server-side AI precision.</p>
     <div class="hero-cta">
       <a href="create.html" class="btn btn-primary pulse-active">START CREATING</a>
-      <a href="#explore" class="btn btn-secondary">EXPLORE TOOLS</a>
+      <a href="#explore" class="btn btn-secondary">EXPLORE ENGINES</a>
     </div>
   </section>
 
-  <!-- Tools Tray -->
+  <!-- Ad Reward Slot (Free User Monetization) -->
+  <div style="padding: 0 16px; margin-bottom: 12px;">
+    <div class="glass" style="padding: 12px 14px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <div style="font-size: 0.8rem; font-weight: 700;">Free Daily Credits</div>
+        <div style="font-size: 0.68rem; color: var(--text-muted);">Watch verified sponsor to claim credits</div>
+      </div>
+      <button id="claimAdRewardBtn" class="btn btn-secondary" style="font-size: 0.72rem; padding: 6px 10px;">📺 Watch Ad (+1)</button>
+    </div>
+  </div>
+
+  <!-- Horizontal Tool Tray -->
   <section class="section" id="explore">
     <div class="section-header">
-      <div class="section-title">Core AI Engines</div>
-      <span class="section-tag">18 Tools</span>
+      <div class="section-title">AI Processing Engines</div>
+      <span class="section-tag">25 Tools</span>
     </div>
     <div class="scroll-tray" id="toolsHorizontalTray"></div>
   </section>
 
-  <!-- Inspiration Grid -->
+  <!-- Inspiration & Production UGC Templates -->
   <section class="section">
     <div class="section-header">
-      <div class="section-title">Inspiration & UGC</div>
+      <div class="section-title">Production UGC Templates</div>
     </div>
-    <div class="inspiration-grid">
-      <div class="insp-card glass">
-        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=1');">
-          <span class="insp-badge">UGC Style</span>
+    <div class="inspiration-grid" id="templatesGrid">
+      <div class="insp-card glass" onclick="UIController.openToolModal('p-enhancer')">
+        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600');">
+          <span class="insp-badge">Product</span>
         </div>
         <div class="insp-content">
-          <div class="insp-title">Product Showcase</div>
+          <div class="insp-title">Studio Watch Glow</div>
           <div class="insp-desc">Clean background swap with dynamic shadows</div>
         </div>
       </div>
-      <div class="insp-card glass">
-        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=2');">
-          <span class="insp-badge">AI Creative</span>
+
+      <div class="insp-card glass" onclick="UIController.openToolModal('face-enhance')">
+        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600');">
+          <span class="insp-badge">Cinematic</span>
         </div>
         <div class="insp-content">
-          <div class="insp-title">Cinematic Ad</div>
-          <div class="insp-desc">Hyper-real lighting and volumetric motion</div>
+          <div class="insp-title">Portrait Master 35mm</div>
+          <div class="insp-desc">Kodak Portra texture, volumetric rim lighting</div>
         </div>
       </div>
-      <div class="insp-card glass">
-        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=3');">
-          <span class="insp-badge">Beauty</span>
+
+      <div class="insp-card glass" onclick="UIController.openToolModal('v-enhancer')">
+        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600');">
+          <span class="insp-badge">UGC</span>
         </div>
         <div class="insp-content">
-          <div class="insp-title">Portrait Retouch</div>
-          <div class="insp-desc">Pore-preserving texture face restoration</div>
+          <div class="insp-title">Unboxing Reel Hook</div>
+          <div class="insp-desc">Natural daylight preservation at 60 FPS</div>
         </div>
       </div>
-      <div class="insp-card glass">
-        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=4');">
-          <span class="insp-badge">Motion</span>
+
+      <div class="insp-card glass" onclick="UIController.openToolModal('vid-upscale')">
+        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600');">
+          <span class="insp-badge">Social</span>
         </div>
         <div class="insp-content">
-          <div class="insp-title">Image to Video</div>
-          <div class="insp-desc">Smooth fluid camera simulation</div>
+          <div class="insp-title">Viral Reels 4K</div>
+          <div class="insp-desc">Deep color balance & edge-sharpening</div>
         </div>
       </div>
     </div>
@@ -107,11 +128,11 @@
       <div class="upload-box" id="uploadBox">
         <div class="upload-icon">📤</div>
         <div class="upload-label">Tap to Choose Photo or Video</div>
-        <div class="upload-sub">Direct encrypted upload to Supabase Storage</div>
+        <div class="upload-sub">Direct encrypted upload to Supabase Private Storage</div>
         <input type="file" id="fileInput" accept="image/*,video/*" style="display: none;">
       </div>
 
-      <!-- Preview & Validation Screen -->
+      <!-- Preview Screen -->
       <div class="preview-container" id="previewContainer">
         <div class="file-info-bar glass">
           <div class="file-details">
@@ -121,7 +142,7 @@
           <button class="btn-remove" id="removeFileBtn">Remove</button>
         </div>
 
-        <!-- Touch Before/After Comparison Component for Photos -->
+        <!-- Before/After Slider for Photos -->
         <div class="comparison-wrapper" id="photoSliderContainer">
           <img class="comparison-img" id="sliderAfterImg" src="https://picsum.photos/600/400?random=10" alt="Target Preview">
           <div class="comparison-before">
@@ -132,27 +153,26 @@
           <input type="range" min="0" max="100" value="50" class="comparison-slider-input" aria-label="Comparison slider">
         </div>
 
-        <!-- Video Preview Element for Videos -->
+        <!-- Video Preview for Videos -->
         <div id="videoPreviewContainer" style="display: none; width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #000;">
           <video id="videoPreviewPlayer" controls style="width: 100%; max-height: 240px; display: block;"></video>
         </div>
       </div>
 
-      <!-- Server Processing Progress State -->
+      <!-- Processing State -->
       <div id="processingState" style="display: none; padding: 12px; border-radius: var(--radius-md); background: rgba(0, 210, 255, 0.08); border: 1px solid var(--border-highlight);">
         <div style="display: flex; align-items: center; gap: 8px;">
           <div class="skeleton" style="width: 20px; height: 20px; border-radius: 50%;"></div>
-          <span id="processingStatusText" style="font-size: 0.82rem;">Queueing job...</span>
+          <span id="processingStatusText" style="font-size: 0.82rem;">Processing media...</span>
         </div>
       </div>
 
-      <!-- System Notice Callout -->
+      <!-- Notice Callout -->
       <div class="backend-notice" id="systemNotice">
         <span>ℹ️</span>
         <div id="noticeMsg">Ready for backend orchestration.</div>
       </div>
 
-      <!-- Real Backend Trigger Button (No dummy alert) -->
       <button type="button" class="btn btn-primary" id="processBtn" style="width: 100%;">
         PROCESS NOW
       </button>
@@ -170,7 +190,7 @@
       <span>Create</span>
     </a>
     <div class="nav-fab-wrap">
-      <a href="create.html" class="nav-fab" aria-label="AI Launch">✨</a>
+      <a href="create.html" class="nav-fab" aria-label="Create Action">✨</a>
     </div>
     <a href="history.html" class="nav-item">
       <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
