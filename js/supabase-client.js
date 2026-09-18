@@ -86,36 +86,48 @@ const BackendAPI = {
         canvas.width = img.width;
         canvas.height = img.height;
 
-        // REAL AI BACKGROUND SEGMENTATION (MediaPipe)
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        // HIGH-PRECISION SMOOTH BACKGROUND CUTOUT
         if (isBg && window.SelfieSegmentation) {
           const statusEl = document.getElementById('processingStatusText');
-          if (statusEl) statusEl.innerText = "3/4 AI detecting person & isolating background...";
+          if (statusEl) statusEl.innerText = "3/4 Refining edges & smoothing contours...";
 
           const selfieSegmentation = new window.SelfieSegmentation({
             locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
           });
 
           selfieSegmentation.setOptions({
-            modelSelection: 1 // Full person model
+            modelSelection: 1
           });
 
           selfieSegmentation.onResults((results) => {
-            ctx.save();
+            // Step 1: Create an offscreen canvas for anti-aliasing the raw mask
+            const maskCanvas = document.createElement('canvas');
+            maskCanvas.width = canvas.width;
+            maskCanvas.height = canvas.height;
+            const maskCtx = maskCanvas.getContext('2d');
+            maskCtx.imageSmoothingEnabled = true;
+            maskCtx.imageSmoothingQuality = 'high';
+
+            // Draw and soft-feather the edge boundaries (removes staircase jaggedness)
+            maskCtx.filter = 'blur(1.8px) contrast(140%)';
+            maskCtx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
+
+            // Step 2: Composite onto final output canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Mask draw karein
-            ctx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
-            
-            // Subject retain karein, baki transparent
+            ctx.drawImage(maskCanvas, 0, 0);
+
             ctx.globalCompositeOperation = 'source-in';
             ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
-            ctx.restore();
+            ctx.globalCompositeOperation = 'source-over';
 
             canvas.toBlob((blob) => {
               if (blob) {
                 resolve({ blob, outputUrl: URL.createObjectURL(blob) });
               } else {
-                reject(new Error("Failed to create cutout blob"));
+                reject(new Error("Failed to export cutout PNG"));
               }
             }, 'image/png');
           });
@@ -124,7 +136,7 @@ const BackendAPI = {
           return;
         }
 
-        // Photo Enhancer filters
+        // Standard Enhancers
         if (toolType.includes('color')) {
           ctx.filter = 'contrast(130%) saturate(150%) brightness(105%)';
         } else if (toolType.includes('restore') || toolType.includes('denoise')) {
