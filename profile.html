@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/animations.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <header class="app-header glass">
@@ -19,30 +20,29 @@
   <main style="padding: 16px;">
     <!-- Profile Card -->
     <div class="glass-elevated" style="padding: 20px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-      <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: bold; color: #040817;">
+      <div id="avatarBadge" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: bold; color: #040817;">
         U
       </div>
       <div>
-        <div style="font-size: 1.1rem; font-weight: 700;">AI Creator</div>
-        <div style="font-size: 0.8rem; color: var(--text-muted);">Guest Session (Unlinked)</div>
+        <div id="profileUsername" style="font-size: 1.1rem; font-weight: 700;">AI Creator</div>
+        <div id="profileEmail" style="font-size: 0.8rem; color: var(--text-muted);">Guest Session (Unlinked)</div>
       </div>
     </div>
 
-    <!-- Tier Card -->
+    <!-- Credits Card -->
     <div class="glass" style="padding: 16px; border-radius: var(--radius-md); margin-bottom: 16px; border-color: var(--border-highlight);">
       <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-        <span style="font-size: 0.85rem; font-weight: 600;">Available Fast Credits</span>
-        <span style="font-size: 0.85rem; color: var(--primary-cyan); font-weight: 700;">50 / 50</span>
+        <span style="font-size: 0.85rem; font-weight: 600;">Available Credits</span>
+        <span id="creditsValue" style="font-size: 0.85rem; color: var(--primary-cyan); font-weight: 700;">-- / --</span>
       </div>
       <div style="height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.1); overflow: hidden;">
-        <div style="width: 100%; height: 100%; background: var(--primary-cyan);"></div>
+        <div id="creditProgressBar" style="width: 100%; height: 100%; background: var(--primary-cyan);"></div>
       </div>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 10px;">
-      <a href="login.html" class="btn btn-secondary" style="justify-content: flex-start;">🔐 Sign In / Sync Account</a>
-      <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="alert('Part 2 feature')">⚙️ Processing Preferences</button>
-      <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="alert('Part 2 feature')">🌐 API Configuration</button>
+      <a id="authActionBtn" href="login.html" class="btn btn-secondary" style="justify-content: flex-start;">🔐 Sign In / Sync Account</a>
+      <button id="logoutBtn" class="btn btn-secondary" style="justify-content: flex-start; display: none; color: var(--danger);">🚪 Sign Out</button>
     </div>
   </main>
 
@@ -67,5 +67,38 @@
       <span>Profile</span>
     </a>
   </nav>
+
+  <script src="js/supabase-client.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await window.BackendAPI.getUser();
+      const authBtn = document.getElementById('authActionBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const usernameEl = document.getElementById('profileUsername');
+      const emailEl = document.getElementById('profileEmail');
+      const creditsVal = document.getElementById('creditsValue');
+      const avatarBadge = document.getElementById('avatarBadge');
+
+      if (user) {
+        emailEl.innerText = user.email;
+        authBtn.style.display = 'none';
+        logoutBtn.style.display = 'flex';
+
+        const { data: profile } = await window.BackendAPI.getProfile(user.id);
+        if (profile) {
+          usernameEl.innerText = profile.username || 'Creator';
+          creditsVal.innerText = `${profile.credits} Credits (${profile.plan})`;
+          avatarBadge.innerText = (profile.username || user.email)[0].toUpperCase();
+        }
+      } else {
+        creditsVal.innerText = '0 (Sign in required)';
+      }
+
+      logoutBtn.addEventListener('click', async () => {
+        await window.BackendAPI.signOut();
+        window.location.reload();
+      });
+    });
+  </script>
 </body>
 </html>

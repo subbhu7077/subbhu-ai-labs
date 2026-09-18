@@ -6,27 +6,97 @@
   <title>Sign In | SUBBHU AI LABS</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body style="display: flex; flex-direction: column; justify-content: center; padding: 24px 16px;">
+<body style="display: flex; flex-direction: column; justify-content: center; padding: 24px 16px; min-height: 100vh;">
   <div class="glass-elevated" style="padding: 28px 20px; border-radius: var(--radius-lg);">
     <div style="display: flex; justify-content: center; margin-bottom: 16px;">
       <div class="brand-icon" style="width: 48px; height: 48px; font-size: 1.5rem;">S</div>
     </div>
     <h2 style="text-align: center; margin-bottom: 6px;">SUBBHU AI LABS</h2>
-    <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 24px;">Sign in to sync your high-resolution render gallery</p>
+    <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 24px;">Sign in to sync your generations and credits</p>
 
-    <form onsubmit="event.preventDefault(); alert('Authentication backend will be configured in Part 2.');" style="display: flex; flex-direction: column; gap: 14px;">
+    <div id="statusAlert" style="display: none; padding: 10px; border-radius: 8px; margin-bottom: 14px; font-size: 0.8rem;"></div>
+
+    <form id="authForm" style="display: flex; flex-direction: column; gap: 14px;">
       <div>
         <label style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Email Address</label>
-        <input type="email" placeholder="name@domain.com" required style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0, 0, 0, 0.4); color: #fff;">
+        <input type="email" id="authEmail" placeholder="name@domain.com" required style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0, 0, 0, 0.4); color: #fff;">
       </div>
       <div>
         <label style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Password</label>
-        <input type="password" placeholder="••••••••" required style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0, 0, 0, 0.4); color: #fff;">
+        <input type="password" id="authPassword" placeholder="••••••••" required style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0, 0, 0, 0.4); color: #fff;">
       </div>
-      <button type="submit" class="btn btn-primary" style="margin-top: 8px;">CONTINUE</button>
+      <button type="submit" id="submitBtn" class="btn btn-primary" style="margin-top: 8px;">SIGN IN</button>
+      <button type="button" id="signupBtn" class="btn btn-secondary">CREATE NEW ACCOUNT</button>
+      <button type="button" id="resetBtn" class="btn btn-secondary" style="font-size: 0.75rem; border: none; background: transparent;">Forgot Password?</button>
       <a href="index.html" class="btn btn-secondary">Back to Dashboard</a>
     </form>
   </div>
+
+  <script src="js/supabase-client.js"></script>
+  <script>
+    const form = document.getElementById('authForm');
+    const email = document.getElementById('authEmail');
+    const password = document.getElementById('authPassword');
+    const signupBtn = document.getElementById('signupBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const statusAlert = document.getElementById('statusAlert');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function notify(msg, isError = false) {
+      statusAlert.style.display = 'block';
+      statusAlert.innerText = msg;
+      statusAlert.style.background = isError ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)';
+      statusAlert.style.border = isError ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)';
+      statusAlert.style.color = isError ? '#f87171' : '#34d399';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.innerText = "Signing in...";
+      submitBtn.disabled = true;
+      try {
+        const { data, error } = await window.BackendAPI.signIn(email.value.trim(), password.value);
+        if (error) throw error;
+        notify("Logged in successfully! Redirecting...");
+        setTimeout(() => window.location.href = "index.html", 800);
+      } catch (err) {
+        notify(err.message, true);
+      } finally {
+        submitBtn.innerText = "SIGN IN";
+        submitBtn.disabled = false;
+      }
+    });
+
+    signupBtn.addEventListener('click', async () => {
+      if (!email.value || !password.value) {
+        notify("Enter both email and password first.", true);
+        return;
+      }
+      signupBtn.innerText = "Creating account...";
+      signupBtn.disabled = true;
+      try {
+        const { data, error } = await window.BackendAPI.signUp(email.value.trim(), password.value);
+        if (error) throw error;
+        notify("Account created successfully! You can now sign in.");
+      } catch (err) {
+        notify(err.message, true);
+      } finally {
+        signupBtn.innerText = "CREATE NEW ACCOUNT";
+        signupBtn.disabled = false;
+      }
+    });
+
+    resetBtn.addEventListener('click', async () => {
+      if (!email.value) {
+        notify("Enter email address to receive reset link.", true);
+        return;
+      }
+      const { error } = await supabaseClient.auth.resetPasswordForEmail(email.value.trim());
+      if (error) notify(error.message, true);
+      else notify("Password reset link sent to your email!");
+    });
+  </script>
 </body>
 </html>
