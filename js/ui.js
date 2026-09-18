@@ -21,7 +21,7 @@ const UIController = {
     const tool = window.AI_TOOLS.find(t => t.id === toolId);
     if (!tool) return;
 
-    window.currentToolId = tool.id;
+    window.currentToolId = tool.id || "photo-enhancer";
 
     const modal = document.getElementById('toolModal');
     const title = document.getElementById('modalToolTitle');

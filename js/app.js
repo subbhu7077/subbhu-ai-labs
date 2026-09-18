@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         await window.BackendAPI.completeTask(genRes.generation_id, savedUrl || enhanced.outputUrl);
 
-        // Reveal and hook download button
-        const fileExt = window.currentToolId === 'bg-remove' ? 'png' : 'jpg';
+        const isBg = window.currentToolId.includes('bg');
+        const fileExt = isBg ? 'png' : 'jpg';
         const downloadName = `subbhu_ai_${window.currentToolId}_${Date.now()}.${fileExt}`;
         
         if (downloadBtn) {

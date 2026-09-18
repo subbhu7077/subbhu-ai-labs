@@ -6,6 +6,34 @@ const getHFKey = () => atob(_h.replace("aW", "aG"));
 
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
+// Downscale heavy images to max 1024px before sending to AI inference
+async function prepareOptimizedBlob(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width;
+      let h = img.height;
+      const maxDim = 1024;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) {
+          h = Math.round((h * maxDim) / w);
+          w = maxDim;
+        } else {
+          w = Math.round((w * maxDim) / h);
+          h = maxDim;
+        }
+      }
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      c.toBlob((blob) => resolve(blob), 'image/jpeg', 0.9);
+    };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 const BackendAPI = {
   getUser: async () => {
     const { data: { user } } = await supabaseClient.auth.getUser();
@@ -38,14 +66,10 @@ const BackendAPI = {
           upsert: true
         });
 
-      if (error) {
-        console.warn("Storage upload warning:", error);
-        return null;
-      }
+      if (error) return null;
       const { data: publicData } = supabaseClient.storage.from('outputs').getPublicUrl(filePath);
       return publicData?.publicUrl || filePath;
     } catch (e) {
-      console.warn("Storage upload failed gracefully:", e);
       return null;
     }
   },
@@ -83,35 +107,32 @@ const BackendAPI = {
   },
 
   enhanceImageLocal: async (file, toolType) => {
-    // 1. REAL AI BACKGROUND REMOVER (Hugging Face RMBG-1.4 Neural Model)
-    if (toolType === 'bg-remove' || toolType.includes('bg')) {
+    const isBg = toolType === 'bg-remove' || toolType.includes('bg');
+
+    if (isBg) {
       const statusEl = document.getElementById('processingStatusText');
-      if (statusEl) statusEl.innerText = "3/4 Running AI RMBG-1.4 neural cutout...";
+      if (statusEl) statusEl.innerText = "3/4 AI Segmentation model cutting background...";
 
-      try {
-        const response = await fetch("https://api-inference.huggingface.co/models/briaai/RMBG-1.4", {
-          headers: {
-            "Authorization": `Bearer ${getHFKey()}`
-          },
-          method: "POST",
-          body: file
-        });
+      const optimizedBlob = await prepareOptimizedBlob(file);
 
-        if (response.ok) {
-          const blob = await response.blob();
-          return { blob, outputUrl: URL.createObjectURL(blob) };
-        } else {
-          console.warn("HF RMBG error:", response.status, response.statusText);
-        }
-      } catch (err) {
-        console.warn("RMBG endpoint request error:", err);
+      const response = await fetch("https://api-inference.huggingface.co/models/briaai/RMBG-1.4", {
+        headers: {
+          "Authorization": `Bearer ${getHFKey()}`
+        },
+        method: "POST",
+        body: optimizedBlob
+      });
+
+      if (!response.ok) {
+        throw new Error(`AI Model is currently loading on GPU (Status ${response.status}). Please retry in 10 seconds.`);
       }
+
+      const resultBlob = await response.blob();
+      return { blob: resultBlob, outputUrl: URL.createObjectURL(resultBlob) };
     }
 
-    // 2. PHOTO ENHANCEMENT / RETOUCH ENGINE
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.crossOrigin = "anonymous";
       img.onload = () => {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -127,7 +148,6 @@ const BackendAPI = {
         }
 
         ctx.drawImage(img, 0, 0);
-
         canvas.toBlob((blob) => {
           resolve({ blob, outputUrl: URL.createObjectURL(blob) });
         }, 'image/jpeg', 0.95);
