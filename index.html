@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SUBBHU BHAI | AI NEURAL LABS</title>
+  <title>SUBBHU BHAI | AI NEURAL LABS (26 ENGINES)</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap");
 
@@ -19,7 +19,7 @@
       min-height: 100vh;
     }
 
-    /* 3D Cyber Wallpaper Background */
+    /* Background Wallpaper */
     .bg-wallpaper {
       position: fixed;
       top: 0;
@@ -29,26 +29,23 @@
       background-image: url('subbhu_dp.jpg');
       background-size: cover;
       background-position: center top;
-      opacity: 0.28;
+      opacity: 0.22;
       filter: blur(1.5px) saturate(1.4);
-      transform: scale(1.04);
       z-index: -2;
       animation: wallpaperBreath 10s ease-in-out infinite alternate;
     }
-
     .bg-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at 50% 20%, rgba(0, 242, 254, 0.12) 0%, rgba(4, 7, 17, 0.88) 75%);
+      background: radial-gradient(circle at 50% 15%, rgba(0, 242, 254, 0.12) 0%, rgba(4, 7, 17, 0.9) 75%);
       z-index: -1;
     }
-
     @keyframes wallpaperBreath {
       0% { transform: scale(1.02) translateY(0px); }
-      100% { transform: scale(1.08) translateY(-10px); }
+      100% { transform: scale(1.06) translateY(-8px); }
     }
 
     /* Header */
@@ -57,20 +54,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(8, 14, 28, 0.75);
+      background: rgba(8, 14, 28, 0.8);
       backdrop-filter: blur(15px);
       border-bottom: 1px solid rgba(0, 242, 254, 0.3);
       position: sticky;
       top: 0;
       z-index: 1000;
     }
-
-    .brand-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .brand-box { display: flex; align-items: center; gap: 10px; cursor: pointer; }
     .dp-avatar-header {
       width: 40px;
       height: 40px;
@@ -79,9 +70,7 @@
       box-shadow: 0 0 14px rgba(0, 242, 254, 0.7);
       object-fit: cover;
       object-position: top;
-      cursor: pointer;
     }
-
     .subbhu-neon-title {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.15rem;
@@ -94,29 +83,28 @@
       background-clip: text;
       animation: shimmer 3s linear infinite;
     }
-
     @keyframes shimmer {
       0% { background-position: -200% center; }
       100% { background-position: 200% center; }
     }
 
-    /* 3D Floating Hero Showcase Card */
+    /* Hero Showcase Banner */
     .hero-showcase {
-      margin: 16px 16px 10px 16px;
+      margin: 14px 16px 8px 16px;
       background: rgba(13, 22, 45, 0.75);
       border: 1.5px solid rgba(0, 242, 254, 0.4);
       border-radius: 18px;
-      padding: 14px 16px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 14px;
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.3), inset 0 0 15px rgba(0, 242, 254, 0.15);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
       backdrop-filter: blur(12px);
+      cursor: pointer;
     }
-
     .hero-thumb {
-      width: 62px;
-      height: 62px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       border: 2.5px solid #ff007f;
       box-shadow: 0 0 18px rgba(255, 0, 127, 0.7);
@@ -124,30 +112,129 @@
       object-position: top;
     }
 
+    /* Dubbing Banner */
+    .dub-banner {
+      margin: 6px 16px 10px 16px;
+      background: linear-gradient(135deg, rgba(88,28,135,0.6), rgba(30,27,75,0.8));
+      border: 1.5px solid #a855f7;
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 20px rgba(168,85,247,0.3);
+      cursor: pointer;
+    }
+
+    /* Pills Scroll */
+    .pills-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 6px 16px 10px 16px;
+    }
+    .pills-scroll::-webkit-scrollbar { display: none; }
+    .pill-3d {
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #cbd5e1;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .pill-3d.active {
+      background: linear-gradient(135deg, #00f2fe, #ff007f);
+      color: #fff;
+      border-color: #00f2fe;
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.6);
+    }
+
     /* Tools Grid */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      padding: 12px 16px;
+      padding: 4px 16px 16px 16px;
     }
-
     .card-3d {
-      background: rgba(14, 23, 46, 0.8);
+      background: rgba(14, 23, 46, 0.85);
       border: 1px solid rgba(0, 242, 254, 0.25);
       border-radius: 16px;
       overflow: hidden;
       cursor: pointer;
       backdrop-filter: blur(10px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      position: relative;
+      transition: all 0.2s ease;
     }
     .card-3d:active { border-color: #ff007f; transform: scale(0.97); }
-
+    .card-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: rgba(4, 7, 17, 0.85);
+      color: #00f2fe;
+      border: 1px solid #00f2fe;
+      font-family: 'Orbitron', sans-serif;
+    }
     .card-media { width: 100%; height: 115px; object-fit: cover; display: block; }
     .card-body { padding: 10px; }
-    .card-title { font-size: 0.85rem; font-weight: 700; font-family: 'Orbitron', sans-serif; color: #fff; }
+    .card-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .card-desc {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      height: 28px;
+      overflow: hidden;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
 
-    /* Bottom Navigation */
+    /* Modal Sheet */
+    .engine-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 17, 0.85);
+      backdrop-filter: blur(15px);
+      z-index: 2000;
+      display: none;
+      align-items: flex-end;
+    }
+    .modal-sheet {
+      background: #0b1122;
+      border-top: 2px solid #00f2fe;
+      box-shadow: 0 -10px 40px rgba(0, 242, 254, 0.4);
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      padding: 20px 18px 30px 18px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Bottom Nav */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -196,7 +283,7 @@
   <div class="bg-wallpaper"></div>
   <div class="bg-overlay"></div>
 
-  <!-- Header with Avatar DP -->
+  <!-- Header -->
   <header class="app-header">
     <div class="brand-box" onclick="window.location.href='wallpaper.html'">
       <img class="dp-avatar-header" src="subbhu_dp.jpg" alt="DP" onerror="this.src='IMG_1324.jpg'">
@@ -211,31 +298,320 @@
   <div class="hero-showcase" onclick="window.location.href='wallpaper.html'">
     <img class="hero-thumb" src="subbhu_dp.jpg" alt="Subbhu Bhai" onerror="this.src='IMG_1324.jpg'">
     <div>
-      <div style="font-size: 0.72rem; color: #00f2fe; font-family: 'Orbitron', sans-serif; font-weight: 800;">OFFICIAL CYBER WALLPAPER</div>
-      <div style="font-size: 1.1rem; font-weight: 900; font-family: 'Orbitron', sans-serif; margin-top: 2px;">SUBBHU BHAI THEME</div>
-      <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Tap to view & save full resolution →</div>
+      <div style="font-size: 0.68rem; color: #00f2fe; font-family: 'Orbitron', sans-serif; font-weight: 800;">OFFICIAL CYBER WALLPAPER</div>
+      <div style="font-size: 1.05rem; font-weight: 900; font-family: 'Orbitron', sans-serif; margin-top: 2px;">SUBBHU BHAI THEME</div>
+      <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 2px;">Tap to view & save HD wallpaper →</div>
     </div>
   </div>
 
-  <!-- Tools Preview Grid -->
-  <div class="grid-container">
-    <div class="card-3d" onclick="window.location.href='create.html'">
+  <!-- Video Dubbing CTA -->
+  <div class="dub-banner" onclick="window.location.href='dubbing.html'">
+    <div>
+      <div style="font-size: 0.88rem; font-weight: 800; font-family: 'Orbitron', sans-serif; color: #fff;">🎙️ ElevenLabs AI Dubbing</div>
+      <div style="font-size: 0.7rem; color: #cbd5e1;">Multi-Speaker Voice Cloning & Audio Sync</div>
+    </div>
+    <div style="background: linear-gradient(135deg, #a855f7, #ec4899); padding: 7px 14px; border-radius: 10px; font-size: 0.72rem; font-family: 'Orbitron', sans-serif; font-weight: 900; color: #fff;">
+      START
+    </div>
+  </div>
+
+  <!-- Filter Pills -->
+  <div class="pills-scroll">
+    <div class="pill-3d active" onclick="filterItems('all', this)">⚡ All Engines (26)</div>
+    <div class="pill-3d" onclick="filterItems('portraits', this)">👤 Portraits</div>
+    <div class="pill-3d" onclick="filterItems('art', this)">🎨 Creative Art</div>
+    <div class="pill-3d" onclick="filterItems('commercial', this)">📦 Commercial</div>
+  </div>
+
+  <!-- Complete 26 Working Tools Grid -->
+  <div class="grid-container" id="toolsGrid">
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('4K Clarity Upscaler', 'ultra detailed 4k photograph, crisp sharp edges, masterwork resolution, fine textures, authentic details')">
+      <span class="card-tag">Super-Res</span>
       <img class="card-media" src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80">
       <div class="card-body">
         <div class="card-title">4K Upscaler</div>
-        <div style="font-size: 0.72rem; color:#00f2fe; margin-top: 4px;">LAUNCH →</div>
+        <div class="card-desc">Super resolution & edge crispness</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
       </div>
     </div>
-    <div class="card-3d" onclick="window.location.href='create.html'">
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Background Remover', 'isolated subject against clean pure solid minimalist studio background, high contrast cutout studio portrait')">
+      <span class="card-tag">Alpha Cut</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">BG Remover</div>
+        <div class="card-desc">Accurate cutout & crisp subject isolate</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('Master Portrait 35mm', 'authentic candid 35mm film photograph of a person, 85mm f1.8 lens, natural skin pores, soft bokeh, daylight')">
+      <span class="card-tag">Cinematic</span>
       <img class="card-media" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80">
       <div class="card-body">
-        <div class="card-title">DSLR Portrait</div>
-        <div style="font-size: 0.72rem; color:#00f2fe; margin-top: 4px;">LAUNCH →</div>
+        <div class="card-title">Master Portrait 35mm</div>
+        <div class="card-desc">Kodak warm tone & genuine skin texture</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('Studio Pro Lighting', 'dramatic high-end studio portrait, volumetric softbox rim lighting, deep contrast shadows, commercial photography')">
+      <span class="card-tag">Studio Rim</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Studio Pro Lighting</div>
+        <div class="card-desc">Volumetric softbox & edge rim lights</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Anime Cel-Shaded', 'Makoto Shinkai style vibrant anime character portrait, cel shaded, breathtaking detailed anime landscape, ghibli aesthetics, 8k')">
+      <span class="card-tag">Stylize</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Anime Cel-Shaded</div>
+        <div class="card-desc">Japanese anime aesthetic & sharp ink art</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Cyberpunk Neon', 'cyberpunk night portrait, rain wet asphalt reflections, neon magenta and cyan backlights, blade runner aesthetic')">
+      <span class="card-tag">Neon FX</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Cyberpunk Neon</div>
+        <div class="card-desc">Futuristic cyber glow & rainy reflections</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('3D Pixar Animation', 'charming 3D animated character, pixar disney animation style, expressive big eyes, unreal engine 5 raytraced')">
+      <span class="card-tag">3D Pixar</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">3D Pixar Character</div>
+        <div class="card-desc">Disney animated 3D character render</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('Vintage 90s Kodak', 'authentic 1990s vintage 35mm photograph, Kodak Portra 400 color tones, natural film grain, nostalgia aesthetic')">
+      <span class="card-tag">Retro 90s</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Vintage 90s Kodak</div>
+        <div class="card-desc">Warm film grain & authentic nostalgic tone</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Commercial Product Ad', 'commercial luxury product photography, floating clean water droplets, marble podium, crisp soft studio lights, 8k render')">
+      <span class="card-tag">Product Ad</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Product Studio Ad</div>
+        <div class="card-desc">Commercial showcase with marble podium</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Dark Fantasy Art', 'epic dark fantasy concept art, Elden Ring aesthetic, gothic atmospheric fog, cinematic mystical lighting, matte painting, 8k')">
+      <span class="card-tag">Dark Fantasy</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Dark Fantasy Art</div>
+        <div class="card-desc">Epic mythic landscape & gothic knights</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('Fashion Editorial', 'high fashion magazine editorial cover, Vogue photography style, dramatic high key lighting, crisp makeup details')">
+      <span class="card-tag">Runway</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Fashion Editorial</div>
+        <div class="card-desc">Vogue magazine luxury studio cover</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Superbike & Automotive', 'custom matte black sports motorcycle parked on wet city asphalt at night, dramatic rim light, raytraced metal reflections, 8k')">
+      <span class="card-tag">Motorsport</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Superbike & Hypercar</div>
+        <div class="card-desc">Raytraced automotive lighting & metal shine</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Vocal Audio EQ Studio', 'high-end broadcast sound studio recording booth, dynamic microphone, acoustic foam panels, mixing console')">
+      <span class="card-tag">Audio HQ</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Vocal & Audio EQ</div>
+        <div class="card-desc">Studio mic clarity & denoise acoustics</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('Face Skin Retouch', 'macro beauty portrait, authentic smooth human skin texture, ultra detailed fine facial pores, natural lips, soft luminous catchlights')">
+      <span class="card-tag">Beauty</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Face Skin Retouch</div>
+        <div class="card-desc">Natural skin pores & beauty glow</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('HDR Nature Panorama', 'breathtaking mountain valley landscape, dramatic sunrise rays, alpine lake reflections, ultra HD National Geographic photography')">
+      <span class="card-tag">Nature</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">HDR Nature Panorama</div>
+        <div class="card-desc">NatGeo style landscape & mountain sunburst</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Tattoo Blackwork', 'intricate fine-line blackwork tattoo design, neo-traditional style, crisp geometric patterns, dark gothic ink drawing')">
+      <span class="card-tag">Tattoo</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Tattoo & Blackwork</div>
+        <div class="card-desc">Fine-line neo-traditional ink sketch</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Vector Logo Design', 'modern minimalist vector tech logo design, sleek gradient symbol, clean lines, behance trending brand identity')">
+      <span class="card-tag">Branding</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Vector Logo Design</div>
+        <div class="card-desc">Minimalist tech emblem & modern branding</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('Old Photo Restore', 'restored historical vintage photograph, authentic natural colorization, sharp facial clarity, no scratches, rich historic skin tones')">
+      <span class="card-tag">Restore</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Old Photo Restore</div>
+        <div class="card-desc">Scratch removal & vivid color restore</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Luxury Architecture', 'modern luxury concrete and glass villa, infinity pool, warm architectural interior lighting, sunset ambience, Architectural Digest 8k')">
+      <span class="card-tag">Architecture</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Luxury Architecture</div>
+        <div class="card-desc">Modern glass villa with infinity pool</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Surreal Dreamscape', 'mind-bending surrealism artwork, floating islands in starry cosmic clouds, salvador dali style melted clocks, ethereal glowing dream fantasy')">
+      <span class="card-tag">Surreal</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Surreal Dreamscape</div>
+        <div class="card-desc">Ethereal floating islands & cosmic fantasy</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Low-Poly 3D Asset', 'isometric low-poly 3D game scene, vibrant pastel colors, stylized trees and cabin, blender 3D render, cute video game aesthetic')">
+      <span class="card-tag">Game Art</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Low-Poly 3D Asset</div>
+        <div class="card-desc">Isometric stylized indie video game render</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Oil Canvas Painting', 'expressive traditional oil painting on textured canvas, thick impasto palette knife strokes, impressionist warm colors, gallery masterpiece')">
+      <span class="card-tag">Oil Paint</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Oil Canvas Painting</div>
+        <div class="card-desc">Impasto palette knife textured stroke art</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Neon Typography', 'glowing neon light signboard text on dark weathered brick wall, vibrant electric pink and cyan tubes, rainy night reflections')">
+      <span class="card-tag">Neon Sign</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Neon Typography</div>
+        <div class="card-desc">Glowing glass gas tube neon signboards</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="portraits" onclick="openEngine('Wildlife Macro Focus', 'extreme macro photography of tiger eyes and detailed whiskers, razor sharp iris texture, natural jungle sun dappled light, 8k NatGeo')">
+      <span class="card-tag">Macro Wild</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Wildlife Macro Focus</div>
+        <div class="card-desc">Razor sharp iris reflection & fur details</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="art" onclick="openEngine('Sci-Fi Mech Robot', 'giant industrial sci-fi combat mecha robot standing in desert hangar, detailed hydraulic pistons, weathering battle scars, cinematic concept art')">
+      <span class="card-tag">Mecha</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Sci-Fi Mech Robot</div>
+        <div class="card-desc">Industrial robotic combat machine hangar</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <div class="card-3d" data-cat="commercial" onclick="openEngine('Cinematic Movie LUTs', 'Hollywood cinematic still frame, Arri Alexa camera, 2.39:1 anamorphic aspect ratio, teal and orange color grading, dramatic blockbuster scene')">
+      <span class="card-tag">Movie Grade</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Cinematic Movie LUTs</div>
+        <div class="card-desc">Arri Alexa teal & orange blockbuster grade</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Interactive Modal Sheet -->
+  <div id="engineModal" class="engine-modal">
+    <div class="modal-sheet">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div id="modalEngineTitle" style="font-size: 1.1rem; font-weight: 800; color: #00f2fe; font-family: 'Orbitron', sans-serif;">Tool Name</div>
+        <button onclick="closeEngineModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">✕</button>
+      </div>
+      <input id="modalSubject" type="text" placeholder="Describe subject (e.g. portrait of young man / sports car)" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.06); border: 1.5px solid #00f2fe; border-radius: 10px; color: #fff; outline: none; margin-bottom: 12px;">
+      <button id="genBtn" onclick="renderEnginePhoto()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #00f2fe, #ff007f); border: none; border-radius: 12px; font-weight: 900; font-family: 'Orbitron', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 0 20px rgba(0,242,254,0.5);">
+        ⚡ GENERATE CREATIVE
+      </button>
+
+      <div id="modalLoader" style="display: none; text-align: center; margin-top: 14px; color: #00f2fe; font-family: 'Orbitron', sans-serif; font-size: 0.85rem;">
+        Rendering Neural Creative...
+      </div>
+
+      <div id="modalResult" style="display: none; margin-top: 14px;">
+        <img id="modalImg" src="" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 10px; border: 1px solid #00f2fe;">
+        <a id="modalDl" href="#" download="subbhu_bhai_ai.jpg" style="display: block; text-align: center; text-decoration: none; padding: 12px; background: #00f2fe; color: #040711; font-family: 'Orbitron', sans-serif; font-weight: 900; border-radius: 10px; margin-top: 8px;">
+          💾 SAVE HIGH RESOLUTION
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-btn active">
       <div class="icon-cube">⚡</div>
@@ -255,5 +631,64 @@
     </a>
   </nav>
 
+  <script>
+    let activePrompt = '';
+    function openEngine(title, prompt) {
+      document.getElementById('modalEngineTitle').innerText = title;
+      activePrompt = prompt;
+      document.getElementById('modalResult').style.display = 'none';
+      document.getElementById('modalLoader').style.display = 'none';
+      document.getElementById('engineModal').style.display = 'flex';
+    }
+    function closeEngineModal() {
+      document.getElementById('engineModal').style.display = 'none';
+    }
+    async function renderEnginePhoto() {
+      const subject = document.getElementById('modalSubject').value.trim();
+      const prompt = subject ? `${subject}, ${activePrompt}` : activePrompt;
+      const cleanPrompt = `${prompt}, authentic, true color balance, natural exposure, sharp focus, 8k`;
+      const neg = `oversaturated, red tint, ugly, cartoon, blurry`;
+      const btn = document.getElementById('genBtn');
+      const loader = document.getElementById('modalLoader');
+      const res = document.getElementById('modalResult');
+      const img = document.getElementById('modalImg');
+      const dl = document.getElementById('modalDl');
+
+      btn.disabled = true;
+      loader.style.display = 'block';
+      res.style.display = 'none';
+
+      const seed = Math.floor(Math.random() * 9999999);
+      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=768&height=1024&seed=${seed}&model=flux&nologo=true&negative=${encodeURIComponent(neg)}`;
+
+      try {
+        const r = await fetch(url);
+        const b = await r.blob();
+        const obj = URL.createObjectURL(b);
+        img.src = obj;
+        dl.href = obj;
+      } catch(e) {
+        img.src = url;
+        dl.href = url;
+      } finally {
+        loader.style.display = 'none';
+        res.style.display = 'block';
+        btn.disabled = false;
+      }
+    }
+
+    function filterItems(cat, btn) {
+      document.querySelectorAll('.pill-3d').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('.card-3d');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>
