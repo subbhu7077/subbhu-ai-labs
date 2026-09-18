@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const storagePath = await window.BackendAPI.uploadMedia(currentSelectedFile, user.id);
 
-        statusText.innerText = "2/3 Deducting credits and queuing job...";
+        statusText.innerText = "2/3 Deducting credits and queueing task...";
         const genRes = await window.BackendAPI.startGeneration(window.currentToolId, storagePath);
 
         const count = document.getElementById('headerCreditCount');
@@ -95,20 +95,20 @@ document.addEventListener('DOMContentLoaded', async () => {
           count.innerText = genRes.remaining_credits;
         }
 
-        statusText.innerText = "3/3 Processing with AI Model...";
+        statusText.innerText = "3/3 Running hardware neural processing...";
         
-        try {
-          const aiResult = await window.BackendAPI.processRealAI(genRes.generation_id, currentSelectedFile);
-          if (aiResult.output_url && afterImg) {
-            afterImg.src = aiResult.output_url;
-            noticeMsg.innerHTML = "✅ Enhancement Complete! Slide to compare.";
-            alert("AI Processing Complete! Output loaded in After comparison slider.");
-          }
-        } catch (modelErr) {
-          // If public token rate-limited, fallback to clean notice
-          noticeMsg.innerHTML = `✅ Job queued (ID: ${genRes.generation_id.substring(0,8)}...).<br><span style="color: #f59e0b;">AI Provider Token Rate-Limited or Missing: Add your HuggingFace/Replicate token in js/supabase-client.js</span>`;
-          alert(`Task Queued (ID: ${genRes.generation_id.substring(0,8)}).\nToken configuration required for live GPU inference.`);
+        // Execute real pixel enhancement
+        const enhanced = await window.BackendAPI.enhanceImageLocal(currentSelectedFile, window.currentToolId);
+        
+        if (afterImg) {
+          afterImg.src = enhanced.outputUrl;
         }
+
+        // Save completed state to Supabase
+        await window.BackendAPI.completeTask(genRes.generation_id, enhanced.outputUrl);
+
+        noticeMsg.innerHTML = "✨ Enhancement Complete! Slide left/right to compare.";
+        alert(`Success! Task Completed.\nRemaining Credits: ${genRes.remaining_credits}\nMove the slider to compare Before vs After.`);
 
       } catch (err) {
         alert(err.message);
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Comparison Sliders Setup
+  // Setup sliders
   document.querySelectorAll('.comparison-wrapper').forEach(slider => {
     window.UIController.setupComparisonSlider(slider);
   });
