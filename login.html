@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | SUBBHU AI LABS</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body style="display: flex; flex-direction: column; justify-content: center; padding: 24px 16px;">
+  <div class="glass-elevated" style="padding: 28px 20px; border-radius: var(--radius-lg);">
+    <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+      <div class="brand-icon" style="width: 48px; height: 48px; font-size: 1.5rem;">S</div>
+    </div>
+    <h2 style="text-align: center; margin-bottom: 6px;">SUBBHU AI LABS</h2>
+    <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 24px;">Sign in to sync your high-resolution render gallery</p>
+
+    <form onsubmit="event.preventDefault(); alert('Authentication backend will be configured in Part 2.');" style="display: flex; flex-direction: column; gap: 14px;">
+      <div>
+        <label style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Email Address</label>
+        <input type="email" placeholder="name@domain.com" required style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0, 0, 0, 0.4); color: #fff;">
+      </div>
+      <div>
+        <label style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; display: block;">Password</label>
+        <input type="password" placeholder="••••••••" required style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0, 0, 0, 0.4); color: #fff;">
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top: 8px;">CONTINUE</button>
+      <a href="index.html" class="btn btn-secondary">Back to Dashboard</a>
+    </form>
+  </div>
+</body>
+</html>

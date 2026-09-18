@@ -1,0 +1,16 @@
+{
+  "name": "SUBBHU AI LABS",
+  "short_name": "SubbhuAI",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#060913",
+  "theme_color": "#00d2ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23060913' width='100' height='100'/><text y='.9em' font-size='90' fill='%2300d2ff'>S</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

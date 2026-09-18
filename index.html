@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SUBBHU AI LABS | Create Better With AI</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00d2ff">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="app-header glass">
+    <div class="brand-wrap">
+      <div class="brand-icon">S</div>
+      <div class="brand-name">SUBBHU AI LABS</div>
+    </div>
+    <div class="header-actions">
+      <a href="create.html" class="btn-icon" aria-label="Create Plus">＋</a>
+      <a href="profile.html" class="btn-icon" aria-label="Profile">👤</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-badge">⚡ Next-Gen AI Engine</div>
+    <h1>Create Better<br>With AI</h1>
+    <p class="hero-subtitle">Enhance, create and transform your photos and videos with AI.</p>
+    <div class="hero-cta">
+      <a href="create.html" class="btn btn-primary pulse-active">START CREATING</a>
+      <a href="#explore" class="btn btn-secondary">EXPLORE TOOLS</a>
+    </div>
+  </section>
+
+  <!-- Tools Horizontal Carousel Tray -->
+  <section class="section" id="explore">
+    <div class="section-header">
+      <div class="section-title">Core AI Engines</div>
+      <span class="section-tag">18 Tools</span>
+    </div>
+    <div class="scroll-tray" id="toolsHorizontalTray">
+      <!-- Generated via js/tools.js -->
+    </div>
+  </section>
+
+  <!-- Inspiration Sections -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">Inspiration & UGC</div>
+    </div>
+    <div class="inspiration-grid">
+      <div class="insp-card glass">
+        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=1');">
+          <span class="insp-badge">UGC Style</span>
+        </div>
+        <div class="insp-content">
+          <div class="insp-title">Product Showcase</div>
+          <div class="insp-desc">Clean background swap with dynamic shadows</div>
+        </div>
+      </div>
+      <div class="insp-card glass">
+        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=2');">
+          <span class="insp-badge">AI Creative</span>
+        </div>
+        <div class="insp-content">
+          <div class="insp-title">Cinematic Ad</div>
+          <div class="insp-desc">Hyper-real lighting and volumetric motion</div>
+        </div>
+      </div>
+      <div class="insp-card glass">
+        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=3');">
+          <span class="insp-badge">Beauty</span>
+        </div>
+        <div class="insp-content">
+          <div class="insp-title">Portrait Retouch</div>
+          <div class="insp-desc">Pore-preserving texture face restoration</div>
+        </div>
+      </div>
+      <div class="insp-card glass">
+        <div class="insp-thumb" style="background-image: url('https://picsum.photos/400/300?random=4');">
+          <span class="insp-badge">Motion</span>
+        </div>
+        <div class="insp-content">
+          <div class="insp-title">Image to Video</div>
+          <div class="insp-desc">Smooth fluid camera simulation</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool Interactive Execution Modal -->
+  <div class="modal-overlay" id="toolModal">
+    <div class="modal-sheet glass-elevated">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="modalToolTitle">AI Tool</h2>
+          <span id="modalToolBadge" class="hero-badge" style="margin: 4px 0 0 0;">Category</span>
+        </div>
+        <button class="modal-close" onclick="UIController.closeModal()">✕</button>
+      </div>
+
+      <!-- Upload Interface -->
+      <div class="upload-box" id="uploadBox">
+        <div class="upload-icon">📤</div>
+        <div class="upload-label">Tap to Choose Photo or Video</div>
+        <div class="upload-sub">Supports PNG, JPG, MP4 (Max 100MB)</div>
+        <input type="file" id="fileInput" accept="image/*,video/*" style="display: none;">
+      </div>
+
+      <!-- Preview & Validation Screen -->
+      <div class="preview-container" id="previewContainer">
+        <div class="file-info-bar glass">
+          <div class="file-details">
+            <span class="file-name" id="previewFileName">filename.jpg</span>
+            <span class="file-size" id="previewFileSize">0 MB</span>
+          </div>
+          <button class="btn-remove" id="removeFileBtn">Remove</button>
+        </div>
+
+        <!-- Touch Before/After Comparison Component -->
+        <div class="comparison-wrapper">
+          <img class="comparison-img" id="sliderAfterImg" src="https://picsum.photos/600/400?random=10" alt="Target Preview">
+          <div class="comparison-before">
+            <img id="sliderBeforeImg" src="https://picsum.photos/600/400?random=11" alt="Original Source">
+          </div>
+          <span class="comparison-label label-before">BEFORE</span>
+          <span class="comparison-label label-after">AFTER</span>
+          <input type="range" min="0" max="100" value="50" class="comparison-slider-input" aria-label="Comparison slider">
+        </div>
+      </div>
+
+      <!-- Explicit Backend State Disclaimer -->
+      <div class="backend-notice">
+        <span>ℹ️</span>
+        <div>AI processing will be connected in the backend.</div>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%;" onclick="alert('AI processing will be connected in the backend.')">
+        PROCESS NOW
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="bottom-nav glass">
+    <a href="index.html" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="create.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+      <span>Create</span>
+    </a>
+    <div class="nav-fab-wrap">
+      <a href="create.html" class="nav-fab" aria-label="AI Launch">✨</a>
+    </div>
+    <a href="history.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+      <span>History</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script src="js/tools.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

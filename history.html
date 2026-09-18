@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task History | SUBBHU AI LABS</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <header class="app-header glass">
+    <div class="brand-wrap">
+      <a href="index.html" class="btn-icon" style="margin-right: 8px;">←</a>
+      <div class="brand-name">History & Queue</div>
+    </div>
+  </header>
+
+  <main style="padding: 16px;">
+    <!-- Empty State -->
+    <div class="glass" style="padding: 32px 16px; border-radius: var(--radius-lg); text-align: center; margin-top: 20px;">
+      <div style="font-size: 3rem; margin-bottom: 12px;">📁</div>
+      <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 6px;">No Recent Tasks Found</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">Your processed media and AI upscales will appear here when connected to the backend.</p>
+      <a href="index.html" class="btn btn-primary" style="display: inline-flex;">Explore AI Engines</a>
+    </div>
+
+    <!-- Skeleton Loading Display -->
+    <div style="margin-top: 24px;">
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Queued Pipeline (Placeholder)</div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav glass">
+    <a href="index.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="create.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+      <span>Create</span>
+    </a>
+    <div class="nav-fab-wrap">
+      <a href="create.html" class="nav-fab">✨</a>
+    </div>
+    <a href="history.html" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+      <span>History</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+</body>
+</html>
