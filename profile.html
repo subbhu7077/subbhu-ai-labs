@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Account & Plans | SUBBHU AI LABS</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css?v=4.0">
+  <link rel="stylesheet" href="css/responsive.css?v=4.0">
+  <link rel="stylesheet" href="css/animations.css?v=4.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
   <header class="app-header glass">
@@ -25,7 +26,7 @@
       </div>
       <div>
         <div id="profileUsername" style="font-size: 1rem; font-weight: 700;">AI Creator</div>
-        <div id="profileEmail" style="font-size: 0.75rem; color: var(--text-muted);">Guest Session (Unlinked)</div>
+        <div id="profileEmail" style="font-size: 0.75rem; color: var(--text-muted);">Guest Session</div>
       </div>
     </div>
 
@@ -40,17 +41,18 @@
       </div>
     </div>
 
-    <!-- Monetization Plans (Truthful Gateway Validation) -->
+    <!-- Monetization Plans -->
     <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px;">Upgrade Subscription</div>
     <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+      
       <!-- PLUS TIER -->
       <div class="glass" style="padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--primary-cyan);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
           <div style="font-weight: 700; color: var(--primary-cyan);">PLUS CREATOR</div>
           <div style="font-size: 0.9rem; font-weight: 800;">₹499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
         </div>
-        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">100 Monthly Fast Credits • 4K Photo Upscaling • Standard Queue</p>
-        <button onclick="upgradePlan('PLUS')" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px;">UPGRADE TO PLUS</button>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">100 Monthly Fast Credits • 4K Photo Upscaling • Fast Queue</p>
+        <button id="buyPlusBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px;">UPGRADE VIA UPI / CARD (₹499)</button>
       </div>
 
       <!-- PRO TIER -->
@@ -59,8 +61,8 @@
           <div style="font-weight: 700; color: var(--primary-purple);">PRO ENTERPRISE</div>
           <div style="font-size: 0.9rem; font-weight: 800;">₹1,499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
         </div>
-        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">500 Monthly Fast Credits • 4K/60FPS Video Enhancer • Priority GPU Node</p>
-        <button onclick="upgradePlan('PRO')" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px; background: linear-gradient(135deg, var(--primary-purple), #7928ca);">UPGRADE TO PRO</button>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">500 Monthly Fast Credits • High Priority GPU Engine</p>
+        <button id="buyProBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px; background: linear-gradient(135deg, var(--primary-purple), #7928ca);">UPGRADE VIA UPI / CARD (₹1,499)</button>
       </div>
     </div>
 
@@ -93,10 +95,13 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js"></script>
+  <script src="js/supabase-client.js?v=4.0"></script>
   <script>
+    const RAZORPAY_KEY_ID = "rzp_test_TRAinkK2e0I691";
+    let currentUser = null;
+
     document.addEventListener('DOMContentLoaded', async () => {
-      const user = await window.BackendAPI.getUser();
+      currentUser = await window.BackendAPI.getUser();
       const authBtn = document.getElementById('authActionBtn');
       const logoutBtn = document.getElementById('logoutBtn');
       const adminBtn = document.getElementById('adminLinkBtn');
@@ -105,16 +110,16 @@
       const creditsVal = document.getElementById('creditsValue');
       const avatarBadge = document.getElementById('avatarBadge');
 
-      if (user) {
-        emailEl.innerText = user.email;
+      if (currentUser) {
+        emailEl.innerText = currentUser.email;
         authBtn.style.display = 'none';
         logoutBtn.style.display = 'flex';
 
-        const { data: profile } = await window.BackendAPI.getProfile(user.id);
+        const { data: profile } = await window.BackendAPI.getProfile(currentUser.id);
         if (profile) {
           usernameEl.innerText = profile.username || 'Creator';
           creditsVal.innerText = `${profile.credits} Credits (${profile.plan})`;
-          avatarBadge.innerText = (profile.username || user.email)[0].toUpperCase();
+          avatarBadge.innerText = (profile.username || currentUser.email)[0].toUpperCase();
 
           if (profile.role === 'admin') {
             adminBtn.style.display = 'flex';
@@ -128,14 +133,65 @@
         await window.BackendAPI.signOut();
         window.location.reload();
       });
+
+      document.getElementById('buyPlusBtn').addEventListener('click', () => {
+        startCheckout('PLUS', 499);
+      });
+
+      document.getElementById('buyProBtn').addEventListener('click', () => {
+        startCheckout('PRO', 1499);
+      });
     });
 
-    async function upgradePlan(plan) {
-      try {
-        await window.BackendAPI.createCheckout(plan);
-      } catch (err) {
-        alert(err.message);
+    function startCheckout(plan, amount) {
+      if (!currentUser) {
+        alert("Please sign in first before purchasing a plan.");
+        window.location.href = "login.html";
+        return;
       }
+
+      const orderRef = "order_" + Date.now();
+
+      const options = {
+        key: RAZORPAY_KEY_ID,
+        amount: amount * 100,
+        currency: "INR",
+        name: "SUBBHU AI LABS",
+        description: `Upgrade to ${plan} Plan`,
+        image: "https://subbhu7077.github.io/subbhu-ai-labs/icons/icon-192.png",
+        prefill: {
+          email: currentUser.email
+        },
+        theme: {
+          color: "#00d2ff"
+        },
+        handler: async function (response) {
+          try {
+            const { data, error } = await supabaseClient.rpc("fulfill_subscription_payment", {
+              p_user_id: currentUser.id,
+              p_payment_id: response.razorpay_payment_id,
+              p_order_id: orderRef,
+              p_plan: plan,
+              p_amount: amount
+            });
+
+            if (error) throw error;
+
+            alert(`🎉 Payment Successful!\nPayment ID: ${response.razorpay_payment_id}\nYour account is now upgraded to ${plan}!`);
+            window.location.reload();
+          } catch (e) {
+            alert("Error activating subscription: " + e.message);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            console.log("Checkout window closed.");
+          }
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
     }
   </script>
 </body>
