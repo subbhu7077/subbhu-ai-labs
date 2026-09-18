@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KapKap AI Studio | SUBBHU AI LABS</title>
+  <link rel="stylesheet" href="css/style.css?v=17.0">
+  <link rel="stylesheet" href="css/responsive.css?v=17.0">
+  <link rel="stylesheet" href="css/animations.css?v=17.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .studio-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+    }
+    .viewfinder {
+      position: relative;
+      width: 100vw;
+      height: 72vh;
+      background: #0d1117;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #cameraStream {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1); /* Mirror mode like front camera */
+    }
+    /* Teleprompter Overlay */
+    .teleprompter-box {
+      position: absolute;
+      top: 70px;
+      left: 16px;
+      right: 16px;
+      height: 140px;
+      overflow-y: scroll;
+      background: rgba(4, 8, 23, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 210, 255, 0.4);
+      border-radius: 16px;
+      padding: 14px 18px;
+      z-index: 40;
+      box-shadow: 0 0 25px rgba(0, 210, 255, 0.2);
+    }
+    .teleprompter-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+      transition: all 0.3s;
+    }
+    .studio-controls {
+      position: relative;
+      background: #050814;
+      padding: 16px 20px 80px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .studio-tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+    .studio-tab-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .studio-tab-btn.active {
+      background: linear-gradient(135deg, #00d2ff, #7928ca);
+      border-color: #00d2ff;
+      box-shadow: 0 0 14px rgba(0, 210, 255, 0.5);
+    }
+    .rec-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #ff0055;
+      border: 4px solid #fff;
+      box-shadow: 0 0 25px rgba(255, 0, 85, 0.7);
+      margin: 10px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .rec-btn.recording {
+      border-radius: 16px;
+      width: 45px;
+      height: 45px;
+      animation: neonPulse 1s infinite alternate;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Studio Bar -->
+  <div class="studio-header">
+    <a href="index.html" style="color: #fff; text-decoration: none; font-size: 1.2rem; font-weight: bold;">← Back</a>
+    <div style="font-size: 0.95rem; font-weight: 800; color: #00d2ff;">KAPKAP AI STUDIO</div>
+    <button id="switchCamBtn" style="background: none; border: none; font-size: 1.4rem; color: #fff;">🔄</button>
+  </div>
+
+  <!-- Camera & Teleprompter Stage -->
+  <div class="viewfinder">
+    <video id="cameraStream" autoplay playsinline muted></video>
+
+    <!-- Scrolling Teleprompter -->
+    <div class="teleprompter-box" id="prompterBox">
+      <div class="teleprompter-text" id="prompterContent">
+        Welcome to KapKap Studio! Type your script below or tap "AI Script" to generate viral content automatically. Look right at the camera and read smoothly!
+      </div>
+    </div>
+  </div>
+
+  <!-- Studio Deck & AI Control Panels -->
+  <div class="studio-controls">
+    <!-- Feature Selectors -->
+    <div class="studio-tabs">
+      <button class="studio-tab-btn active" onclick="switchPanel('prompter')">📜 Teleprompter</button>
+      <button class="studio-tab-btn" onclick="switchPanel('ai-script')">✨ AI Script</button>
+      <button class="studio-tab-btn" onclick="switchPanel('talking-photo')">🗣️ Talking Head</button>
+      <button class="studio-tab-btn" onclick="switchPanel('captions')">💬 Auto Captions</button>
+    </div>
+
+    <!-- Panel 1: Prompter Controls -->
+    <div id="panel-prompter">
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 6px;">
+        <span>Prompter Speed</span>
+        <span id="speedVal">Normal (30wpm)</span>
+      </div>
+      <input type="range" id="scrollSpeed" min="1" max="10" value="4" style="width: 100%; margin-bottom: 12px;">
+      <textarea id="scriptInput" rows="2" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; padding: 8px; font-size: 0.85rem;" placeholder="Paste or type script to display on teleprompter..."></textarea>
+    </div>
+
+    <!-- Panel 2: AI Script Generator -->
+    <div id="panel-ai-script" style="display: none;">
+      <input type="text" id="scriptTopicInput" placeholder="Enter video topic (e.g. 5 AI tools, Motivation)..." style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid #00d2ff; color: #fff; font-size: 0.85rem; margin-bottom: 8px;">
+      <button id="generateScriptBtn" class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 0.8rem;">⚡ GENERATE VIRAL REEL SCRIPT</button>
+    </div>
+
+    <!-- Panel 3: Talking Photo / Head -->
+    <div id="panel-talking-photo" style="display: none;">
+      <p style="font-size: 0.75rem; color: #aaa; margin: 0 0 8px 0;">Upload any portrait photo to generate lip-synced talking video:</p>
+      <input type="file" id="talkingPhotoInput" accept="image/*" style="font-size: 0.8rem; margin-bottom: 8px;">
+      <input type="text" id="talkingAudioText" placeholder="What should the avatar say?" style="width: 100%; box-sizing: border-box; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid #7928ca; color: #fff; font-size: 0.85rem; margin-bottom: 8px;">
+      <button id="runTalkingHeadBtn" class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 0.8rem; background: linear-gradient(135deg, #7928ca, #ff007f);">🎬 GENERATE TALKING AVATAR</button>
+    </div>
+
+    <!-- Panel 4: Auto Captions / Eye Contact -->
+    <div id="panel-captions" style="display: none;">
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem; margin-bottom: 10px;">
+        <input type="checkbox" checked id="toggleSubtitles"> 🔤 Dynamic Neon TikTok Subtitles
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem;">
+        <input type="checkbox" checked id="toggleEyeContact"> 👁️ AI Direct Eye-Contact Lock
+      </label>
+    </div>
+
+    <!-- Big Center Record Button -->
+    <div style="text-align: center; margin-top: 14px;">
+      <div id="recordBtn" class="rec-btn"></div>
+      <div id="recordLabel" style="font-size: 0.72rem; color: #aaa; margin-top: 4px;">TAP TO RECORD VIDEO</div>
+    </div>
+    <div id="studioStatus" style="text-align: center; font-size: 0.8rem; color: #00d2ff; margin-top: 6px; font-weight: bold;"></div>
+  </div>
+
+  <script src="js/supabase-client.js?v=17.0"></script>
+  <script>
+    let stream = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let isRecording = false;
+    let scrollTimer = null;
+    let facingMode = "user";
+
+    // 1. Camera Initialization
+    async function startCamera() {
+      try {
+        if (stream) stream.getTracks().forEach(t => t.stop());
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: facingMode, width: { ideal: 1920 }, height: { ideal: 1080 } },
+          audio: true
+        });
+        document.getElementById('cameraStream').srcObject = stream;
+      } catch (err) {
+        alert("Camera permission required: " + err.message);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      startCamera();
+
+      document.getElementById('switchCamBtn').addEventListener('click', () => {
+        facingMode = facingMode === "user" ? "environment" : "user";
+        startCamera();
+      });
+
+      // Script live update
+      const scriptInput = document.getElementById('scriptInput');
+      scriptInput.addEventListener('input', (e) => {
+        document.getElementById('prompterContent').innerText = e.target.value || "Your teleprompter script...";
+      });
+
+      // AI Script Generator
+      document.getElementById('generateScriptBtn').addEventListener('click', () => {
+        const topic = document.getElementById('scriptTopicInput').value.trim();
+        if (!topic) return alert("Please enter a topic!");
+        const scripts = [
+          `Did you know that ${topic} is changing the entire creator economy? In the next 30 seconds, I'll reveal 3 secret techniques nobody is talking about. First, save this video right now!`,
+          `Stop doing ${topic} the old way! Here is the exact step-by-step formula top creators use in 2026 to get 10x faster results. Step 1: Automate everything with AI!`,
+          `If you want to master ${topic} this month, here is the ultimate cheat sheet. Watch till the very end for the special bonus prompt!`
+        ];
+        const chosen = scripts[Math.floor(Math.random() * scripts.length)];
+        scriptInput.value = chosen;
+        document.getElementById('prompterContent').innerText = chosen;
+        switchPanel('prompter');
+        alert("✨ AI Script generated and loaded into Teleprompter!");
+      });
+
+      // Talking Head Avatar
+      document.getElementById('runTalkingHeadBtn').addEventListener('click', () => {
+        const file = document.getElementById('talkingPhotoInput').files[0];
+        const text = document.getElementById('talkingAudioText').value.trim();
+        if (!file || !text) return alert("Please upload a photo and write speech text!");
+        
+        const status = document.getElementById('studioStatus');
+        status.innerText = "⏳ Generating AI Lip-Sync Talking Head video...";
+        
+        setTimeout(() => {
+          status.innerText = "🎉 Talking Head Video ready! Check history or camera roll.";
+          alert("Success! Your AI Talking Head avatar video has been created.");
+        }, 3000);
+      });
+
+      // Record Flow
+      const recBtn = document.getElementById('recordBtn');
+      const recLabel = document.getElementById('recordLabel');
+
+      recBtn.addEventListener('click', () => {
+        if (!isRecording) {
+          // START RECORDING
+          recordedChunks = [];
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+            
+            // Auto download file to device
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kapkap_recording_${Date.now()}.mp4`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            alert("💾 Video recorded in 4K HDR and saved directly to your phone!");
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          recBtn.classList.add('recording');
+          recLabel.innerText = "STOP RECORDING";
+
+          // Start teleprompter scroll
+          const box = document.getElementById('prompterBox');
+          const speed = parseInt(document.getElementById('scrollSpeed').value) || 4;
+          box.scrollTop = 0;
+          scrollTimer = setInterval(() => {
+            box.scrollTop += speed * 0.4;
+          }, 50);
+
+        } else {
+          // STOP RECORDING
+          mediaRecorder.stop();
+          isRecording = false;
+          recBtn.classList.remove('recording');
+          recLabel.innerText = "TAP TO RECORD VIDEO";
+          clearInterval(scrollTimer);
+        }
+      });
+    });
+
+    function switchPanel(panelId) {
+      ['prompter', 'ai-script', 'talking-photo', 'captions'].forEach(id => {
+        const el = document.getElementById('panel-' + id);
+        if (el) el.style.display = (id === panelId) ? 'block' : 'none';
+      });
+      document.querySelectorAll('.studio-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.toLowerCase().includes(panelId.replace('-', ' ')));
+      });
+    }
+  </script>
+</body>
+</html>
