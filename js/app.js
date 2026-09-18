@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
     } catch (e) {
-      console.warn("Unauthenticated session", e);
+      console.warn("Session check", e);
     }
   }
 
@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const videoPlayer = document.getElementById('videoPreviewPlayer');
   const processBtn = document.getElementById('processBtn');
   const downloadBtn = document.getElementById('downloadResultBtn');
+  const laser = document.getElementById('laserScanBar');
 
   if (dropZone && fileInput) {
     new window.MediaUploadHandler({
@@ -83,29 +84,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     processBtn.addEventListener('click', async () => {
       const user = await window.BackendAPI.getUser();
       if (!user) {
-        alert("Please sign in first via Profile -> Sign In.");
         window.location.href = "login.html";
         return;
       }
 
       if (!currentSelectedFile) {
-        alert("Please select an image or video file first.");
         return;
       }
 
       const processingState = document.getElementById('processingState');
       const statusText = document.getElementById('processingStatusText');
+      const progressPct = document.getElementById('processingProgressPct');
       const noticeMsg = document.getElementById('noticeMsg');
 
       try {
         processBtn.disabled = true;
         if (downloadBtn) downloadBtn.style.display = 'none';
-        processingState.style.display = 'block'; const laser = document.getElementById('laserScanBar'); if(laser) laser.style.display = 'block';
+        if (laser) laser.style.display = 'block';
+        processingState.style.display = 'block';
 
-        statusText.innerText = "1/4 Uploading to encrypted vault...";
+        statusText.innerText = "1/4 Uploading original...";
+        if (progressPct) progressPct.innerText = "25%";
         const storagePath = await window.BackendAPI.uploadMedia(currentSelectedFile, user.id);
 
-        statusText.innerText = "2/4 Verifying AI engine quota...";
+        statusText.innerText = "2/4 Verifying quota...";
+        if (progressPct) progressPct.innerText = "50%";
         const genRes = await window.BackendAPI.startGeneration(window.currentToolId, storagePath);
 
         const count = document.getElementById('headerCreditCount');
@@ -113,7 +116,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           count.innerText = genRes.remaining_credits;
         }
 
-        statusText.innerText = "3/4 GPU Neural Processing (" + window.currentToolId + ")...";
+        statusText.innerText = "3/4 AI Neural Processing...";
+        if (progressPct) progressPct.innerText = "75%";
         const result = await window.BackendAPI.enhanceMediaEngine(currentSelectedFile, window.currentToolId);
 
         if (result.isVideo) {
@@ -127,7 +131,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         }
 
-        statusText.innerText = "4/4 Archiving processed master file...";
+        statusText.innerText = "4/4 Archiving master file...";
+        if (progressPct) progressPct.innerText = "99%";
         const savedUrl = await window.BackendAPI.uploadOutputToStorage(result.blob, user.id, window.currentToolId);
 
         await window.BackendAPI.completeTask(genRes.generation_id, savedUrl || result.outputUrl);
@@ -139,15 +144,16 @@ document.addEventListener('DOMContentLoaded', async () => {
           downloadBtn.style.display = 'inline-flex';
         }
 
-        noticeMsg.innerHTML = "✨ Process Complete! Master 4K / HD File ready.";
-        // alert removed for seamless UX
+        if (noticeMsg) {
+          noticeMsg.innerHTML = "✨ Complete! Full resolution file ready to save.";
+        }
 
       } catch (err) {
-        alert(err.message);
-        noticeMsg.innerText = err.message;
+        if (noticeMsg) noticeMsg.innerText = err.message;
       } finally {
         processBtn.disabled = false;
-        processingState.style.display = 'none'; const laser = document.getElementById('laserScanBar'); if(laser) laser.style.display = 'none';
+        processingState.style.display = 'none';
+        if (laser) laser.style.display = 'none';
       }
     });
   }
