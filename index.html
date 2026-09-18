@@ -7,12 +7,7 @@
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap");
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     body {
       background: #040711;
@@ -20,125 +15,116 @@
       font-family: 'Rajdhani', sans-serif;
       padding-bottom: 95px;
       overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 100% 50%, rgba(255, 0, 127, 0.12) 0%, transparent 40%);
+      position: relative;
+      min-height: 100vh;
     }
 
-    /* 3D Floating Animation */
-    @keyframes float3D {
-      0% {
-        transform: perspective(600px) translateY(0px) rotateX(0deg) rotateY(0deg);
-      }
-      50% {
-        transform: perspective(600px) translateY(-8px) rotateX(6deg) rotateY(-4deg);
-      }
-      100% {
-        transform: perspective(600px) translateY(0px) rotateX(0deg) rotateY(0deg);
-      }
+    /* 3D Cyber Wallpaper Background */
+    .bg-wallpaper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('subbhu_dp.jpg');
+      background-size: cover;
+      background-position: center top;
+      opacity: 0.28;
+      filter: blur(1.5px) saturate(1.4);
+      transform: scale(1.04);
+      z-index: -2;
+      animation: wallpaperBreath 10s ease-in-out infinite alternate;
     }
 
-    /* Neon Border Pulse Animation */
-    @keyframes neonGlowPulse {
-      0% {
-        box-shadow: 0 0 10px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(0, 242, 254, 0.2);
-        border-color: #00f2fe;
-      }
-      50% {
-        box-shadow: 0 0 25px rgba(255, 0, 127, 0.8), 0 0 45px rgba(0, 242, 254, 0.6), inset 0 0 15px rgba(255, 0, 127, 0.4);
-        border-color: #ff007f;
-      }
-      100% {
-        box-shadow: 0 0 10px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(0, 242, 254, 0.2);
-        border-color: #00f2fe;
-      }
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 20%, rgba(0, 242, 254, 0.12) 0%, rgba(4, 7, 17, 0.88) 75%);
+      z-index: -1;
     }
 
-    /* Continuous Loading Shine / Shimmer Wave */
-    @keyframes textLoadingShimmer {
-      0% { background-position: -200% center; }
-      100% { background-position: 200% center; }
+    @keyframes wallpaperBreath {
+      0% { transform: scale(1.02) translateY(0px); }
+      100% { transform: scale(1.08) translateY(-10px); }
     }
 
-    /* Subbhu Bhai Neon Title */
-    .subbhu-neon-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, #00f2fe 0%, #ffffff 25%, #ff007f 50%, #ffffff 75%, #00f2fe 100%);
-      background-size: 200% auto;
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: textLoadingShimmer 3s linear infinite;
-      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.8)) drop-shadow(0 0 18px rgba(255, 0, 127, 0.6));
-    }
-
-    /* Header Styling */
+    /* Header */
     .app-header {
-      padding: 14px 16px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(10, 16, 32, 0.75);
+      background: rgba(8, 14, 28, 0.75);
       backdrop-filter: blur(15px);
-      border-bottom: 1px solid rgba(0, 242, 254, 0.25);
+      border-bottom: 1px solid rgba(0, 242, 254, 0.3);
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
 
     .brand-box {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .brand-badge-3d {
-      background: linear-gradient(135deg, #00f2fe, #ff007f);
-      color: #050b18;
+    .dp-avatar-header {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #00f2fe;
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.7);
+      object-fit: cover;
+      object-position: top;
+      cursor: pointer;
+    }
+
+    .subbhu-neon-title {
       font-family: 'Orbitron', sans-serif;
+      font-size: 1.15rem;
       font-weight: 900;
-      font-size: 0.95rem;
-      width: 34px;
-      height: 34px;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #00f2fe 0%, #ffffff 25%, #ff007f 50%, #00f2fe 100%);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* 3D Floating Hero Showcase Card */
+    .hero-showcase {
+      margin: 16px 16px 10px 16px;
+      background: rgba(13, 22, 45, 0.75);
+      border: 1.5px solid rgba(0, 242, 254, 0.4);
+      border-radius: 18px;
+      padding: 14px 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.7);
+      gap: 14px;
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.3), inset 0 0 15px rgba(0, 242, 254, 0.15);
+      backdrop-filter: blur(12px);
     }
 
-    .credits-pill {
-      background: rgba(0, 242, 254, 0.1);
-      border: 1px solid #00f2fe;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #00f2fe;
-      font-family: 'Orbitron', sans-serif;
-      box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+    .hero-thumb {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 2.5px solid #ff007f;
+      box-shadow: 0 0 18px rgba(255, 0, 127, 0.7);
+      object-fit: cover;
+      object-position: top;
     }
 
-    /* 3D Floating Subbhu Bhai Badge */
-    .floating-subbhu-banner {
-      margin: 14px 16px 8px 16px;
-      padding: 12px 16px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(13, 24, 48, 0.8), rgba(26, 12, 38, 0.8));
-      border: 1.5px solid #00f2fe;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      animation: float3D 4s ease-in-out infinite, neonGlowPulse 3s ease-in-out infinite alternate;
-      backdrop-filter: blur(10px);
-    }
-
-    /* Grid of 3D Cards */
+    /* Tools Grid */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -147,102 +133,19 @@
     }
 
     .card-3d {
-      background: linear-gradient(165deg, rgba(18, 28, 54, 0.8) 0%, rgba(8, 14, 28, 0.95) 100%);
+      background: rgba(14, 23, 46, 0.8);
       border: 1px solid rgba(0, 242, 254, 0.25);
       border-radius: 16px;
       overflow: hidden;
       cursor: pointer;
-      position: relative;
-      transition: all 0.25s ease;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     }
-    .card-3d:active {
-      transform: scale(0.96);
-      border-color: #ff007f;
-      box-shadow: 0 0 20px rgba(255, 0, 127, 0.6);
-    }
+    .card-3d:active { border-color: #ff007f; transform: scale(0.97); }
 
-    .card-media {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .card-tag {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(4, 7, 17, 0.85);
-      color: #00f2fe;
-      border: 1px solid #00f2fe;
-      font-family: 'Orbitron', sans-serif;
-    }
-
-    .card-body {
-      padding: 10px;
-    }
-    .card-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      margin-top: 6px;
-    }
-
-    /* Fixed Floating 3D Subbhu Bhai Orb */
-    .subbhu-fixed-orb {
-      position: fixed;
-      right: 14px;
-      bottom: 85px;
-      z-index: 1000;
-      background: linear-gradient(135deg, #00f2fe, #ff007f);
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 900;
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      color: #fff;
-      border: 1.5px solid #fff;
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.9), 0 0 35px rgba(255, 0, 127, 0.7);
-      animation: float3D 3s ease-in-out infinite;
-      cursor: pointer;
-    }
-
-    /* Modal Engine Sheet */
-    .engine-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 7, 17, 0.85);
-      backdrop-filter: blur(15px);
-      z-index: 2000;
-      display: none;
-      align-items: flex-end;
-    }
-    .modal-sheet {
-      background: #0b1122;
-      border-top: 2px solid #00f2fe;
-      box-shadow: 0 -10px 40px rgba(0, 242, 254, 0.4);
-      border-radius: 20px 20px 0 0;
-      width: 100%;
-      padding: 20px 18px 30px 18px;
-    }
+    .card-media { width: 100%; height: 115px; object-fit: cover; display: block; }
+    .card-body { padding: 10px; }
+    .card-title { font-size: 0.85rem; font-weight: 700; font-family: 'Orbitron', sans-serif; color: #fff; }
 
     /* Bottom Navigation */
     .bottom-nav {
@@ -256,7 +159,7 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      z-index: 999;
+      z-index: 1000;
     }
     .nav-btn {
       display: flex;
@@ -269,14 +172,12 @@
       font-family: 'Orbitron', sans-serif;
       gap: 4px;
     }
-    .nav-btn.active {
-      color: #00f2fe;
-    }
+    .nav-btn.active { color: #00f2fe; }
     .icon-cube {
       width: 32px;
       height: 32px;
       border-radius: 10px;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
       display: flex;
       align-items: center;
@@ -284,7 +185,6 @@
     }
     .nav-btn.active .icon-cube {
       background: linear-gradient(135deg, #00f2fe, #ff007f);
-      border-color: #00f2fe;
       box-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
       color: #040711;
     }
@@ -292,127 +192,50 @@
 </head>
 <body>
 
-  <!-- App Header -->
+  <!-- Dynamic Cyber Wallpaper Layer -->
+  <div class="bg-wallpaper"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- Header with Avatar DP -->
   <header class="app-header">
-    <div class="brand-box">
-      <div class="brand-badge-3d" style="padding: 1px; overflow: hidden; border-radius: 50%;"><img src="subbhu_dp.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.innerText="👑""></div>
+    <div class="brand-box" onclick="window.location.href='wallpaper.html'">
+      <img class="dp-avatar-header" src="subbhu_dp.jpg" alt="DP" onerror="this.src='IMG_1324.jpg'">
       <div class="subbhu-neon-title">SUBBHU BHAI</div>
     </div>
-    <div class="credits-pill">⚡ 9950 CR</div>
+    <div style="background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; border-radius: 20px; padding: 4px 12px; font-size: 0.75rem; font-weight: 700; color: #00f2fe; font-family: 'Orbitron', sans-serif;">
+      ⚡ 9950 CR
+    </div>
   </header>
 
-  <!-- 3D Floating Subbhu Bhai Neon Banner -->
-  <div class="floating-subbhu-banner">
+  <!-- Hero Banner -->
+  <div class="hero-showcase" onclick="window.location.href='wallpaper.html'">
+    <img class="hero-thumb" src="subbhu_dp.jpg" alt="Subbhu Bhai" onerror="this.src='IMG_1324.jpg'">
     <div>
-      <div style="font-size: 0.7rem; color: #00f2fe; font-family: 'Orbitron', sans-serif; font-weight: 800;">NEURAL CREATIVE SUITE</div>
-      <div class="subbhu-neon-title" style="font-size: 1.05rem; margin-top: 2px;">SUBBHU BHAI LABS</div>
-    </div>
-    <div style="background: linear-gradient(135deg, #ff007f, #00f2fe); padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-family: 'Orbitron', sans-serif; font-weight: 900; color: #fff;">
-      PRO 4K
+      <div style="font-size: 0.72rem; color: #00f2fe; font-family: 'Orbitron', sans-serif; font-weight: 800;">OFFICIAL CYBER WALLPAPER</div>
+      <div style="font-size: 1.1rem; font-weight: 900; font-family: 'Orbitron', sans-serif; margin-top: 2px;">SUBBHU BHAI THEME</div>
+      <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">Tap to view & save full resolution →</div>
     </div>
   </div>
 
-  <!-- Video Dubbing CTA -->
-  <div style="padding: 6px 16px 10px 16px;">
-    <div onclick="window.location.href='dubbing.html'" style="cursor: pointer; background: linear-gradient(135deg, rgba(88,28,135,0.6), rgba(30,27,75,0.8)); border: 1.5px solid #a855f7; border-radius: 16px; padding: 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 20px rgba(168,85,247,0.4);">
-      <div>
-        <div style="font-size: 0.9rem; font-weight: 800; font-family: 'Orbitron', sans-serif; color: #fff;">🎙️ ElevenLabs Dubber</div>
-        <div style="font-size: 0.72rem; color: #cbd5e1;">Voice Clone & Multi-Speaker Translation</div>
-      </div>
-      <div style="background: linear-gradient(135deg, #a855f7, #ec4899); padding: 8px 14px; border-radius: 10px; font-size: 0.72rem; font-family: 'Orbitron', sans-serif; font-weight: 900; color: #fff; box-shadow: 0 0 15px rgba(236,72,153,0.6);">
-        START
-      </div>
-    </div>
-  </div>
-
-  <!-- Tools Grid -->
-  <div class="grid-container" id="toolsGrid">
-    <div class="card-3d" onclick="openEngine('4K Clarity Upscaler', 'ultra realistic 4k photograph, fine skin texture, sharp focus, 85mm lens')">
-      <span class="card-tag">Super-Res</span>
+  <!-- Tools Preview Grid -->
+  <div class="grid-container">
+    <div class="card-3d" onclick="window.location.href='create.html'">
       <img class="card-media" src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80">
       <div class="card-body">
         <div class="card-title">4K Upscaler</div>
-        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+        <div style="font-size: 0.72rem; color:#00f2fe; margin-top: 4px;">LAUNCH →</div>
       </div>
     </div>
-
-    <div class="card-3d" onclick="openEngine('Background Remover', 'isolated subject against clean pure solid minimalist studio background, cutout')">
-      <span class="card-tag">Alpha Cut</span>
-      <img class="card-media" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80">
-      <div class="card-body">
-        <div class="card-title">BG Remover</div>
-        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
-      </div>
-    </div>
-
-    <div class="card-3d" onclick="openEngine('Master Portrait 35mm', 'authentic 35mm film photograph of a young person, natural daylight, soft bokeh')">
-      <span class="card-tag">Cinematic</span>
+    <div class="card-3d" onclick="window.location.href='create.html'">
       <img class="card-media" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80">
       <div class="card-body">
         <div class="card-title">DSLR Portrait</div>
-        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
-      </div>
-    </div>
-
-    <div class="card-3d" onclick="openEngine('Anime Cel-Shaded', 'Makoto Shinkai style vibrant anime character portrait, cel shaded, ghibli aesthetics, 8k')">
-      <span class="card-tag">Anime</span>
-      <img class="card-media" src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&q=80">
-      <div class="card-body">
-        <div class="card-title">Anime Cel</div>
-        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
-      </div>
-    </div>
-
-    <div class="card-3d" onclick="openEngine('Cyberpunk Neon', 'cyberpunk night portrait, wet asphalt neon reflections, magenta cyan lights, 8k')">
-      <span class="card-tag">Neon FX</span>
-      <img class="card-media" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80">
-      <div class="card-body">
-        <div class="card-title">Cyberpunk</div>
-        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
-      </div>
-    </div>
-
-    <div class="card-3d" onclick="openEngine('3D Pixar Animation', 'charming 3D animated character, pixar style, expressive eyes, unreal engine 5 render')">
-      <span class="card-tag">Pixar 3D</span>
-      <img class="card-media" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80">
-      <div class="card-body">
-        <div class="card-title">Pixar 3D</div>
-        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+        <div style="font-size: 0.72rem; color:#00f2fe; margin-top: 4px;">LAUNCH →</div>
       </div>
     </div>
   </div>
 
-  <!-- Persistent 3D Floating Subbhu Bhai Badge -->
-  <div class="subbhu-fixed-orb" onclick="window.location.href='create.html'">
-    👑 SUBBHU BHAI
-  </div>
-
-  <!-- Interactive Modal Sheet -->
-  <div id="engineModal" class="engine-modal">
-    <div class="modal-sheet">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div id="modalEngineTitle" style="font-size: 1.1rem; font-weight: 800; color: #00f2fe; font-family: 'Orbitron', sans-serif;">Tool Name</div>
-        <button onclick="closeEngineModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">✕</button>
-      </div>
-      <input id="modalSubject" type="text" placeholder="Describe subject (e.g. young man with camera / bike)" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.06); border: 1.5px solid #00f2fe; border-radius: 10px; color: #fff; outline: none; margin-bottom: 12px;">
-      <button id="genBtn" onclick="renderEnginePhoto()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #00f2fe, #ff007f); border: none; border-radius: 12px; font-weight: 900; font-family: 'Orbitron', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 0 20px rgba(0,242,254,0.5);">
-        ⚡ SUBBHU BHAI GENERATE
-      </button>
-
-      <div id="modalLoader" style="display: none; text-align: center; margin-top: 14px; color: #00f2fe; font-family: 'Orbitron', sans-serif; font-size: 0.85rem;">
-        Rendering Neural Creative...
-      </div>
-
-      <div id="modalResult" style="display: none; margin-top: 14px;">
-        <img id="modalImg" src="" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 10px; border: 1px solid #00f2fe;">
-        <a id="modalDl" href="#" download="subbhu_bhai_ai.jpg" style="display: block; text-align: center; text-decoration: none; padding: 12px; background: #00f2fe; color: #040711; font-family: 'Orbitron', sans-serif; font-weight: 900; border-radius: 10px; margin-top: 8px;">
-          💾 SAVE HIGH RESOLUTION
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Nav -->
+  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-btn active">
       <div class="icon-cube">⚡</div>
@@ -422,9 +245,9 @@
       <div class="icon-cube">🎨</div>
       <span>Create</span>
     </a>
-    <a href="dubbing.html" class="nav-btn">
-      <div class="icon-cube">🎙️</div>
-      <span>Dubbing</span>
+    <a href="wallpaper.html" class="nav-btn">
+      <div class="icon-cube">🖼️</div>
+      <span>Wallpaper</span>
     </a>
     <a href="profile.html" class="nav-btn">
       <div class="icon-cube">👤</div>
@@ -432,51 +255,5 @@
     </a>
   </nav>
 
-  <script>
-    let activePrompt = '';
-    function openEngine(title, prompt) {
-      document.getElementById('modalEngineTitle').innerText = title;
-      activePrompt = prompt;
-      document.getElementById('modalResult').style.display = 'none';
-      document.getElementById('modalLoader').style.display = 'none';
-      document.getElementById('engineModal').style.display = 'flex';
-    }
-    function closeEngineModal() {
-      document.getElementById('engineModal').style.display = 'none';
-    }
-    async function renderEnginePhoto() {
-      const subject = document.getElementById('modalSubject').value.trim();
-      const prompt = subject ? `${subject}, ${activePrompt}` : activePrompt;
-      const cleanPrompt = `${prompt}, authentic, true color balance, natural exposure, sharp focus, 8k`;
-      const neg = `oversaturated, red tint, ugly, cartoon, blurry`;
-      const btn = document.getElementById('genBtn');
-      const loader = document.getElementById('modalLoader');
-      const res = document.getElementById('modalResult');
-      const img = document.getElementById('modalImg');
-      const dl = document.getElementById('modalDl');
-
-      btn.disabled = true;
-      loader.style.display = 'block';
-      res.style.display = 'none';
-
-      const seed = Math.floor(Math.random() * 9999999);
-      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=768&height=1024&seed=${seed}&model=flux&nologo=true&negative=${encodeURIComponent(neg)}`;
-
-      try {
-        const r = await fetch(url);
-        const b = await r.blob();
-        const obj = URL.createObjectURL(b);
-        img.src = obj;
-        dl.href = obj;
-      } catch(e) {
-        img.src = url;
-        dl.href = url;
-      } finally {
-        loader.style.display = 'none';
-        res.style.display = 'block';
-        btn.disabled = false;
-      }
-    }
-  </script>
 </body>
 </html>

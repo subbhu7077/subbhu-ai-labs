@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SUBBHU BHAI | HD Wallpaper</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap");
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #040711;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 90px 16px;
+      background-image: radial-gradient(circle at 50% 10%, rgba(0, 242, 254, 0.2), transparent 70%);
+    }
+
+    .wall-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #00f2fe, #ff007f);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 14px;
+    }
+
+    .wall-frame {
+      width: 100%;
+      max-width: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid #00f2fe;
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.5), 0 0 50px rgba(255, 0, 127, 0.3);
+      position: relative;
+    }
+
+    .wall-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .btn-save {
+      display: block;
+      width: 100%;
+      max-width: 380px;
+      padding: 15px;
+      margin-top: 18px;
+      background: linear-gradient(135deg, #00f2fe, #ff007f);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 0.9rem;
+      border-radius: 12px;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.7);
+    }
+
+    .btn-back {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-family: 'Orbitron', sans-serif;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wall-title">👑 SUBBHU BHAI WALLPAPER</div>
+
+  <div class="wall-frame">
+    <img id="mainWallImg" class="wall-img" src="subbhu_dp.jpg" onerror="this.src='IMG_1324.jpg'" alt="Wallpaper">
+  </div>
+
+  <a id="saveBtn" href="subbhu_dp.jpg" download="SUBBHU_BHAI_HD_WALLPAPER.jpg" class="btn-save">
+    💾 SAVE FULL HD WALLPAPER
+  </a>
+
+  <a href="index.html" class="btn-back">← BACK TO HOME</a>
+
+  <script>
+    // Ensure download works even if file is named IMG_1324.jpg
+    const img = document.getElementById('mainWallImg');
+    const btn = document.getElementById('saveBtn');
+    img.onerror = () => {
+      img.src = 'IMG_1324.jpg';
+      btn.href = 'IMG_1324.jpg';
+    };
+  </script>
+</body>
+</html>
