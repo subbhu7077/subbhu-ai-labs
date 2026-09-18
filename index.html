@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SUBBHU AI LABS</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/style.css?v=30.0">
-  <link rel="stylesheet" href="css/responsive.css?v=30.0">
-  <link rel="stylesheet" href="css/animations.css?v=30.0">
+  <link rel="stylesheet" href="css/style.css?v=35.0">
+  <link rel="stylesheet" href="css/responsive.css?v=35.0">
+  <link rel="stylesheet" href="css/animations.css?v=35.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
   <style>
@@ -270,16 +270,16 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js?v=30.0"></script>
-  <script src="js/tools.js?v=30.0"></script>
-  <script src="js/upload.js?v=30.0"></script>
-  <script src="js/ui.js?v=30.0"></script>
-  <script src="js/app.js?v=30.0"></script>
+  <script src="js/supabase-client.js?v=35.0"></script>
+  <script src="js/tools.js?v=35.0"></script>
+  <script src="js/upload.js?v=35.0"></script>
+  <script src="js/ui.js?v=35.0"></script>
+  <script src="js/app.js?v=35.0"></script>
   <script>
     // Visual Grid Render with Image Preview Demos
     document.addEventListener('DOMContentLoaded', () => {
       const grid = document.getElementById('toolsGrid');
-      if (grid && window.AI_TOOLS) {
+      if (grid && window.AI_TOOLS) { window.UIController.renderVisualToolsGrid('toolsGrid', window.AI_TOOLS); return;
         grid.innerHTML = '';
         window.AI_TOOLS.forEach(tool => {
           const card = document.createElement('div');

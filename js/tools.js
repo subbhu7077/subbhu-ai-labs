@@ -51,7 +51,7 @@ window.AI_TOOLS = [
     badge: "Stylize",
     cost: 1,
     demo: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400",
-    desc: "Makoto Shinkai vibrant anime color grading"
+    desc: "Makoto Shinkai vibrant anime grading"
   },
   {
     id: "low-light",
@@ -72,13 +72,13 @@ window.AI_TOOLS = [
     desc: "De-scratch, denoise & facial restoration"
   },
   {
-    id: "video-anime",
-    name: "Video Anime Filter",
-    category: "AI Video",
-    badge: "Motion Cel",
-    cost: 5,
-    demo: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400",
-    desc: "Convert live action clips to anime animation"
+    id: "colorize",
+    name: "Vintage B&W Colorizer",
+    category: "AI Photo",
+    badge: "Deep Color",
+    cost: 1,
+    demo: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400",
+    desc: "Realistic skin & scene color reconstruction"
   },
   {
     id: "game-fidelity",
@@ -99,12 +99,84 @@ window.AI_TOOLS = [
     desc: "Clean drop shadows & commercial pop"
   },
   {
+    id: "video-anime",
+    name: "Video Anime Filter",
+    category: "AI Video",
+    badge: "Motion Cel",
+    cost: 5,
+    demo: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400",
+    desc: "Convert live clips to anime animation"
+  },
+  {
     id: "video-lowlight",
     name: "Video Night Booster",
     category: "AI Video",
     badge: "Night Cam",
     cost: 5,
-    demo: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400",
-    desc: "Enhance night video clips with ISO clarity"
+    demo: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400",
+    desc: "Enhance dark videos with ISO balance"
+  },
+  {
+    id: "hdr-tone",
+    name: "True HDR Dynamic",
+    category: "AI Photo",
+    badge: "Dynamic Range",
+    cost: 1,
+    demo: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400",
+    desc: "Balanced highlights & dynamic shadow pop"
+  },
+  {
+    id: "sharpen-crisp",
+    name: "Micro Sharpen & De-blur",
+    category: "AI Photo",
+    badge: "Edge Crisp",
+    cost: 1,
+    demo: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400",
+    desc: "Remove motion blur & crisp up micro details"
+  },
+  {
+    id: "cyberpunk-vibe",
+    name: "Neon Cyberpunk Glow",
+    category: "AI Photo",
+    badge: "Neon Grade",
+    cost: 1,
+    demo: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=400",
+    desc: "Tokyo night neon teal & magenta grade"
+  },
+  {
+    id: "sketch-art",
+    name: "Pencil & Charcoal Sketch",
+    category: "AI Photo",
+    badge: "Artistic",
+    cost: 1,
+    demo: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400",
+    desc: "Fine-line hand drawn pencil texture"
+  },
+  {
+    id: "film-grain",
+    name: "Kodak 35mm Film Grain",
+    category: "AI Photo",
+    badge: "Vintage 90s",
+    cost: 1,
+    demo: "https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?w=400",
+    desc: "Analog vintage film grain & nostalgic halation"
+  },
+  {
+    id: "video-cinematic",
+    name: "Cinematic Teal & Orange",
+    category: "AI Video",
+    badge: "Hollywood LUT",
+    cost: 5,
+    demo: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=400",
+    desc: "Blockbuster Hollywood color graded frames"
+  },
+  {
+    id: "video-game",
+    name: "Video Game RTX Grade",
+    category: "AI Video",
+    badge: "Ray-Tracing",
+    cost: 5,
+    demo: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400",
+    desc: "Vibrant high-contrast gaming video visuals"
   }
 ];

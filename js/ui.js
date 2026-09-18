@@ -1,16 +1,24 @@
 const UIController = {
-  renderToolsTray: (containerId, tools) => {
+  renderVisualToolsGrid: (containerId, tools) => {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = '';
-    
+
     tools.forEach(tool => {
       const card = document.createElement('div');
-      card.className = 'tool-chip glass';
+      card.className = 'tool-box';
       card.innerHTML = `
-        <span class="tool-chip-badge">${tool.badge}</span>
-        <div class="tool-chip-name">${tool.name}</div>
-        <div class="tool-chip-cost">⚡ ${tool.cost} credit</div>
+        <div class="tool-thumb" style="background-image: url('${tool.demo}');">
+          <div class="tool-badge-pill">${tool.badge}</div>
+        </div>
+        <div class="tool-info">
+          <div class="tool-title">${tool.name}</div>
+          <div class="tool-desc">${tool.desc}</div>
+          <div class="tool-footer">
+            <span class="tool-cost">⚡ ${tool.cost} credit</span>
+            <span class="tool-try">TRY NOW →</span>
+          </div>
+        </div>
       `;
       card.addEventListener('click', () => {
         UIController.openToolModal(tool.id);
@@ -20,7 +28,7 @@ const UIController = {
   },
 
   openToolModal: (toolId) => {
-    const tool = (window.AI_TOOLS || []).find(t => t.id === toolId) || { id: toolId, name: "AI Engine", category: "Processing" };
+    const tool = (window.AI_TOOLS || []).find(t => t.id === toolId) || { id: toolId, name: "AI Tool", category: "AI Processing" };
     window.currentToolId = tool.id;
 
     const modal = document.getElementById('toolModal');
