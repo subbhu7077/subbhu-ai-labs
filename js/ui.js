@@ -1,65 +1,56 @@
-/**
- * UI Renderer, Sliders and Modals Controller
- */
 const UIController = {
-  renderToolsTray: function(containerId, tools) {
+  renderToolsTray: (containerId, tools) => {
     const container = document.getElementById(containerId);
     if (!container) return;
-
-    container.innerHTML = tools.map(tool => `
-      <div class="tool-chip glass" onclick="UIController.openToolModal('${tool.id}')">
-        <div class="chip-icon">${tool.icon}</div>
-        <div>
-          <div class="chip-label">${tool.name}</div>
-          <div class="chip-meta">${tool.tag}</div>
-        </div>
-      </div>
-    `).join('');
+    container.innerHTML = '';
+    
+    tools.forEach(tool => {
+      const card = document.createElement('div');
+      card.className = 'tool-chip glass';
+      card.innerHTML = `
+        <span class="tool-chip-badge">${tool.badge}</span>
+        <div class="tool-chip-name">${tool.name}</div>
+        <div class="tool-chip-cost">⚡ ${tool.cost} credit</div>
+      `;
+      card.addEventListener('click', () => {
+        UIController.openToolModal(tool.id);
+      });
+      container.appendChild(card);
+    });
   },
 
-  openToolModal: function(toolId) {
-    const tool = window.AI_TOOLS.find(t => t.id === toolId);
-    if (!tool) return;
-
-    window.currentToolId = tool.id || "photo-enhancer";
+  openToolModal: (toolId) => {
+    const tool = (window.AI_TOOLS || []).find(t => t.id === toolId) || { id: toolId, name: "AI Engine", category: "Processing" };
+    window.currentToolId = tool.id;
 
     const modal = document.getElementById('toolModal');
-    const title = document.getElementById('modalToolTitle');
-    const badge = document.getElementById('modalToolBadge');
-    
-    if (title) title.innerText = tool.name;
-    if (badge) badge.innerText = tool.category;
+    const modalTitle = document.getElementById('modalToolTitle');
+    const modalBadge = document.getElementById('modalToolBadge');
+    const fileInput = document.getElementById('fileInput');
+
+    if (modalTitle) modalTitle.innerText = tool.name;
+    if (modalBadge) modalBadge.innerText = tool.category || "AI Processing";
     if (modal) modal.classList.add('active');
+
+    if (fileInput) {
+      fileInput.accept = (tool.id.includes('vid') || tool.id.includes('video')) ? 'video/*' : 'image/*';
+    }
   },
 
-  closeModal: function() {
+  closeModal: () => {
     const modal = document.getElementById('toolModal');
     if (modal) modal.classList.remove('active');
-    
-    const previewContainer = document.getElementById('previewContainer');
-    const uploadBox = document.getElementById('uploadBox');
-    const videoPreview = document.getElementById('videoPreviewContainer');
-    const photoSlider = document.getElementById('photoSliderContainer');
-
-    if (previewContainer) previewContainer.classList.remove('active');
-    if (uploadBox) uploadBox.style.display = 'block';
-    if (videoPreview) videoPreview.style.display = 'none';
-    if (photoSlider) photoSlider.style.display = 'block';
+    const removeBtn = document.getElementById('removeFileBtn');
+    if (removeBtn) removeBtn.click();
   },
 
-  setupComparisonSlider: function(containerElement) {
-    if (!containerElement) return;
-    const range = containerElement.querySelector('.comparison-slider-input');
-    const beforeEl = containerElement.querySelector('.comparison-before');
-
-    if (!range || !beforeEl) return;
-
-    const updateSlider = (val) => {
-      beforeEl.style.width = `${val}%`;
-    };
-
-    range.addEventListener('input', (e) => updateSlider(e.target.value));
-    range.addEventListener('touchmove', (e) => updateSlider(e.target.value), { passive: true });
+  setupComparisonSlider: (container) => {
+    const sliderInput = container.querySelector('.comparison-slider-input');
+    const beforeWrap = container.querySelector('.comparison-before');
+    if (!sliderInput || !beforeWrap) return;
+    sliderInput.addEventListener('input', (e) => {
+      beforeWrap.style.width = `${e.target.value}%`;
+    });
   }
 };
 
