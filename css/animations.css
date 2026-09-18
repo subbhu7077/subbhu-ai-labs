@@ -93,3 +93,70 @@
     filter: drop-shadow(0 0 4px rgba(0, 242, 254, 0.6)) drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
   }
 }
+
+/* 3D Floating Animations */
+@keyframes float3D {
+  0% {
+    transform: perspective(600px) translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(600px) translateY(-10px) rotateX(6deg) rotateY(-6deg);
+  }
+  100% {
+    transform: perspective(600px) translateY(0px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
+@keyframes subbhuGlowPulse {
+  0% {
+    box-shadow: 0 0 10px #00f2fe, inset 0 0 10px #00f2fe;
+    border-color: #00f2fe;
+  }
+  50% {
+    box-shadow: 0 0 25px #ff007f, 0 0 45px #00f2fe, inset 0 0 15px #ff007f;
+    border-color: #ff007f;
+  }
+  100% {
+    box-shadow: 0 0 10px #00f2fe, inset 0 0 10px #00f2fe;
+    border-color: #00f2fe;
+  }
+}
+
+.floating-subbhu-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(255, 0, 127, 0.25));
+  border: 1.5px solid #00f2fe;
+  border-radius: 30px;
+  padding: 6px 14px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-transform: uppercase;
+  animation: float3D 3.5s ease-in-out infinite, subbhuGlowPulse 2.5s ease-in-out infinite alternate;
+  backdrop-filter: blur(10px);
+}
+
+/* Floating Corner Orb */
+.subbhu-floating-orb {
+  position: fixed;
+  right: 14px;
+  bottom: 85px;
+  z-index: 999;
+  background: linear-gradient(145deg, #00f2fe, #ff007f);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.72rem;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.8), 0 0 40px rgba(255, 0, 127, 0.6);
+  animation: float3D 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
