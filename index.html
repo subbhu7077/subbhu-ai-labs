@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SUBBHU AI LABS | 12 Neural Engines</title>
-  <link rel="stylesheet" href="css/style.css?v=99.0">
-  <link rel="stylesheet" href="css/animations.css?v=99.0">
+  <title>SUBBHU AI LABS | 26 Neural Engines</title>
+  <link rel="stylesheet" href="css/style.css?v=105.0">
+  <link rel="stylesheet" href="css/animations.css?v=105.0">
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap");
 
@@ -128,9 +128,7 @@
       border: 1px solid rgba(0, 242, 254, 0.3);
     }
 
-    .card-body {
-      padding: 10px;
-    }
+    .card-body { padding: 10px; }
     .card-title {
       font-size: 0.8rem;
       font-weight: 800;
@@ -257,13 +255,13 @@
 
   <!-- Filter Pills -->
   <div class="pills-scroll">
-    <div class="pill-3d active" onclick="filterItems('all', this)">⚡ All Engines (12)</div>
+    <div class="pill-3d active" onclick="filterItems('all', this)">⚡ All Engines (26)</div>
     <div class="pill-3d" onclick="filterItems('portraits', this)">👤 Portraits</div>
     <div class="pill-3d" onclick="filterItems('art', this)">🎨 Creative Art</div>
     <div class="pill-3d" onclick="filterItems('commercial', this)">📦 Commercial</div>
   </div>
 
-  <!-- Grid: Complete 12 Working Tools -->
+  <!-- Complete 26 Working Tools Grid -->
   <div class="grid-container" id="toolsGrid">
 
     <!-- 1 -->
@@ -398,6 +396,160 @@
       </div>
     </div>
 
+    <!-- 13 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Vocal & Audio EQ Studio', 'high-end broadcast sound studio recording booth, Shure SM7B dynamic microphone, acoustic foam panels, sound engineer mixing console, cinematic atmosphere')">
+      <span class="card-tag">Audio HQ</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Vocal & Audio EQ</div>
+        <div class="card-desc">Studio mic clarity & denoise acoustics</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('Face Retouch & Pore Detail', 'macro beauty portrait, authentic smooth human skin texture, ultra detailed fine facial pores, natural lips, soft luminous catchlights in eyes, clean studio')">
+      <span class="card-tag">Beauty</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Face Skin Retouch</div>
+        <div class="card-desc">Natural skin pores & beauty glow</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('HDR Landscape & Nature', 'breathtaking mountain valley landscape, dramatic sunrise rays, alpine lake reflections, ultra HD National Geographic photography, vivid depth')">
+      <span class="card-tag">Nature</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">HDR Nature Panorama</div>
+        <div class="card-desc">NatGeo style landscape & mountain sunburst</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 16 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Tattoo & Blackwork Ink', 'intricate fine-line blackwork tattoo design, neo-traditional style, crisp geometric patterns, dark gothic ink drawing on clean parchment')">
+      <span class="card-tag">Tattoo</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Tattoo & Blackwork</div>
+        <div class="card-desc">Fine-line neo-traditional ink sketch</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 17 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Vector Logo & Minimal Icon', 'modern minimalist vector tech logo design, sleek gradient symbol, clean lines, behance trending brand identity, dark background')">
+      <span class="card-tag">Branding</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Vector Logo Design</div>
+        <div class="card-desc">Minimalist tech emblem & modern branding</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 18 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('Old Photo Colorizer', 'restored historical vintage photograph, authentic natural colorization, sharp facial clarity, no scratches, rich realistic historic skin tones')">
+      <span class="card-tag">Restore</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Old Photo Restore</div>
+        <div class="card-desc">Scratch removal & vivid color restore</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 19 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Architectural Luxury Villa', 'modern luxury concrete and glass villa, infinity pool, warm architectural interior lighting, sunset ambience, Architectural Digest 8k')">
+      <span class="card-tag">Architecture</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Luxury Architecture</div>
+        <div class="card-desc">Modern glass villa with infinity pool</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 20 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Surrealism Dreamscape', 'mind-bending surrealism artwork, floating islands in starry cosmic clouds, salvador dali style melted clocks, ethereal glowing dream fantasy')">
+      <span class="card-tag">Surreal</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Surreal Dreamscape</div>
+        <div class="card-desc">Ethereal floating islands & cosmic fantasy</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 21 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Low-Poly 3D Game Asset', 'isometric low-poly 3D game scene, vibrant pastel colors, stylized trees and cabin, blender 3D render, cute video game aesthetic')">
+      <span class="card-tag">Game Art</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Low-Poly 3D Asset</div>
+        <div class="card-desc">Isometric stylized indie video game render</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 22 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Oil Canvas Masterpiece', 'expressive traditional oil painting on textured canvas, thick impasto palette knife strokes, impressionist warm colors, gallery masterpiece')">
+      <span class="card-tag">Oil Paint</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Oil Canvas Painting</div>
+        <div class="card-desc">Impasto palette knife textured stroke art</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 23 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Neon Typography Sign', 'glowing neon light signboard text on dark weathered brick wall, vibrant electric pink and cyan tubes, rainy night reflections')">
+      <span class="card-tag">Neon Sign</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Neon Typography</div>
+        <div class="card-desc">Glowing glass gas tube neon signboards</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 24 -->
+    <div class="card-3d" data-cat="portraits" onclick="openStudioEngine('Wildlife Macro Lens', 'extreme macro photography of tiger eyes and detailed whiskers, razor sharp iris texture, natural jungle sun dappled light, 8k NatGeo')">
+      <span class="card-tag">Macro Wild</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Wildlife Macro Focus</div>
+        <div class="card-desc">Razor sharp iris reflection & fur details</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 25 -->
+    <div class="card-3d" data-cat="art" onclick="openStudioEngine('Sci-Fi Mech & Spaceship', 'giant industrial sci-fi combat mecha robot standing in desert hangar, detailed hydraulic pistons, weathering battle scars, cinematic concept art')">
+      <span class="card-tag">Mecha</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Sci-Fi Mech Robot</div>
+        <div class="card-desc">Industrial robotic combat machine hangar</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
+    <!-- 26 -->
+    <div class="card-3d" data-cat="commercial" onclick="openStudioEngine('Cinematic Movie LUTs', 'Hollywood cinematic still frame, Arri Alexa camera, 2.39:1 anamorphic aspect ratio, teal and orange color grading, dramatic blockbuster scene')">
+      <span class="card-tag">Movie Grade</span>
+      <img class="card-media" src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&q=80">
+      <div class="card-body">
+        <div class="card-title">Cinematic Movie LUTs</div>
+        <div class="card-desc">Arri Alexa teal & orange blockbuster grade</div>
+        <div class="card-footer"><span style="color:#fbbf24">⚡ 1 credit</span><span style="color:#00f2fe">OPEN →</span></div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Interactive Generation Modal Sheet -->
@@ -411,19 +563,17 @@
         <button onclick="closeModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">✕</button>
       </div>
 
-      <label style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">Subject Description (Optional):</label>
+      <label style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">Subject / Details (Optional):</label>
       <input id="customSubject" type="text" placeholder="e.g. young Indian man in black jacket / sports bike" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(0,242,254,0.3); border-radius: 10px; color: #fff; margin-top: 6px; outline: none; box-sizing: border-box;">
 
       <button id="runBtn" class="btn-primary" onclick="renderArtwork()" style="width: 100%; padding: 14px; border-radius: 12px; margin-top: 14px; font-weight: 800;">
         ⚡ GENERATE CREATIVE
       </button>
 
-      <!-- Shimmer Progress -->
       <div id="renderLoader" style="display: none; margin-top: 16px; text-align: center; color: #00f2fe; font-weight: 800; font-size: 0.85rem;">
         Rendering High-Resolution Output...
       </div>
 
-      <!-- Result Image & Download -->
       <div id="renderResult" style="display: none; margin-top: 16px;">
         <img id="renderImg" src="" style="width: 100%; max-height: 380px; object-fit: cover; border-radius: 12px; border: 1px solid #00f2fe;">
         <a id="downloadLink" href="#" download="subbhu_ai.jpg" class="btn-primary" style="display: block; text-align: center; text-decoration: none; padding: 12px; margin-top: 10px; border-radius: 10px; font-weight: 800;">
@@ -472,8 +622,8 @@
     async function renderArtwork() {
       const subject = document.getElementById('customSubject').value.trim();
       const prompt = subject ? `${subject}, ${currentEnginePrompt}` : currentEnginePrompt;
-      const cleanPrompt = `${prompt}, authentic photography, natural color balance, high resolution, sharp focus, 8k`;
-      const negativePrompt = `oversaturated, red tint, cartoon, blurry, deformed`;
+      const cleanPrompt = `${prompt}, authentic, true colors, balanced lighting, high resolution, sharp focus, 8k`;
+      const negativePrompt = `oversaturated, neon skin, blown out, cartoon, blurry, ugly`;
 
       const btn = document.getElementById('runBtn');
       const loader = document.getElementById('renderLoader');
