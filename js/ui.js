@@ -1,32 +1,4 @@
 const UIController = {
-  renderVisualToolsGrid: (containerId, tools) => {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = '';
-
-    tools.forEach(tool => {
-      const card = document.createElement('div');
-      card.className = 'tool-box';
-      card.innerHTML = `
-        <div class="tool-thumb" style="background-image: url('${tool.demo}');">
-          <div class="tool-badge-pill">${tool.badge}</div>
-        </div>
-        <div class="tool-info">
-          <div class="tool-title">${tool.name}</div>
-          <div class="tool-desc">${tool.desc}</div>
-          <div class="tool-footer">
-            <span class="tool-cost">⚡ ${tool.cost} credit</span>
-            <span class="tool-try">TRY NOW →</span>
-          </div>
-        </div>
-      `;
-      card.addEventListener('click', () => {
-        UIController.openToolModal(tool.id);
-      });
-      container.appendChild(card);
-    });
-  },
-
   openToolModal: (toolId) => {
     const tool = (window.AI_TOOLS || []).find(t => t.id === toolId) || { id: toolId, name: "AI Tool", category: "AI Processing" };
     window.currentToolId = tool.id;
@@ -37,7 +9,7 @@ const UIController = {
     const fileInput = document.getElementById('fileInput');
 
     if (modalTitle) modalTitle.innerText = tool.name;
-    if (modalBadge) modalBadge.innerText = tool.category || "AI Processing";
+    if (modalBadge) modalBadge.innerText = tool.badge || "Active";
     if (modal) modal.classList.add('active');
 
     if (fileInput) {
