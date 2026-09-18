@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         processBtn.disabled = true;
         if (downloadBtn) downloadBtn.style.display = 'none';
-        processingState.style.display = 'block';
+        processingState.style.display = 'block'; const laser = document.getElementById('laserScanBar'); if(laser) laser.style.display = 'block';
 
         statusText.innerText = "1/4 Uploading to encrypted vault...";
         const storagePath = await window.BackendAPI.uploadMedia(currentSelectedFile, user.id);
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         noticeMsg.innerText = err.message;
       } finally {
         processBtn.disabled = false;
-        processingState.style.display = 'none';
+        processingState.style.display = 'none'; const laser = document.getElementById('laserScanBar'); if(laser) laser.style.display = 'none';
       }
     });
   }
