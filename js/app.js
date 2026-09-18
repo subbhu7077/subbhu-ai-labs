@@ -1,16 +1,11 @@
-/**
- * Production Event Controller & Task Management
- */
 let currentSelectedFile = null;
 window.currentToolId = "photo-enhancer";
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Render Main Tool Trays
   if (window.AI_TOOLS && document.getElementById('toolsHorizontalTray')) {
     window.UIController.renderToolsTray('toolsHorizontalTray', window.AI_TOOLS);
   }
 
-  // 2. Auth Session Check & Credit Hydration
   let currentUser = null;
   if (window.BackendAPI) {
     try {
@@ -31,18 +26,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // 3. Upload & Preview Handling
   const dropZone = document.getElementById('uploadBox');
   const fileInput = document.getElementById('fileInput');
   const previewContainer = document.getElementById('previewContainer');
   const fileNameEl = document.getElementById('previewFileName');
   const fileSizeEl = document.getElementById('previewFileSize');
   const removeBtn = document.getElementById('removeFileBtn');
-  const photoSlider = document.getElementById('photoSliderContainer');
   const beforeImg = document.getElementById('sliderBeforeImg');
   const afterImg = document.getElementById('sliderAfterImg');
-  const videoContainer = document.getElementById('videoPreviewContainer');
-  const videoPlayer = document.getElementById('videoPreviewPlayer');
   const processBtn = document.getElementById('processBtn');
 
   if (dropZone && fileInput) {
@@ -56,19 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (fileNameEl) fileNameEl.innerText = meta.name;
         if (fileSizeEl) fileSizeEl.innerText = meta.size;
         
-        if (meta.type === 'video') {
-          if (photoSlider) photoSlider.style.display = 'none';
-          if (videoContainer) videoContainer.style.display = 'block';
-          if (videoPlayer) {
-            videoPlayer.src = meta.blobUrl;
-            videoPlayer.load();
-          }
-        } else {
-          if (videoContainer) videoContainer.style.display = 'none';
-          if (photoSlider) photoSlider.style.display = 'block';
-          if (beforeImg) beforeImg.src = meta.blobUrl;
-          if (afterImg) afterImg.src = meta.blobUrl;
-        }
+        if (beforeImg) beforeImg.src = meta.blobUrl;
+        if (afterImg) afterImg.src = meta.blobUrl;
       }
     });
   }
@@ -79,14 +59,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (fileInput) fileInput.value = '';
       if (previewContainer) previewContainer.classList.remove('active');
       if (dropZone) dropZone.style.display = 'block';
-      if (videoPlayer) {
-        videoPlayer.pause();
-        videoPlayer.src = '';
-      }
     });
   }
 
-  // 4. Real Generation Flow (Truthful API State)
   if (processBtn) {
     processBtn.addEventListener('click', async () => {
       const user = await window.BackendAPI.getUser();
@@ -108,11 +83,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         processBtn.disabled = true;
         processingState.style.display = 'block';
-        statusText.innerText = "1/2 Uploading encrypted media...";
+        statusText.innerText = "1/3 Uploading to secure storage...";
 
         const storagePath = await window.BackendAPI.uploadMedia(currentSelectedFile, user.id);
 
-        statusText.innerText = "2/2 Deducting credits and queueing job...";
+        statusText.innerText = "2/3 Deducting credits and queuing job...";
         const genRes = await window.BackendAPI.startGeneration(window.currentToolId, storagePath);
 
         const count = document.getElementById('headerCreditCount');
@@ -120,9 +95,20 @@ document.addEventListener('DOMContentLoaded', async () => {
           count.innerText = genRes.remaining_credits;
         }
 
-        // Truthful notice: Real backend task queued, provider status checked
-        noticeMsg.innerHTML = `✅ Job queued (ID: ${genRes.generation_id.substring(0,8)}...).<br><span style="color: #f59e0b;">AI Provider: NOT CONFIGURED. Set AI_API_KEY in backend to enable model weights.</span>`;
-        alert(`Job Queued in Database!\nTask ID: ${genRes.generation_id}\nRemaining Credits: ${genRes.remaining_credits}\n\nAI Provider Status: NOT CONFIGURED (Production keys required).`);
+        statusText.innerText = "3/3 Processing with AI Model...";
+        
+        try {
+          const aiResult = await window.BackendAPI.processRealAI(genRes.generation_id, currentSelectedFile);
+          if (aiResult.output_url && afterImg) {
+            afterImg.src = aiResult.output_url;
+            noticeMsg.innerHTML = "✅ Enhancement Complete! Slide to compare.";
+            alert("AI Processing Complete! Output loaded in After comparison slider.");
+          }
+        } catch (modelErr) {
+          // If public token rate-limited, fallback to clean notice
+          noticeMsg.innerHTML = `✅ Job queued (ID: ${genRes.generation_id.substring(0,8)}...).<br><span style="color: #f59e0b;">AI Provider Token Rate-Limited or Missing: Add your HuggingFace/Replicate token in js/supabase-client.js</span>`;
+          alert(`Task Queued (ID: ${genRes.generation_id.substring(0,8)}).\nToken configuration required for live GPU inference.`);
+        }
 
       } catch (err) {
         alert(err.message);
@@ -134,40 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 5. Watch Ad & Earn Reward Credits Handler
-  const adRewardBtn = document.getElementById('claimAdRewardBtn');
-  if (adRewardBtn) {
-    adRewardBtn.addEventListener('click', async () => {
-      const user = await window.BackendAPI.getUser();
-      if (!user) {
-        alert("Please log in to claim reward credits.");
-        return;
-      }
-
-      adRewardBtn.innerText = "Simulating verified ad view (5s)...";
-      adRewardBtn.disabled = true;
-
-      setTimeout(async () => {
-        try {
-          const res = await window.BackendAPI.claimReward(user.id);
-          if (res.success) {
-            alert(`Reward claimed! +1 Credit added. Total: ${res.remaining_credits}`);
-            const count = document.getElementById('headerCreditCount');
-            if (count) count.innerText = res.remaining_credits;
-          } else {
-            alert(res.message);
-          }
-        } catch (e) {
-          alert(e.message);
-        } finally {
-          adRewardBtn.innerText = "📺 Watch Ad (+1 Credit)";
-          adRewardBtn.disabled = false;
-        }
-      }, 5000);
-    });
-  }
-
-  // 6. Init Comparison Sliders
+  // Comparison Sliders Setup
   document.querySelectorAll('.comparison-wrapper').forEach(slider => {
     window.UIController.setupComparisonSlider(slider);
   });
