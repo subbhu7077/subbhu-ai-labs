@@ -2,231 +2,177 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account & Plans | SUBBHU AI LABS</title>
-  <link rel="stylesheet" href="css/style.css?v=5.0">
-  <link rel="stylesheet" href="css/responsive.css?v=5.0">
-  <link rel="stylesheet" href="css/animations.css?v=5.0">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SUBBHU BHAI | Official Profile</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap");
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #040711;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      padding-bottom: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 20%, rgba(0, 242, 254, 0.15), transparent 70%);
+    }
+
+    /* 3D Floating & Glowing Neon DP Frame */
+    @keyframes dpFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes ringGlow {
+      0% { box-shadow: 0 0 15px #00f2fe, 0 0 30px rgba(0, 242, 254, 0.4); border-color: #00f2fe; }
+      50% { box-shadow: 0 0 30px #ff007f, 0 0 50px rgba(255, 0, 127, 0.6); border-color: #ff007f; }
+      100% { box-shadow: 0 0 15px #00f2fe, 0 0 30px rgba(0, 242, 254, 0.4); border-color: #00f2fe; }
+    }
+
+    .dp-container {
+      margin-top: 40px;
+      position: relative;
+      animation: dpFloat 4s ease-in-out infinite;
+    }
+
+    .dp-frame {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      padding: 5px;
+      border: 3px solid #00f2fe;
+      animation: ringGlow 3s ease-in-out infinite alternate;
+      background: linear-gradient(135deg, rgba(0,242,254,0.2), rgba(255,0,127,0.2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dp-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .creator-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-top: 18px;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #00f2fe, #ff007f);
+      -webkit-background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 10px rgba(0,242,254,0.6));
+    }
+
+    .badge-sub {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #00f2fe;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid #00f2fe;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-top: 6px;
+      box-shadow: 0 0 10px rgba(0,242,254,0.3);
+    }
+
+    .action-card {
+      width: 88%;
+      max-width: 380px;
+      background: rgba(13, 22, 45, 0.85);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 18px;
+      padding: 20px;
+      margin-top: 25px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+
+    .btn-save {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #00f2fe, #ff007f);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 0.85rem;
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+      cursor: pointer;
+      margin-top: 14px;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(7, 12, 24, 0.95);
+      border-top: 1px solid rgba(0, 242, 254, 0.25);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #64748b;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+      gap: 4px;
+    }
+    .nav-btn.active { color: #00f2fe; }
+  </style>
 </head>
 <body>
-  <header class="app-header glass">
-    <div class="brand-wrap">
-      <a href="index.html" class="btn-icon" style="margin-right: 8px;">←</a>
-      <div class="brand-name">Account & Subscriptions</div>
-    </div>
-  </header>
 
-  <main style="padding: 16px;">
-    <!-- Profile Card -->
-    <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
-      <div id="avatarBadge" style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold; color: #040817;">
-        U
-      </div>
-      <div>
-        <div id="profileUsername" style="font-size: 1rem; font-weight: 700;">AI Creator</div>
-        <div id="profileEmail" style="font-size: 0.75rem; color: var(--text-muted);">Guest Session</div>
-      </div>
+  <!-- DP Frame -->
+  <div class="dp-container">
+    <div class="dp-frame">
+      <img class="dp-img" src="subbhu_dp.jpg" alt="SUBBHU BHAI" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'">
     </div>
+  </div>
 
-    <!-- Credits Meter -->
-    <div class="glass" style="padding: 14px; border-radius: var(--radius-md); margin-bottom: 20px; border-color: var(--border-highlight);">
-      <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-        <span style="font-size: 0.8rem; font-weight: 600;">Available Fast Credits</span>
-        <span id="creditsValue" style="font-size: 0.85rem; color: var(--primary-cyan); font-weight: 700;">--</span>
-      </div>
-      <div style="height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.1); overflow: hidden;">
-        <div style="width: 100%; height: 100%; background: var(--primary-cyan);"></div>
-      </div>
+  <div class="creator-title">👑 SUBBHU BHAI</div>
+  <div class="badge-sub">FOUNDER & CHIEF ARCHITECT</div>
+
+  <!-- Save & Stats Card -->
+  <div class="action-card">
+    <div style="font-size: 0.9rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">Official Profile Artwork</div>
+    <div style="font-size: 0.75rem; color: #94a3b8; line-height: 1.4;">
+      Authentic cinematic outdoor portrait with natural daylight lens blur.
     </div>
 
-    <!-- Supported UPI Badges -->
-    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.03); border-radius: var(--radius-md); border: 1px solid var(--border-glass); margin-bottom: 16px;">
-      <span style="font-size: 0.75rem; color: var(--text-muted);">Instant UPI Auto-Pay:</span>
-      <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary-cyan);">GPay • PhonePe • Paytm • BHIM</span>
-    </div>
-
-    <!-- Monetization Plans -->
-    <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px;">Upgrade Subscription</div>
-    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-      
-      <!-- PLUS TIER -->
-      <div class="glass" style="padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--primary-cyan);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <div style="font-weight: 700; color: var(--primary-cyan);">PLUS CREATOR</div>
-          <div style="font-size: 0.9rem; font-weight: 800;">₹499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
-        </div>
-        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">100 Monthly Fast Credits • 4K Photo Upscaling • Fast Queue</p>
-        <button id="buyPlusBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px;">PAY VIA UPI / GPAY / PHONEPE (₹499)</button>
-      </div>
-
-      <!-- PRO TIER -->
-      <div class="glass-elevated" style="padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--primary-purple);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <div style="font-weight: 700; color: var(--primary-purple);">PRO ENTERPRISE</div>
-          <div style="font-size: 0.9rem; font-weight: 800;">₹1,499 <span style="font-size: 0.7rem; color: var(--text-muted);">/mo</span></div>
-        </div>
-        <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 10px;">500 Monthly Fast Credits • High Priority GPU Engine</p>
-        <button id="buyProBtn" class="btn btn-primary" style="width: 100%; font-size: 0.75rem; padding: 8px; background: linear-gradient(135deg, var(--primary-purple), #7928ca);">PAY VIA UPI / GPAY / PHONEPE (₹1,499)</button>
-      </div>
-    </div>
-
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <a id="adminLinkBtn" href="admin.html" class="btn btn-secondary" style="justify-content: flex-start; display: none; border-color: var(--primary-cyan);">🛡️ Administrator Console</a>
-      <a id="authActionBtn" href="login.html" class="btn btn-secondary" style="justify-content: flex-start;">🔐 Sign In / Sync Account</a>
-      <button id="logoutBtn" class="btn btn-secondary" style="justify-content: flex-start; display: none; color: var(--danger);">🚪 Sign Out</button>
-    </div>
-  </main>
-
-  <nav class="bottom-nav glass">
-    <a href="index.html" class="nav-item">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span>Home</span>
+    <a href="subbhu_dp.jpg" download="subbhu_bhai_original.jpg" class="btn-save">
+      💾 SAVE HD PHOTO
     </a>
-    <a href="create.html" class="nav-item">
-      <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
-      <span>Create</span>
-    </a>
-    <div class="nav-fab-wrap">
-      <a href="create.html" class="nav-fab">✨</a>
-    </div>
-    <a href="history.html" class="nav-item">
-      <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-      <span>History</span>
-    </a>
-    <a href="profile.html" class="nav-item active">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      <span>Profile</span>
-    </a>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-btn"><span>Home</span></a>
+    <a href="create.html" class="nav-btn"><span>Create</span></a>
+    <a href="dubbing.html" class="nav-btn"><span>Dubbing</span></a>
+    <a href="profile.html" class="nav-btn active"><span>Profile</span></a>
   </nav>
 
-  <script src="js/supabase-client.js?v=5.0"></script>
-  <script>
-    const RAZORPAY_KEY_ID = "rzp_test_TRAinkK2e0I691";
-    let currentUser = null;
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      currentUser = await window.BackendAPI.getUser();
-      const authBtn = document.getElementById('authActionBtn');
-      const logoutBtn = document.getElementById('logoutBtn');
-      const adminBtn = document.getElementById('adminLinkBtn');
-      const usernameEl = document.getElementById('profileUsername');
-      const emailEl = document.getElementById('profileEmail');
-      const creditsVal = document.getElementById('creditsValue');
-      const avatarBadge = document.getElementById('avatarBadge');
-
-      if (currentUser) {
-        emailEl.innerText = currentUser.email;
-        authBtn.style.display = 'none';
-        logoutBtn.style.display = 'flex';
-
-        const { data: profile } = await window.BackendAPI.getProfile(currentUser.id);
-        if (profile) {
-          usernameEl.innerText = profile.username || 'Creator';
-          creditsVal.innerText = `${profile.credits} Credits (${profile.plan})`;
-          avatarBadge.innerText = (profile.username || currentUser.email)[0].toUpperCase();
-
-          if (profile.role === 'admin') {
-            adminBtn.style.display = 'flex';
-          }
-        }
-      } else {
-        creditsVal.innerText = '0 (Sign in required)';
-      }
-
-      logoutBtn.addEventListener('click', async () => {
-        await window.BackendAPI.signOut();
-        window.location.reload();
-      });
-
-      document.getElementById('buyPlusBtn').addEventListener('click', () => {
-        startCheckout('PLUS', 499);
-      });
-
-      document.getElementById('buyProBtn').addEventListener('click', () => {
-        startCheckout('PRO', 1499);
-      });
-    });
-
-    function startCheckout(plan, amount) {
-      if (!currentUser) {
-        alert("Please sign in first before purchasing a plan.");
-        window.location.href = "login.html";
-        return;
-      }
-
-      const orderRef = "order_" + Date.now();
-
-      const options = {
-        key: RAZORPAY_KEY_ID,
-        amount: amount * 100,
-        currency: "INR",
-        name: "SUBBHU AI LABS",
-        description: `Upgrade to ${plan} Plan`,
-        image: "https://subbhu7077.github.io/subbhu-ai-labs/icons/icon-192.png",
-        prefill: {
-          email: currentUser.email,
-          method: "upi" // Defaults directly to UPI mode
-        },
-        config: {
-          display: {
-            blocks: {
-              upi: {
-                name: "Pay via UPI Apps & QR",
-                instruments: [
-                  {
-                    method: "upi",
-                    flows: ["intent", "qr", "collect"],
-                    apps: ["google_pay", "phonepe", "paytm", "bhim"]
-                  }
-                ]
-              },
-              other: {
-                name: "Cards & NetBanking",
-                instruments: [
-                  { method: "card" },
-                  { method: "netbanking" }
-                ]
-              }
-            },
-            sequence: ["block.upi", "block.other"],
-            preferences: {
-              show_default_blocks: true
-            }
-          }
-        },
-        theme: {
-          color: "#00d2ff"
-        },
-        handler: async function (response) {
-          try {
-            const { data, error } = await supabaseClient.rpc("fulfill_subscription_payment", {
-              p_user_id: currentUser.id,
-              p_payment_id: response.razorpay_payment_id,
-              p_order_id: orderRef,
-              p_plan: plan,
-              p_amount: amount
-            });
-
-            if (error) throw error;
-
-            alert(`🎉 Payment Successful!\nPayment ID: ${response.razorpay_payment_id}\nYour account is now upgraded to ${plan}!`);
-            window.location.reload();
-          } catch (e) {
-            alert("Error activating subscription: " + e.message);
-          }
-        },
-        modal: {
-          ondismiss: function () {
-            console.log("Checkout closed");
-          }
-        }
-      };
-
-      const rzp = new Razorpay(options);
-      rzp.open();
-    }
-  </script>
 </body>
 </html>
