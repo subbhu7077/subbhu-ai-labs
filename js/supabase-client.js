@@ -1,6 +1,6 @@
 /**
  * Supabase Frontend Client Architecture
- * Direct Database & Storage Mode (100% Reliable without Edge deployment dependencies)
+ * High Performance & Low Latency
  */
 const SUPABASE_URL = "https://pgvxbfvyzklqokehtxkx.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_kD5UMF5T7pYqNl4js1V4vg_egYZQW_k";
@@ -8,7 +8,6 @@ const SUPABASE_ANON_KEY = "sb_publishable_kD5UMF5T7pYqNl4js1V4vg_egYZQW_k";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const BackendAPI = {
-  // 1. AUTHENTICATION
   signUp: async (email, password, username) => {
     return await supabaseClient.auth.signUp({
       email,
@@ -35,30 +34,28 @@ const BackendAPI = {
       .from('profiles')
       .select('*')
       .eq('id', userId)
-      .single();
+      .maybeSingle();
   },
 
-  // 2. STORAGE UPLOAD
   uploadMedia: async (file, userId) => {
     const ext = file.name.split('.').pop();
-    const filePath = `${userId}/${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
+    const filePath = `${userId}/${Date.now()}.${ext}`;
     
     const { data, error } = await supabaseClient.storage
       .from('uploads')
-      .upload(filePath, file, { cacheControl: '3600', upsert: false });
+      .upload(filePath, file, { cacheControl: '3600', upsert: true });
 
     if (error) throw error;
     return data.path;
   },
 
-  // 3. GENERATION QUEUE & SERVER-SIDE CREDIT DEDUCTION VIA RPC
   startGeneration: async (toolType, filePath) => {
     const user = await BackendAPI.getUser();
     if (!user) throw new Error("Please log in to use AI tools.");
 
     const cost = toolType.includes("video") ? 5 : 1;
 
-    // Server-side atomic credit deduction
+    // Fast atomic deduction
     const { data: deductRes, error: rpcError } = await supabaseClient.rpc("deduct_credits_atomic", {
       p_user_id: user.id,
       p_amount: cost,
@@ -67,10 +64,10 @@ const BackendAPI = {
 
     if (rpcError) throw new Error(rpcError.message);
     if (!deductRes || !deductRes.success) {
-      throw new Error(deductRes?.message || "Insufficient credits. Please recharge.");
+      throw new Error(deductRes?.message || "Insufficient credits.");
     }
 
-    // Insert generation row in database
+    // Insert task in generations table
     const { data: generation, error: genError } = await supabaseClient
       .from("generations")
       .insert({
@@ -87,12 +84,10 @@ const BackendAPI = {
     return {
       success: true,
       generation_id: generation.id,
-      status: generation.status,
       remaining_credits: deductRes.remaining_credits
     };
   },
 
-  // 4. STATUS & HISTORY
   getHistory: async (userId) => {
     return await supabaseClient
       .from('generations')
