@@ -1,38 +1,7 @@
 const SUPABASE_URL = "https://pgvxbfvyzklqokehtxkx.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_kD5UMF5T7pYqNl4js1V4vg_egYZQW_k";
 
-const _h = "aWZfTVpkbFlGZlVIT0NhVW1BSHhYcGdUbGxZdm1aa0hCcnZmSw==";
-const getHFKey = () => atob(_h.replace("aW", "aG"));
-
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
-// Downscale heavy images to max 1024px before sending to AI inference
-async function prepareOptimizedBlob(file) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      let w = img.width;
-      let h = img.height;
-      const maxDim = 1024;
-      if (w > maxDim || h > maxDim) {
-        if (w > h) {
-          h = Math.round((h * maxDim) / w);
-          w = maxDim;
-        } else {
-          w = Math.round((w * maxDim) / h);
-          h = maxDim;
-        }
-      }
-      const c = document.createElement('canvas');
-      c.width = w;
-      c.height = h;
-      const ctx = c.getContext('2d');
-      ctx.drawImage(img, 0, 0, w, h);
-      c.toBlob((blob) => resolve(blob), 'image/jpeg', 0.9);
-    };
-    img.src = URL.createObjectURL(file);
-  });
-}
 
 const BackendAPI = {
   getUser: async () => {
@@ -109,36 +78,53 @@ const BackendAPI = {
   enhanceImageLocal: async (file, toolType) => {
     const isBg = toolType === 'bg-remove' || toolType.includes('bg');
 
-    if (isBg) {
-      const statusEl = document.getElementById('processingStatusText');
-      if (statusEl) statusEl.innerText = "3/4 AI Segmentation model cutting background...";
-
-      const optimizedBlob = await prepareOptimizedBlob(file);
-
-      const response = await fetch("https://api-inference.huggingface.co/models/briaai/RMBG-1.4", {
-        headers: {
-          "Authorization": `Bearer ${getHFKey()}`
-        },
-        method: "POST",
-        body: optimizedBlob
-      });
-
-      if (!response.ok) {
-        throw new Error(`AI Model is currently loading on GPU (Status ${response.status}). Please retry in 10 seconds.`);
-      }
-
-      const resultBlob = await response.blob();
-      return { blob: resultBlob, outputUrl: URL.createObjectURL(resultBlob) };
-    }
-
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.onload = () => {
+      img.onload = async () => {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = img.width;
         canvas.height = img.height;
 
+        // REAL AI BACKGROUND SEGMENTATION (MediaPipe)
+        if (isBg && window.SelfieSegmentation) {
+          const statusEl = document.getElementById('processingStatusText');
+          if (statusEl) statusEl.innerText = "3/4 AI detecting person & isolating background...";
+
+          const selfieSegmentation = new window.SelfieSegmentation({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
+          });
+
+          selfieSegmentation.setOptions({
+            modelSelection: 1 // Full person model
+          });
+
+          selfieSegmentation.onResults((results) => {
+            ctx.save();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Mask draw karein
+            ctx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
+            
+            // Subject retain karein, baki transparent
+            ctx.globalCompositeOperation = 'source-in';
+            ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
+            ctx.restore();
+
+            canvas.toBlob((blob) => {
+              if (blob) {
+                resolve({ blob, outputUrl: URL.createObjectURL(blob) });
+              } else {
+                reject(new Error("Failed to create cutout blob"));
+              }
+            }, 'image/png');
+          });
+
+          await selfieSegmentation.send({ image: img });
+          return;
+        }
+
+        // Photo Enhancer filters
         if (toolType.includes('color')) {
           ctx.filter = 'contrast(130%) saturate(150%) brightness(105%)';
         } else if (toolType.includes('restore') || toolType.includes('denoise')) {
@@ -152,6 +138,7 @@ const BackendAPI = {
           resolve({ blob, outputUrl: URL.createObjectURL(blob) });
         }, 'image/jpeg', 0.95);
       };
+
       img.onerror = reject;
       img.src = URL.createObjectURL(file);
     });
