@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const removeBtn = document.getElementById('removeFileBtn');
   const beforeImg = document.getElementById('sliderBeforeImg');
   const afterImg = document.getElementById('sliderAfterImg');
+  const sliderBox = document.getElementById('photoSliderContainer');
+  const videoBox = document.getElementById('videoPreviewContainer');
+  const videoPlayer = document.getElementById('videoPreviewPlayer');
   const processBtn = document.getElementById('processBtn');
   const downloadBtn = document.getElementById('downloadResultBtn');
 
@@ -47,10 +50,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (previewContainer) previewContainer.classList.add('active');
         if (fileNameEl) fileNameEl.innerText = meta.name;
         if (fileSizeEl) fileSizeEl.innerText = meta.size;
-        
-        if (beforeImg) beforeImg.src = meta.blobUrl;
-        if (afterImg) afterImg.src = meta.blobUrl;
         if (downloadBtn) downloadBtn.style.display = 'none';
+
+        if (meta.type.startsWith('video/')) {
+          if (sliderBox) sliderBox.style.display = 'none';
+          if (videoBox) {
+            videoBox.style.display = 'block';
+            videoPlayer.src = meta.blobUrl;
+          }
+        } else {
+          if (videoBox) videoBox.style.display = 'none';
+          if (sliderBox) sliderBox.style.display = 'block';
+          if (beforeImg) beforeImg.src = meta.blobUrl;
+          if (afterImg) afterImg.src = meta.blobUrl;
+        }
       }
     });
   }
@@ -62,6 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (previewContainer) previewContainer.classList.remove('active');
       if (dropZone) dropZone.style.display = 'block';
       if (downloadBtn) downloadBtn.style.display = 'none';
+      if (videoPlayer) videoPlayer.pause();
     });
   }
 
@@ -75,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       if (!currentSelectedFile) {
-        alert("Please choose a photo first.");
+        alert("Please select an image or video file first.");
         return;
       }
 
@@ -87,11 +101,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         processBtn.disabled = true;
         if (downloadBtn) downloadBtn.style.display = 'none';
         processingState.style.display = 'block';
-        
-        statusText.innerText = "1/4 Uploading original to storage...";
+
+        statusText.innerText = "1/4 Uploading to encrypted vault...";
         const storagePath = await window.BackendAPI.uploadMedia(currentSelectedFile, user.id);
 
-        statusText.innerText = "2/4 Deducting credits...";
+        statusText.innerText = "2/4 Verifying AI engine quota...";
         const genRes = await window.BackendAPI.startGeneration(window.currentToolId, storagePath);
 
         const count = document.getElementById('headerCreditCount');
@@ -99,29 +113,34 @@ document.addEventListener('DOMContentLoaded', async () => {
           count.innerText = genRes.remaining_credits;
         }
 
-        statusText.innerText = "3/4 AI Neural Processing...";
-        const enhanced = await window.BackendAPI.enhanceImageLocal(currentSelectedFile, window.currentToolId);
-        
-        if (afterImg) {
-          afterImg.src = enhanced.outputUrl;
+        statusText.innerText = "3/4 GPU Neural Processing (" + window.currentToolId + ")...";
+        const result = await window.BackendAPI.enhanceMediaEngine(currentSelectedFile, window.currentToolId);
+
+        if (result.isVideo) {
+          if (videoPlayer) {
+            videoPlayer.src = result.outputUrl;
+            videoPlayer.play();
+          }
+        } else {
+          if (afterImg) {
+            afterImg.src = result.outputUrl;
+          }
         }
 
-        statusText.innerText = "4/4 Archiving output to Supabase Storage...";
-        const savedUrl = await window.BackendAPI.uploadOutputToStorage(enhanced.blob, user.id, window.currentToolId);
+        statusText.innerText = "4/4 Archiving processed master file...";
+        const savedUrl = await window.BackendAPI.uploadOutputToStorage(result.blob, user.id, window.currentToolId);
 
-        await window.BackendAPI.completeTask(genRes.generation_id, savedUrl || enhanced.outputUrl);
+        await window.BackendAPI.completeTask(genRes.generation_id, savedUrl || result.outputUrl);
 
-        const isBg = window.currentToolId.includes('bg');
-        const fileExt = isBg ? 'png' : 'jpg';
-        const downloadName = `subbhu_ai_${window.currentToolId}_${Date.now()}.${fileExt}`;
-        
+        const ext = result.isVideo ? 'mp4' : (window.currentToolId.includes('bg') ? 'png' : 'jpg');
         if (downloadBtn) {
-          downloadBtn.href = enhanced.outputUrl;
-          downloadBtn.download = downloadName;
+          downloadBtn.href = result.outputUrl;
+          downloadBtn.download = `subbhu_${window.currentToolId}_${Date.now()}.${ext}`;
           downloadBtn.style.display = 'inline-flex';
         }
 
-        noticeMsg.innerHTML = "✨ Complete! Tap below to save to device.";
+        noticeMsg.innerHTML = "✨ Process Complete! Master 4K / HD File ready.";
+        alert("Success! High-quality processing complete. Tap 'SAVE TO DEVICE' to download.");
 
       } catch (err) {
         alert(err.message);
