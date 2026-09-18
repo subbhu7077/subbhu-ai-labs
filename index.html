@@ -12,10 +12,14 @@
   <meta name="theme-color" content="#00d2ff">
 
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/style.css?v=3.1">
-  <link rel="stylesheet" href="css/responsive.css?v=3.1">
-  <link rel="stylesheet" href="css/animations.css?v=3.1">
+  <link rel="stylesheet" href="css/style.css?v=7.0">
+  <link rel="stylesheet" href="css/responsive.css?v=7.0">
+  <link rel="stylesheet" href="css/animations.css?v=7.0">
+  
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Real In-Browser AI Background Segmentation Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -36,7 +40,7 @@
   <section class="hero">
     <div class="hero-badge">⚡ 25+ Generative Production Models</div>
     <h1>Create Better<br>With AI</h1>
-    <p class="hero-subtitle">Enhance, create, and transform photos and videos with server-side AI precision.</p>
+    <p class="hero-subtitle">Enhance, cut out backgrounds, and upscale media with hardware neural precision.</p>
     <div class="hero-cta">
       <a href="create.html" class="btn btn-primary pulse-active">START CREATING</a>
       <a href="#explore" class="btn btn-secondary">EXPLORE ENGINES</a>
@@ -63,19 +67,19 @@
     <div class="scroll-tray" id="toolsHorizontalTray"></div>
   </section>
 
-  <!-- Inspiration & Production UGC Templates -->
+  <!-- Inspiration Templates -->
   <section class="section">
     <div class="section-header">
       <div class="section-title">Production UGC Templates</div>
     </div>
     <div class="inspiration-grid" id="templatesGrid">
-      <div class="insp-card glass" onclick="UIController.openToolModal('photo-enhancer')">
+      <div class="insp-card glass" onclick="UIController.openToolModal('bg-remove')">
         <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600');">
-          <span class="insp-badge">Product</span>
+          <span class="insp-badge">AI Cutout</span>
         </div>
         <div class="insp-content">
-          <div class="insp-title">Studio Watch Glow</div>
-          <div class="insp-desc">Clean background swap with dynamic shadows</div>
+          <div class="insp-title">1-Click BG Remover</div>
+          <div class="insp-desc">Clean alpha cutout without hair fraying</div>
         </div>
       </div>
 
@@ -89,23 +93,13 @@
         </div>
       </div>
 
-      <div class="insp-card glass" onclick="UIController.openToolModal('video-enhancer')">
+      <div class="insp-card glass" onclick="UIController.openToolModal('photo-enhancer')">
         <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600');">
           <span class="insp-badge">UGC</span>
         </div>
         <div class="insp-content">
-          <div class="insp-title">Unboxing Reel Hook</div>
-          <div class="insp-desc">Natural daylight preservation at 60 FPS</div>
-        </div>
-      </div>
-
-      <div class="insp-card glass" onclick="UIController.openToolModal('vid-upscale')">
-        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600');">
-          <span class="insp-badge">Social</span>
-        </div>
-        <div class="insp-content">
-          <div class="insp-title">Viral Reels 4K</div>
-          <div class="insp-desc">Deep color balance & edge-sharpening</div>
+          <div class="insp-title">Crisp Clarity Upscale</div>
+          <div class="insp-desc">Denoise, sharpen and HDR color correction</div>
         </div>
       </div>
     </div>
@@ -126,7 +120,7 @@
       <div class="upload-box" id="uploadBox">
         <div class="upload-icon">📤</div>
         <div class="upload-label">Tap to Choose Photo or Video</div>
-        <div class="upload-sub">Direct encrypted upload to Supabase Private Storage</div>
+        <div class="upload-sub">Direct encrypted upload to Supabase Storage</div>
         <input type="file" id="fileInput" accept="image/*,video/*" style="display: none;">
       </div>
 
@@ -140,8 +134,8 @@
           <button class="btn-remove" id="removeFileBtn">Remove</button>
         </div>
 
-        <!-- Before/After Slider for Photos -->
-        <div class="comparison-wrapper" id="photoSliderContainer">
+        <!-- Before/After Slider -->
+        <div class="comparison-wrapper" id="photoSliderContainer" style="background: repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 16px 16px;">
           <img class="comparison-img" id="sliderAfterImg" src="https://picsum.photos/600/400?random=10" alt="Target Preview">
           <div class="comparison-before">
             <img id="sliderBeforeImg" src="https://picsum.photos/600/400?random=11" alt="Original Source">
@@ -151,7 +145,7 @@
           <input type="range" min="0" max="100" value="50" class="comparison-slider-input" aria-label="Comparison slider">
         </div>
 
-        <!-- Video Preview for Videos -->
+        <!-- Video Preview -->
         <div id="videoPreviewContainer" style="display: none; width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #000;">
           <video id="videoPreviewPlayer" controls style="width: 100%; max-height: 240px; display: block;"></video>
         </div>
@@ -165,10 +159,9 @@
         </div>
       </div>
 
-      <!-- Notice Callout -->
       <div class="backend-notice" id="systemNotice">
         <span>ℹ️</span>
-        <div id="noticeMsg">Ready for backend orchestration.</div>
+        <div id="noticeMsg">Ready for AI processing.</div>
       </div>
 
       <button type="button" class="btn btn-primary" id="processBtn" style="width: 100%;">
@@ -200,11 +193,10 @@
     </a>
   </nav>
 
-  <!-- Query parameter appended to bypass old cached files -->
-  <script src="js/supabase-client.js?v=3.3"></script>
-  <script src="js/tools.js?v=3.3"></script>
-  <script src="js/upload.js?v=3.3"></script>
-  <script src="js/ui.js?v=3.3"></script>
-  <script src="js/app.js?v=3.3"></script>
+  <script src="js/supabase-client.js?v=7.0"></script>
+  <script src="js/tools.js?v=7.0"></script>
+  <script src="js/upload.js?v=7.0"></script>
+  <script src="js/ui.js?v=7.0"></script>
+  <script src="js/app.js?v=7.0"></script>
 </body>
 </html>
