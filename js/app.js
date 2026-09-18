@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         noticeMsg.innerHTML = "✨ Process Complete! Master 4K / HD File ready.";
-        alert("Success! High-quality processing complete. Tap 'SAVE TO DEVICE' to download.");
+        // alert removed for seamless UX
 
       } catch (err) {
         alert(err.message);
