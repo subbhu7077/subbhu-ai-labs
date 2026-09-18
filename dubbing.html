@@ -296,7 +296,11 @@
           }, 8000); // Check every 8 seconds
 
         } catch (err) {
-          alert(err.message);
+          if (err.message.includes("Failed to fetch") || err.name === "TypeError") {
+          alert("Backend Edge Function offline: Please deploy 'create-dubbing' function on Supabase Dashboard first.");
+        } else {
+          alert("Dubbing Error: " + err.message);
+        }
           progressCard.style.display = 'none';
           btn.disabled = false;
         }
