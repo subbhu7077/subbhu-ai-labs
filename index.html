@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SUBBHU AI LABS | Next-Gen AI Media Platform</title>
-  <meta name="description" content="Enhance, upscale, and transform your photos and videos with SUBBHU AI LABS. 25+ generative AI models.">
+  <title>SUBBHU AI LABS</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/style.css?v=18.0">
-  <link rel="stylesheet" href="css/responsive.css?v=18.0">
-  <link rel="stylesheet" href="css/animations.css?v=18.0">
+  <link rel="stylesheet" href="css/style.css?v=20.0">
+  <link rel="stylesheet" href="css/responsive.css?v=20.0">
+  <link rel="stylesheet" href="css/animations.css?v=20.0">
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
+  <!-- Clean Top Bar -->
   <header class="app-header glass">
     <div class="brand-wrap">
       <div class="brand-icon">S</div>
@@ -22,25 +22,27 @@
     </div>
     <div class="header-actions">
       <span id="headerCreditBadge" class="hero-badge" style="margin: 0; display: none;">Credits: <b id="headerCreditCount">0</b></span>
-      <a href="create.html" class="btn-icon" aria-label="Create">＋</a>
-      <a href="profile.html" class="btn-icon" aria-label="Profile">👤</a>
+      <a href="studio.html" class="btn-icon" title="Studio">🎙️</a>
+      <a href="profile.html" class="btn-icon" title="Profile">👤</a>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-badge">⚡ 25+ Generative Production Models</div>
-    <h1>Create Better<br>With AI</h1>
-    <p class="hero-subtitle">Enhance, cut out backgrounds, and upscale media with hardware neural precision.</p>
-    <div class="hero-cta">
-      <a href="studio.html" class="btn btn-primary pulse-active" style="background: linear-gradient(135deg, #ff007f, #7928ca); border-color: #ff007f; box-shadow: 0 0 16px rgba(255, 0, 127, 0.6);">🎙️ KAPKAP AI STUDIO</a>
+  <!-- Clean Minimal Hero -->
+  <section class="hero" style="padding: 24px 16px 16px 16px;">
+    <div class="hero-badge" style="margin-bottom: 8px;">⚡ 25+ AI Models Active</div>
+    <h1 style="font-size: 1.85rem; margin-bottom: 6px;">Create Better With AI</h1>
+    <p class="hero-subtitle" style="font-size: 0.85rem; margin-bottom: 16px;">One-tap photo enhancement, video 4K upscaling, and background removal.</p>
+    <div class="hero-cta" style="gap: 10px;">
+      <a href="studio.html" class="btn btn-primary" style="background: linear-gradient(135deg, #00d2ff, #7928ca); border: none;">🎙️ KAPKAP STUDIO</a>
       <a href="create.html" class="btn btn-secondary">START CREATING</a>
     </div>
   </section>
 
-  <section class="section" id="explore">
-    <div class="section-header">
-      <div class="section-title">AI Processing Engines</div>
-      <span class="section-tag">25 Tools</span>
+  <!-- Simple Tools Tray -->
+  <section class="section" style="padding-top: 10px;">
+    <div class="section-header" style="margin-bottom: 12px;">
+      <div class="section-title" style="font-size: 1rem;">AI Engines</div>
+      <span class="section-tag" style="font-size: 0.75rem;">25 Tools</span>
     </div>
     <div class="scroll-tray" id="toolsHorizontalTray"></div>
   </section>
@@ -50,19 +52,21 @@
     <div class="modal-sheet glass-elevated">
       <div class="modal-header">
         <div>
-          <h2 class="modal-title" id="modalToolTitle">AI Tool</h2>
-          <span id="modalToolBadge" class="hero-badge" style="margin: 4px 0 0 0;">Category</span>
+          <h2 class="modal-title" id="modalToolTitle" style="font-size: 1.1rem;">AI Tool</h2>
+          <span id="modalToolBadge" class="hero-badge" style="margin-top: 2px;">Ready</span>
         </div>
         <button class="modal-close" onclick="UIController.closeModal()">✕</button>
       </div>
 
+      <!-- Upload Trigger -->
       <div class="upload-box" id="uploadBox">
         <div class="upload-icon">📤</div>
-        <div class="upload-label">Tap to Choose Photo or Video</div>
-        <div class="upload-sub">Direct encrypted upload to Supabase Storage</div>
+        <div class="upload-label">Select Media File</div>
+        <div class="upload-sub">Images or Videos (Full Quality)</div>
         <input type="file" id="fileInput" accept="image/*,video/*" style="display: none;">
       </div>
 
+      <!-- Preview Screen -->
       <div class="preview-container" id="previewContainer">
         <div class="file-info-bar glass">
           <div class="file-details">
@@ -72,49 +76,53 @@
           <button class="btn-remove" id="removeFileBtn">Remove</button>
         </div>
 
+        <!-- Before / After Slider -->
         <div class="comparison-wrapper" id="photoSliderContainer" style="background: repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 16px 16px;">
-          <img class="comparison-img" id="sliderAfterImg" src="https://picsum.photos/600/400?random=10" alt="Target Preview">
+          <img class="comparison-img" id="sliderAfterImg" src="" alt="After Preview">
           <div class="comparison-before">
-            <img id="sliderBeforeImg" src="https://picsum.photos/600/400?random=11" alt="Original Source">
+            <img id="sliderBeforeImg" src="" alt="Before Source">
           </div>
           <span class="comparison-label label-before">BEFORE</span>
           <span class="comparison-label label-after">AFTER</span>
           <input type="range" min="0" max="100" value="50" class="comparison-slider-input" aria-label="Comparison slider">
         </div>
 
+        <!-- Video Player -->
         <div id="videoPreviewContainer" style="display: none; width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #000;">
-          <video id="videoPreviewPlayer" controls playsinline style="width: 100%; max-height: 280px; display: block;"></video>
+          <video id="videoPreviewPlayer" controls playsinline style="width: 100%; max-height: 260px; display: block;"></video>
         </div>
       </div>
 
-      <!-- Neon Glowing Processing Card -->
-      <div id="processingState" class="neon-loader-card" style="display: none; padding: 14px; border-radius: var(--radius-md); margin: 10px 0;">
+      <!-- Neon Glowing Loading Card -->
+      <div id="processingState" class="neon-loader-card" style="display: none; padding: 14px; margin: 12px 0;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 12px; height: 12px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe;"></div>
-            <span id="processingStatusText" style="font-size: 0.82rem; font-weight: 700; color: #fff; text-shadow: 0 0 8px rgba(0,210,255,0.7);">Processing Neural GPU pipeline...</span>
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe;"></div>
+            <span id="processingStatusText" style="font-size: 0.82rem; font-weight: 700; color: #fff;">Processing Media...</span>
           </div>
-          <span id="processingProgressPct" style="font-size: 0.78rem; font-weight: 800; color: #00d2ff;">0%</span>
+          <span id="processingProgressPct" style="font-size: 0.8rem; font-weight: 800; color: #00d2ff;">0%</span>
         </div>
-        <div class="neon-progress-bar"></div>
+        <div class="neon-stream-bar"></div>
       </div>
 
-      <div class="backend-notice" id="systemNotice">
+      <div class="backend-notice" id="systemNotice" style="margin-top: 8px;">
         <span>ℹ️</span>
-        <div id="noticeMsg">Ready for AI processing.</div>
+        <div id="noticeMsg">Ready for processing.</div>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
         <button type="button" class="btn btn-primary" id="processBtn" style="width: 100%;">
           PROCESS NOW
         </button>
-        <a id="downloadResultBtn" href="#" download="master_output" class="btn" style="display: none; width: 100%; justify-content: center; align-items: center; gap: 8px; background: linear-gradient(135deg, #00f2fe, #7928ca); color: #fff; font-weight: 800; text-decoration: none; border-radius: var(--radius-md); padding: 12px; box-shadow: 0 0 20px rgba(0,210,255,0.5);">
-          <span>💾 SAVE FULL RESOLUTION (DEVICE)</span>
+        <!-- Neon Glowing Download Button -->
+        <a id="downloadResultBtn" href="#" download="subbhu_master" class="btn neon-download-btn" style="display: none; width: 100%; justify-content: center; align-items: center; gap: 8px; text-decoration: none; padding: 12px; border-radius: 8px;">
+          <span>💾 DOWNLOAD FILE</span>
         </a>
       </div>
     </div>
   </div>
 
+  <!-- Bottom Navigation -->
   <nav class="bottom-nav glass">
     <a href="index.html" class="nav-item active">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -125,7 +133,7 @@
       <span>Create</span>
     </a>
     <div class="nav-fab-wrap">
-      <a href="create.html" class="nav-fab" aria-label="Create Action">✨</a>
+      <a href="studio.html" class="nav-fab" aria-label="Studio">✨</a>
     </div>
     <a href="history.html" class="nav-item">
       <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
@@ -137,10 +145,10 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js?v=18.0"></script>
-  <script src="js/tools.js?v=18.0"></script>
-  <script src="js/upload.js?v=18.0"></script>
-  <script src="js/ui.js?v=18.0"></script>
-  <script src="js/app.js?v=18.0"></script>
+  <script src="js/supabase-client.js?v=20.0"></script>
+  <script src="js/tools.js?v=20.0"></script>
+  <script src="js/upload.js?v=20.0"></script>
+  <script src="js/ui.js?v=20.0"></script>
+  <script src="js/app.js?v=20.0"></script>
 </body>
 </html>
