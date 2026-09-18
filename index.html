@@ -5,78 +5,140 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SUBBHU AI LABS</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/style.css?v=20.0">
-  <link rel="stylesheet" href="css/responsive.css?v=20.0">
-  <link rel="stylesheet" href="css/animations.css?v=20.0">
-  
+  <link rel="stylesheet" href="css/style.css?v=21.0">
+  <link rel="stylesheet" href="css/responsive.css?v=21.0">
+  <link rel="stylesheet" href="css/animations.css?v=21.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+  <style>
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 16px 20px 16px;
+    }
+    .tool-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 105px;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .tool-box:active {
+      transform: scale(0.97);
+      border-color: #00d2ff;
+    }
+    .tool-badge-pill {
+      align-self: flex-start;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(0, 210, 255, 0.15);
+      color: #00d2ff;
+      margin-bottom: 6px;
+    }
+    .tool-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .tool-cost {
+      font-size: 0.72rem;
+      color: #ffb703;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .banner-card {
+      margin: 0 16px 18px 16px;
+      padding: 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.15), rgba(121, 40, 202, 0.25));
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
 </head>
-<body>
+<body style="padding-bottom: 90px;">
 
-  <!-- Clean Top Bar -->
+  <!-- Header -->
   <header class="app-header glass">
     <div class="brand-wrap">
       <div class="brand-icon">S</div>
       <div class="brand-name">SUBBHU AI LABS</div>
     </div>
     <div class="header-actions">
-      <span id="headerCreditBadge" class="hero-badge" style="margin: 0; display: none;">Credits: <b id="headerCreditCount">0</b></span>
-      <a href="studio.html" class="btn-icon" title="Studio">🎙️</a>
-      <a href="profile.html" class="btn-icon" title="Profile">👤</a>
+      <span id="headerCreditBadge" class="hero-badge" style="margin: 0; display: inline-flex;">Credits: <b id="headerCreditCount">9964</b></span>
+      <a href="studio.html" class="btn-icon">🎙️</a>
+      <a href="profile.html" class="btn-icon">👤</a>
     </div>
   </header>
 
-  <!-- Clean Minimal Hero -->
-  <section class="hero" style="padding: 24px 16px 16px 16px;">
-    <div class="hero-badge" style="margin-bottom: 8px;">⚡ 25+ AI Models Active</div>
-    <h1 style="font-size: 1.85rem; margin-bottom: 6px;">Create Better With AI</h1>
-    <p class="hero-subtitle" style="font-size: 0.85rem; margin-bottom: 16px;">One-tap photo enhancement, video 4K upscaling, and background removal.</p>
-    <div class="hero-cta" style="gap: 10px;">
-      <a href="studio.html" class="btn btn-primary" style="background: linear-gradient(135deg, #00d2ff, #7928ca); border: none;">🎙️ KAPKAP STUDIO</a>
-      <a href="create.html" class="btn btn-secondary">START CREATING</a>
-    </div>
+  <!-- Hero Section -->
+  <section class="hero" style="padding: 18px 16px 14px 16px; text-align: left;">
+    <div class="hero-badge" style="margin-bottom: 6px;">⚡ 25+ Production AI Models</div>
+    <h1 style="font-size: 1.7rem; margin-bottom: 4px; line-height: 1.2;">Create Better<br>With AI</h1>
+    <p class="hero-subtitle" style="font-size: 0.8rem; margin-bottom: 12px; color: var(--text-muted);">
+      Hardware-accelerated 4K photo, video enhancer, & background cutout.
+    </p>
   </section>
 
-  <!-- Simple Tools Tray -->
-  <section class="section" style="padding-top: 10px;">
-    <div class="section-header" style="margin-bottom: 12px;">
-      <div class="section-title" style="font-size: 1rem;">AI Engines</div>
-      <span class="section-tag" style="font-size: 0.75rem;">25 Tools</span>
+  <!-- KapKap Banner -->
+  <div class="banner-card">
+    <div>
+      <div style="font-size: 0.95rem; font-weight: 800; color: #fff;">🎙️ KapKap Video Studio</div>
+      <div style="font-size: 0.72rem; color: #ccc; margin-top: 2px;">Teleprompter • AI Script • Talking Head</div>
     </div>
-    <div class="scroll-tray" id="toolsHorizontalTray"></div>
-  </section>
+    <a href="studio.html" class="btn btn-primary" style="padding: 8px 14px; font-size: 0.75rem; border-radius: 20px; text-decoration: none;">OPEN</a>
+  </div>
 
-  <!-- Execution Modal -->
+  <!-- Tools Category Title -->
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 16px 10px 16px;">
+    <span style="font-size: 0.95rem; font-weight: 800;">⚡ Popular AI Engines</span>
+    <span style="font-size: 0.72rem; color: #00d2ff; font-weight: 600;">All Working</span>
+  </div>
+
+  <!-- Full Screen Populated Tools Grid -->
+  <div class="tools-grid" id="toolsGrid"></div>
+
+  <!-- Processing Modal -->
   <div class="modal-overlay" id="toolModal">
     <div class="modal-sheet glass-elevated">
       <div class="modal-header">
         <div>
           <h2 class="modal-title" id="modalToolTitle" style="font-size: 1.1rem;">AI Tool</h2>
-          <span id="modalToolBadge" class="hero-badge" style="margin-top: 2px;">Ready</span>
+          <span id="modalToolBadge" class="hero-badge" style="margin-top: 2px;">Active</span>
         </div>
         <button class="modal-close" onclick="UIController.closeModal()">✕</button>
       </div>
 
-      <!-- Upload Trigger -->
       <div class="upload-box" id="uploadBox">
         <div class="upload-icon">📤</div>
-        <div class="upload-label">Select Media File</div>
-        <div class="upload-sub">Images or Videos (Full Quality)</div>
+        <div class="upload-label">Choose Media File</div>
+        <div class="upload-sub">Photos or Videos (Auto High Quality)</div>
         <input type="file" id="fileInput" accept="image/*,video/*" style="display: none;">
       </div>
 
-      <!-- Preview Screen -->
       <div class="preview-container" id="previewContainer">
         <div class="file-info-bar glass">
           <div class="file-details">
-            <span class="file-name" id="previewFileName">filename.jpg</span>
+            <span class="file-name" id="previewFileName">file.jpg</span>
             <span class="file-size" id="previewFileSize">0 MB</span>
           </div>
           <button class="btn-remove" id="removeFileBtn">Remove</button>
         </div>
 
-        <!-- Before / After Slider -->
         <div class="comparison-wrapper" id="photoSliderContainer" style="background: repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 16px 16px;">
           <img class="comparison-img" id="sliderAfterImg" src="" alt="After Preview">
           <div class="comparison-before">
@@ -87,18 +149,17 @@
           <input type="range" min="0" max="100" value="50" class="comparison-slider-input" aria-label="Comparison slider">
         </div>
 
-        <!-- Video Player -->
         <div id="videoPreviewContainer" style="display: none; width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #000;">
           <video id="videoPreviewPlayer" controls playsinline style="width: 100%; max-height: 260px; display: block;"></video>
         </div>
       </div>
 
-      <!-- Neon Glowing Loading Card -->
+      <!-- Glowing Neon Loader -->
       <div id="processingState" class="neon-loader-card" style="display: none; padding: 14px; margin: 12px 0;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <div style="width: 10px; height: 10px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe;"></div>
-            <span id="processingStatusText" style="font-size: 0.82rem; font-weight: 700; color: #fff;">Processing Media...</span>
+            <span id="processingStatusText" style="font-size: 0.82rem; font-weight: 700; color: #fff;">Processing media...</span>
           </div>
           <span id="processingProgressPct" style="font-size: 0.8rem; font-weight: 800; color: #00d2ff;">0%</span>
         </div>
@@ -107,16 +168,15 @@
 
       <div class="backend-notice" id="systemNotice" style="margin-top: 8px;">
         <span>ℹ️</span>
-        <div id="noticeMsg">Ready for processing.</div>
+        <div id="noticeMsg">Ready for AI processing.</div>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
         <button type="button" class="btn btn-primary" id="processBtn" style="width: 100%;">
           PROCESS NOW
         </button>
-        <!-- Neon Glowing Download Button -->
         <a id="downloadResultBtn" href="#" download="subbhu_master" class="btn neon-download-btn" style="display: none; width: 100%; justify-content: center; align-items: center; gap: 8px; text-decoration: none; padding: 12px; border-radius: 8px;">
-          <span>💾 DOWNLOAD FILE</span>
+          <span>💾 DOWNLOAD TO DEVICE</span>
         </a>
       </div>
     </div>
@@ -145,10 +205,34 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js?v=20.0"></script>
-  <script src="js/tools.js?v=20.0"></script>
-  <script src="js/upload.js?v=20.0"></script>
-  <script src="js/ui.js?v=20.0"></script>
-  <script src="js/app.js?v=20.0"></script>
+  <script src="js/supabase-client.js?v=21.0"></script>
+  <script src="js/tools.js?v=21.0"></script>
+  <script src="js/upload.js?v=21.0"></script>
+  <script src="js/ui.js?v=21.0"></script>
+  <script src="js/app.js?v=21.0"></script>
+  <script>
+    // Populate Grid instantly
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('toolsGrid');
+      if (grid && window.AI_TOOLS) {
+        grid.innerHTML = '';
+        window.AI_TOOLS.forEach(tool => {
+          const card = document.createElement('div');
+          card.className = 'tool-box';
+          card.innerHTML = `
+            <div>
+              <div class="tool-badge-pill">${tool.badge}</div>
+              <div class="tool-title">${tool.name}</div>
+            </div>
+            <div class="tool-cost">⚡ ${tool.cost} credit</div>
+          `;
+          card.addEventListener('click', () => {
+            window.UIController.openToolModal(tool.id);
+          });
+          grid.appendChild(card);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
