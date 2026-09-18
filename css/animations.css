@@ -48,3 +48,44 @@
   height: 140px;
   border-radius: var(--radius-md);
 }
+
+/* Neon Cyberpunk Loader Animation */
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.4), inset 0 0 10px rgba(0, 210, 255, 0.2);
+    border-color: #00d2ff;
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.9), 0 0 40px rgba(121, 40, 202, 0.6), inset 0 0 15px rgba(0, 242, 254, 0.4);
+    border-color: #7928ca;
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.4), inset 0 0 10px rgba(0, 210, 255, 0.2);
+    border-color: #00d2ff;
+  }
+}
+
+@keyframes neonBarMove {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.neon-loader-card {
+  border: 1.5px solid #00d2ff !important;
+  animation: neonPulse 2s infinite ease-in-out;
+  background: rgba(4, 8, 23, 0.85) !important;
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-progress-bar {
+  height: 4px;
+  width: 50%;
+  background: linear-gradient(90deg, transparent, #00d2ff, #7928ca, #00f2fe, transparent);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  animation: neonBarMove 1.5s infinite linear;
+  box-shadow: 0 0 12px #00d2ff;
+}

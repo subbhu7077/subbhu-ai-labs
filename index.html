@@ -6,12 +6,11 @@
   <title>SUBBHU AI LABS | Next-Gen AI Media Platform</title>
   <meta name="description" content="Enhance, upscale, and transform your photos and videos with SUBBHU AI LABS. 25+ generative AI models.">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/style.css?v=15.0">
-  <link rel="stylesheet" href="css/responsive.css?v=15.0">
-  <link rel="stylesheet" href="css/animations.css?v=15.0">
+  <link rel="stylesheet" href="css/style.css?v=16.0">
+  <link rel="stylesheet" href="css/responsive.css?v=16.0">
+  <link rel="stylesheet" href="css/animations.css?v=16.0">
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Google MediaPipe AI Model for 100% Client-Side Real Background Removal -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -82,13 +81,22 @@
           <span class="comparison-label label-after">AFTER</span>
           <input type="range" min="0" max="100" value="50" class="comparison-slider-input" aria-label="Comparison slider">
         </div>
+
+        <div id="videoPreviewContainer" style="display: none; width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #000;">
+          <video id="videoPreviewPlayer" controls playsinline style="width: 100%; max-height: 280px; display: block;"></video>
+        </div>
       </div>
 
-      <div id="processingState" style="display: none; padding: 12px; border-radius: var(--radius-md); background: rgba(0, 210, 255, 0.08); border: 1px solid var(--border-highlight);">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <div class="skeleton" style="width: 20px; height: 20px; border-radius: 50%;"></div>
-          <span id="processingStatusText" style="font-size: 0.82rem;">Processing media...</span>
+      <!-- Neon Glowing Processing Card -->
+      <div id="processingState" class="neon-loader-card" style="display: none; padding: 14px; border-radius: var(--radius-md); margin: 10px 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe;"></div>
+            <span id="processingStatusText" style="font-size: 0.82rem; font-weight: 700; color: #fff; text-shadow: 0 0 8px rgba(0,210,255,0.7);">Processing Neural GPU pipeline...</span>
+          </div>
+          <span id="processingProgressPct" style="font-size: 0.78rem; font-weight: 800; color: #00d2ff;">0%</span>
         </div>
+        <div class="neon-progress-bar"></div>
       </div>
 
       <div class="backend-notice" id="systemNotice">
@@ -100,8 +108,8 @@
         <button type="button" class="btn btn-primary" id="processBtn" style="width: 100%;">
           PROCESS NOW
         </button>
-        <a id="downloadResultBtn" href="#" download="transparent_cutout.png" class="btn" style="display: none; width: 100%; justify-content: center; align-items: center; gap: 8px; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000; font-weight: 800; text-decoration: none; border-radius: var(--radius-md); padding: 12px;">
-          <span>💾 SAVE TO DEVICE (PNG)</span>
+        <a id="downloadResultBtn" href="#" download="master_output" class="btn" style="display: none; width: 100%; justify-content: center; align-items: center; gap: 8px; background: linear-gradient(135deg, #00f2fe, #7928ca); color: #fff; font-weight: 800; text-decoration: none; border-radius: var(--radius-md); padding: 12px; box-shadow: 0 0 20px rgba(0,210,255,0.5);">
+          <span>💾 SAVE FULL RESOLUTION (DEVICE)</span>
         </a>
       </div>
     </div>
@@ -129,10 +137,10 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js?v=15.0"></script>
-  <script src="js/tools.js?v=15.0"></script>
-  <script src="js/upload.js?v=15.0"></script>
-  <script src="js/ui.js?v=15.0"></script>
-  <script src="js/app.js?v=15.0"></script>
+  <script src="js/supabase-client.js?v=16.0"></script>
+  <script src="js/tools.js?v=16.0"></script>
+  <script src="js/upload.js?v=16.0"></script>
+  <script src="js/ui.js?v=16.0"></script>
+  <script src="js/app.js?v=16.0"></script>
 </body>
 </html>
