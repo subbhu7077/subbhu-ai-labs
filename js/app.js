@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const beforeImg = document.getElementById('sliderBeforeImg');
   const afterImg = document.getElementById('sliderAfterImg');
   const processBtn = document.getElementById('processBtn');
+  const downloadBtn = document.getElementById('downloadResultBtn');
 
   if (dropZone && fileInput) {
     new window.MediaUploadHandler({
@@ -49,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (beforeImg) beforeImg.src = meta.blobUrl;
         if (afterImg) afterImg.src = meta.blobUrl;
+        if (downloadBtn) downloadBtn.style.display = 'none';
       }
     });
   }
@@ -59,6 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (fileInput) fileInput.value = '';
       if (previewContainer) previewContainer.classList.remove('active');
       if (dropZone) dropZone.style.display = 'block';
+      if (downloadBtn) downloadBtn.style.display = 'none';
     });
   }
 
@@ -72,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       if (!currentSelectedFile) {
-        alert("Please choose a photo or video first.");
+        alert("Please choose a photo first.");
         return;
       }
 
@@ -82,12 +85,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       try {
         processBtn.disabled = true;
+        if (downloadBtn) downloadBtn.style.display = 'none';
         processingState.style.display = 'block';
-        statusText.innerText = "1/3 Uploading to secure storage...";
-
+        
+        statusText.innerText = "1/4 Uploading original to storage...";
         const storagePath = await window.BackendAPI.uploadMedia(currentSelectedFile, user.id);
 
-        statusText.innerText = "2/3 Deducting credits and queueing task...";
+        statusText.innerText = "2/4 Deducting credits...";
         const genRes = await window.BackendAPI.startGeneration(window.currentToolId, storagePath);
 
         const count = document.getElementById('headerCreditCount');
@@ -95,20 +99,29 @@ document.addEventListener('DOMContentLoaded', async () => {
           count.innerText = genRes.remaining_credits;
         }
 
-        statusText.innerText = "3/3 Running hardware neural processing...";
-        
-        // Execute real pixel enhancement
+        statusText.innerText = "3/4 AI Neural Processing...";
         const enhanced = await window.BackendAPI.enhanceImageLocal(currentSelectedFile, window.currentToolId);
         
         if (afterImg) {
           afterImg.src = enhanced.outputUrl;
         }
 
-        // Save completed state to Supabase
-        await window.BackendAPI.completeTask(genRes.generation_id, enhanced.outputUrl);
+        statusText.innerText = "4/4 Archiving output to Supabase Storage...";
+        const savedUrl = await window.BackendAPI.uploadOutputToStorage(enhanced.blob, user.id, window.currentToolId);
 
-        noticeMsg.innerHTML = "✨ Enhancement Complete! Slide left/right to compare.";
-        alert(`Success! Task Completed.\nRemaining Credits: ${genRes.remaining_credits}\nMove the slider to compare Before vs After.`);
+        await window.BackendAPI.completeTask(genRes.generation_id, savedUrl || enhanced.outputUrl);
+
+        // Reveal and hook download button
+        const fileExt = window.currentToolId === 'bg-remove' ? 'png' : 'jpg';
+        const downloadName = `subbhu_ai_${window.currentToolId}_${Date.now()}.${fileExt}`;
+        
+        if (downloadBtn) {
+          downloadBtn.href = enhanced.outputUrl;
+          downloadBtn.download = downloadName;
+          downloadBtn.style.display = 'inline-flex';
+        }
+
+        noticeMsg.innerHTML = "✨ Complete! Tap below to save to device.";
 
       } catch (err) {
         alert(err.message);
@@ -120,7 +133,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Setup sliders
   document.querySelectorAll('.comparison-wrapper').forEach(slider => {
     window.UIController.setupComparisonSlider(slider);
   });

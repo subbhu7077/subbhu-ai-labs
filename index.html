@@ -5,25 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SUBBHU AI LABS | Next-Gen AI Media Platform</title>
   <meta name="description" content="Enhance, upscale, and transform your photos and videos with SUBBHU AI LABS. 25+ generative AI models.">
-  <meta property="og:title" content="SUBBHU AI LABS | Create Better With AI">
-  <meta property="og:description" content="Enhance, restore, denoise, and create media with state-of-the-art AI.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://subbhu7077.github.io/subbhu-ai-labs/">
-  <meta name="theme-color" content="#00d2ff">
-
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/style.css?v=7.0">
-  <link rel="stylesheet" href="css/responsive.css?v=7.0">
-  <link rel="stylesheet" href="css/animations.css?v=7.0">
+  <link rel="stylesheet" href="css/style.css?v=9.0">
+  <link rel="stylesheet" href="css/responsive.css?v=9.0">
+  <link rel="stylesheet" href="css/animations.css?v=9.0">
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Real In-Browser AI Background Segmentation Engine -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/bundle.js"></script>
 </head>
 <body>
 
-  <!-- Top Header -->
   <header class="app-header glass">
     <div class="brand-wrap">
       <div class="brand-icon">S</div>
@@ -36,7 +27,6 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-badge">⚡ 25+ Generative Production Models</div>
     <h1>Create Better<br>With AI</h1>
@@ -47,18 +37,6 @@
     </div>
   </section>
 
-  <!-- Ad Reward Slot -->
-  <div style="padding: 0 16px; margin-bottom: 12px;">
-    <div class="glass" style="padding: 12px 14px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <div style="font-size: 0.8rem; font-weight: 700;">Free Daily Credits</div>
-        <div style="font-size: 0.68rem; color: var(--text-muted);">Watch verified sponsor to claim credits</div>
-      </div>
-      <button id="claimAdRewardBtn" class="btn btn-secondary" style="font-size: 0.72rem; padding: 6px 10px;">📺 Watch Ad (+1)</button>
-    </div>
-  </div>
-
-  <!-- Horizontal Tool Tray -->
   <section class="section" id="explore">
     <div class="section-header">
       <div class="section-title">AI Processing Engines</div>
@@ -67,45 +45,7 @@
     <div class="scroll-tray" id="toolsHorizontalTray"></div>
   </section>
 
-  <!-- Inspiration Templates -->
-  <section class="section">
-    <div class="section-header">
-      <div class="section-title">Production UGC Templates</div>
-    </div>
-    <div class="inspiration-grid" id="templatesGrid">
-      <div class="insp-card glass" onclick="UIController.openToolModal('bg-remove')">
-        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600');">
-          <span class="insp-badge">AI Cutout</span>
-        </div>
-        <div class="insp-content">
-          <div class="insp-title">1-Click BG Remover</div>
-          <div class="insp-desc">Clean alpha cutout without hair fraying</div>
-        </div>
-      </div>
-
-      <div class="insp-card glass" onclick="UIController.openToolModal('face-enhance')">
-        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600');">
-          <span class="insp-badge">Cinematic</span>
-        </div>
-        <div class="insp-content">
-          <div class="insp-title">Portrait Master 35mm</div>
-          <div class="insp-desc">Kodak Portra texture, volumetric rim lighting</div>
-        </div>
-      </div>
-
-      <div class="insp-card glass" onclick="UIController.openToolModal('photo-enhancer')">
-        <div class="insp-thumb" style="background-image: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600');">
-          <span class="insp-badge">UGC</span>
-        </div>
-        <div class="insp-content">
-          <div class="insp-title">Crisp Clarity Upscale</div>
-          <div class="insp-desc">Denoise, sharpen and HDR color correction</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Tool Interactive Execution Modal -->
+  <!-- Execution Modal -->
   <div class="modal-overlay" id="toolModal">
     <div class="modal-sheet glass-elevated">
       <div class="modal-header">
@@ -116,7 +56,6 @@
         <button class="modal-close" onclick="UIController.closeModal()">✕</button>
       </div>
 
-      <!-- Upload Interface -->
       <div class="upload-box" id="uploadBox">
         <div class="upload-icon">📤</div>
         <div class="upload-label">Tap to Choose Photo or Video</div>
@@ -124,7 +63,6 @@
         <input type="file" id="fileInput" accept="image/*,video/*" style="display: none;">
       </div>
 
-      <!-- Preview Screen -->
       <div class="preview-container" id="previewContainer">
         <div class="file-info-bar glass">
           <div class="file-details">
@@ -134,7 +72,6 @@
           <button class="btn-remove" id="removeFileBtn">Remove</button>
         </div>
 
-        <!-- Before/After Slider -->
         <div class="comparison-wrapper" id="photoSliderContainer" style="background: repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 16px 16px;">
           <img class="comparison-img" id="sliderAfterImg" src="https://picsum.photos/600/400?random=10" alt="Target Preview">
           <div class="comparison-before">
@@ -144,14 +81,8 @@
           <span class="comparison-label label-after">AFTER</span>
           <input type="range" min="0" max="100" value="50" class="comparison-slider-input" aria-label="Comparison slider">
         </div>
-
-        <!-- Video Preview -->
-        <div id="videoPreviewContainer" style="display: none; width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #000;">
-          <video id="videoPreviewPlayer" controls style="width: 100%; max-height: 240px; display: block;"></video>
-        </div>
       </div>
 
-      <!-- Processing State -->
       <div id="processingState" style="display: none; padding: 12px; border-radius: var(--radius-md); background: rgba(0, 210, 255, 0.08); border: 1px solid var(--border-highlight);">
         <div style="display: flex; align-items: center; gap: 8px;">
           <div class="skeleton" style="width: 20px; height: 20px; border-radius: 50%;"></div>
@@ -164,13 +95,19 @@
         <div id="noticeMsg">Ready for AI processing.</div>
       </div>
 
-      <button type="button" class="btn btn-primary" id="processBtn" style="width: 100%;">
-        PROCESS NOW
-      </button>
+      <!-- Action Buttons Container -->
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+        <button type="button" class="btn btn-primary" id="processBtn" style="width: 100%;">
+          PROCESS NOW
+        </button>
+        <!-- Dynamic Big Download Button -->
+        <a id="downloadResultBtn" href="#" download="enhanced.png" class="btn" style="display: none; width: 100%; justify-content: center; align-items: center; gap: 8px; background: linear-gradient(135deg, #00f2fe, #4facfe); color: #000; font-weight: 800; text-decoration: none; border-radius: var(--radius-md); padding: 12px;">
+          <span>💾 SAVE TO DEVICE / STORAGE</span>
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav glass">
     <a href="index.html" class="nav-item active">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -193,10 +130,10 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js?v=7.0"></script>
-  <script src="js/tools.js?v=7.0"></script>
-  <script src="js/upload.js?v=7.0"></script>
-  <script src="js/ui.js?v=7.0"></script>
-  <script src="js/app.js?v=7.0"></script>
+  <script src="js/supabase-client.js?v=9.0"></script>
+  <script src="js/tools.js?v=9.0"></script>
+  <script src="js/upload.js?v=9.0"></script>
+  <script src="js/ui.js?v=9.0"></script>
+  <script src="js/app.js?v=9.0"></script>
 </body>
 </html>
