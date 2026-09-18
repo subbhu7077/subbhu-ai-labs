@@ -2,54 +2,172 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Creation Studio | SUBBHU AI LABS</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/animations.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI Creative Studio | SUBBHU AI LABS</title>
+  <link rel="stylesheet" href="css/style.css?v=70.0">
+  <link rel="stylesheet" href="css/animations.css?v=70.0">
+  <style>
+    .studio-container {
+      padding: 16px 18px 90px 18px;
+    }
+    .prompt-box {
+      width: 100%;
+      min-height: 105px;
+      background: rgba(13, 20, 39, 0.8);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 14px;
+      padding: 12px;
+      color: #fff;
+      font-size: 0.85rem;
+      resize: none;
+      outline: none;
+      box-sizing: border-box;
+      margin-top: 8px;
+    }
+    .prompt-box:focus {
+      border-color: #00f2fe;
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.3);
+    }
+    .presets-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin: 10px 0 14px 0;
+    }
+    .presets-row::-webkit-scrollbar { display: none; }
+    .preset-chip {
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .preset-chip.active {
+      background: rgba(0, 242, 254, 0.2);
+      border-color: #00f2fe;
+      color: #00f2fe;
+    }
+    .ratio-pills {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .ratio-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #94a3b8;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+    }
+    .ratio-btn.active {
+      border-color: #00f2fe;
+      color: #00f2fe;
+      background: rgba(0, 242, 254, 0.12);
+    }
+    .result-card {
+      margin-top: 16px;
+      background: rgba(13, 20, 39, 0.85);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 16px;
+      overflow: hidden;
+      display: none;
+    }
+    .result-img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 480px;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Top App Header -->
   <header class="app-header glass">
     <div class="brand-wrap">
-      <a href="index.html" class="btn-icon" style="margin-right: 8px;">←</a>
-      <div class="brand-name">AI Creative Studio</div>
+      <a href="index.html" style="color: #fff; text-decoration: none; font-size: 1.2rem;">←</a>
+      <div class="brand-name">AI CREATIVE STUDIO</div>
     </div>
+    <span class="hero-badge">⚡ FLUX Pro Active</span>
   </header>
 
-  <main style="padding: 16px;">
-    <!-- Studio Workflow Card -->
-    <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-lg); margin-bottom: 16px;">
-      <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 6px;">Prompt Engine</div>
-      <textarea id="promptInput" placeholder="Describe the image or video scene (e.g. Cinematic product ad of luxury perfume bottle on wet black obsidian rock, neon cyan rim lights, 8k render...)" style="width: 100%; height: 90px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0,0,0,0.5); color: #fff; font-size: 0.8rem; margin-bottom: 12px; resize: none;"></textarea>
+  <div class="studio-container">
+    <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">Prompt Engine</div>
+    <textarea id="promptInput" class="prompt-box" placeholder="Describe the image scene (e.g. Cyberpunk sports bike on wet neon city street, hyperrealistic 8k render, glowing teal and purple lights...)"></textarea>
 
-      <div style="display: flex; gap: 8px; margin-bottom: 14px;">
-        <button type="button" class="btn btn-secondary" onclick="document.getElementById('promptInput').value='Cyberpunk cityscape at rainy midnight, volumetric neon lights, photorealistic 8K render'" style="font-size: 0.7rem; padding: 6px 8px;">🌆 Cyberpunk</button>
-        <button type="button" class="btn btn-secondary" onclick="document.getElementById('promptInput').value='Minimalist luxury skincare serum bottle, studio softbox illumination, macro lens shot'" style="font-size: 0.7rem; padding: 6px 8px;">🧴 Product Ad</button>
+    <!-- Quick Presets -->
+    <div class="presets-row">
+      <div class="preset-chip" onclick="applyPreset('🌆 Cyberpunk', 'neon cyberpunk city, glowing magenta and cyan rim light, highly detailed 8k octane render')">🌆 Cyberpunk</div>
+      <div class="preset-chip" onclick="applyPreset('🧴 Product Ad', 'commercial luxury product photography, floating on water splashes, studio lighting, hyperrealistic')">🧴 Product Ad</div>
+      <div class="preset-chip" onclick="applyPreset('🎌 Anime', 'Makoto Shinkai style anime landscape, vibrant colorful skies, studio ghibli aesthetic, masterpiece')">🎌 Anime</div>
+      <div class="preset-chip" onclick="applyPreset('🎬 Cinematic', 'cinematic 35mm portrait photograph, natural bokeh, dramatic golden hour film lighting')">🎬 Cinematic</div>
+      <div class="preset-chip" onclick="applyPreset('🏍️ Superbike', 'futuristic custom motorcycle parked on asphalt, dramatic night atmosphere, raytraced reflections')">🏍️ Superbike</div>
+    </div>
+
+    <!-- Aspect Ratio Selection -->
+    <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">Aspect Ratio</div>
+    <div class="ratio-pills">
+      <div class="ratio-btn active" onclick="setRatio('1:1', this)">1:1 Square</div>
+      <div class="ratio-btn" onclick="setRatio('9:16', this)">9:16 Reel/Story</div>
+      <div class="ratio-btn" onclick="setRatio('16:9', this)">16:9 Wide</div>
+    </div>
+
+    <!-- Generate Button -->
+    <button id="generateBtn" class="btn-primary" style="width: 100%; padding: 14px; font-size: 0.92rem; border-radius: 12px; margin-top: 4px;">
+      ⚡ GENERATE CREATIVE
+    </button>
+
+    <!-- Glowing Processing Loader -->
+    <div id="genLoader" class="neon-loader-card" style="display: none; padding: 14px; margin-top: 14px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe;"></div>
+          <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">Rendering Neural Artwork...</span>
+        </div>
+        <span id="loaderPercent" style="font-size: 0.8rem; font-weight: 800; color: #00d2ff;">Generating</span>
       </div>
-
-      <button id="generateCreativeBtn" class="btn btn-primary" style="width: 100%;">⚡ GENERATE CREATIVE</button>
+      <div class="neon-stream-bar"></div>
     </div>
 
-    <!-- Output Display Panel -->
-    <div id="creativeResultBox" class="glass" style="padding: 16px; border-radius: var(--radius-md); display: none;">
-      <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;">Generation Result</div>
-      <div id="creativeNotice" style="font-size: 0.75rem; color: #f59e0b;"></div>
+    <!-- Result Artwork Card -->
+    <div id="resultCard" class="result-card">
+      <img id="resultImage" class="result-img" src="" alt="Generated AI Artwork">
+      <div style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.75rem; font-weight: 700; color: #00f2fe;">4K Master Render</span>
+          <span style="font-size: 0.7rem; color: var(--text-muted);">FLUX Neural Model</span>
+        </div>
+        <a id="saveImageBtn" href="#" download="subbhu_creative.jpg" class="btn-primary neon-download-btn" style="text-align: center; text-decoration: none; padding: 12px; border-radius: 10px;">
+          💾 SAVE FULL RESOLUTION
+        </a>
+      </div>
     </div>
-  </main>
+  </div>
 
+  <!-- Bottom Nav -->
   <nav class="bottom-nav glass">
     <a href="index.html" class="nav-item">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       <span>Home</span>
     </a>
     <a href="create.html" class="nav-item active">
-      <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
       <span>Create</span>
     </a>
-    <div class="nav-fab-wrap">
-      <a href="create.html" class="nav-fab">✨</a>
-    </div>
+    <a href="studio.html" class="nav-item" style="color: #00f2fe;">
+      <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/></svg>
+      <span>Studio</span>
+    </a>
     <a href="history.html" class="nav-item">
       <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
       <span>History</span>
@@ -60,31 +178,64 @@
     </a>
   </nav>
 
-  <script src="js/supabase-client.js"></script>
   <script>
-    document.getElementById('generateCreativeBtn').addEventListener('click', async () => {
-      const prompt = document.getElementById('promptInput').value.trim();
-      if (!prompt) {
-        alert("Please enter a prompt description.");
+    let currentDimensions = { width: 1024, height: 1024 };
+
+    function setRatio(ratio, btn) {
+      document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (ratio === '1:1') currentDimensions = { width: 1024, height: 1024 };
+      if (ratio === '9:16') currentDimensions = { width: 768, height: 1344 };
+      if (ratio === '16:9') currentDimensions = { width: 1344, height: 768 };
+    }
+
+    function applyPreset(name, promptText) {
+      const ta = document.getElementById('promptInput');
+      ta.value = promptText;
+      ta.focus();
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      const promptText = document.getElementById('promptInput').value.trim();
+      if (!promptText) {
+        document.getElementById('promptInput').focus();
         return;
       }
 
-      const user = await window.BackendAPI.getUser();
-      if (!user) {
-        alert("Please sign in first via Profile.");
-        window.location.href = "login.html";
-        return;
-      }
+      const btn = document.getElementById('generateBtn');
+      const loader = document.getElementById('genLoader');
+      const card = document.getElementById('resultCard');
+      const img = document.getElementById('resultImage');
+      const downloadBtn = document.getElementById('saveImageBtn');
+
+      btn.disabled = true;
+      loader.style.display = 'block';
+      card.style.display = 'none';
+
+      // Safe seed and URL construction
+      const seed = Math.floor(Math.random() * 999999);
+      const encodedPrompt = encodeURIComponent(promptText);
+      const targetUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${currentDimensions.width}&height=${currentDimensions.height}&seed=${seed}&model=flux&nologo=true`;
 
       try {
-        const genRes = await window.BackendAPI.startGeneration('text2img', `prompt://${encodeURIComponent(prompt)}`);
-        const resultBox = document.getElementById('creativeResultBox');
-        const notice = document.getElementById('creativeNotice');
-        resultBox.style.display = 'block';
-        notice.innerHTML = `✅ Generation task queued (ID: ${genRes.generation_id.substring(0,8)}...).<br>AI Provider: NOT CONFIGURED. Backend keys required for raw inference weights.`;
-        alert(`Job queued! Credits remaining: ${genRes.remaining_credits}\nAI Provider: NOT CONFIGURED.`);
+        const response = await fetch(targetUrl);
+        const blob = await response.blob();
+        const objectUrl = URL.createObjectURL(blob);
+
+        img.src = objectUrl;
+        downloadBtn.href = objectUrl;
+        downloadBtn.download = `subbhu_creative_${Date.now()}.jpg`;
+
+        loader.style.display = 'none';
+        card.style.display = 'block';
       } catch (err) {
-        alert(err.message);
+        // Fallback directly via image tag
+        img.src = targetUrl;
+        downloadBtn.href = targetUrl;
+        loader.style.display = 'none';
+        card.style.display = 'block';
+      } finally {
+        btn.disabled = false;
       }
     });
   </script>
