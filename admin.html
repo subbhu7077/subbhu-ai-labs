@@ -17,13 +17,11 @@
   </header>
 
   <main style="padding: 16px;">
-    <!-- Access Check Loader -->
     <div id="adminAuthCheck" style="text-align: center; padding: 40px 0;">
       <div class="skeleton" style="width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 12px;"></div>
       <div style="font-size: 0.85rem; color: var(--text-muted);">Verifying server-side administrator credentials...</div>
     </div>
 
-    <!-- Admin Content (Only revealed if authorized) -->
     <div id="adminContent" style="display: none;">
       <div style="font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-cyan);">Live Platform Telemetry</div>
 
@@ -46,7 +44,6 @@
         </div>
       </div>
 
-      <!-- Quick Administration Actions -->
       <div class="glass-elevated" style="padding: 16px; border-radius: var(--radius-lg); margin-bottom: 16px;">
         <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px;">Credit Dispenser</div>
         <input type="text" id="targetUserId" placeholder="User UUID" style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-glass); background: rgba(0,0,0,0.5); color: #fff; font-size: 0.75rem; margin-bottom: 8px;">
@@ -80,7 +77,6 @@
         return;
       }
 
-      // If authorized, load live database metrics
       loader.style.display = 'none';
       content.style.display = 'block';
 
@@ -93,6 +89,23 @@
       } catch (err) {
         alert("Failed to load metrics: " + err.message);
       }
+
+      document.getElementById('grantCreditsBtn').addEventListener('click', async () => {
+        const targetId = document.getElementById('targetUserId').value.trim();
+        const amount = parseInt(document.getElementById('grantAmount').value);
+
+        if (!targetId || !amount) {
+          alert("Please enter both User UUID and Credits amount.");
+          return;
+        }
+
+        const { error } = await supabaseClient.rpc("claim_reward_credits", { p_user_id: targetId });
+        if (error) {
+          alert("Error granting credits: " + error.message);
+        } else {
+          alert(`Granted successfully to ${targetId}`);
+        }
+      });
     });
   </script>
 </body>
