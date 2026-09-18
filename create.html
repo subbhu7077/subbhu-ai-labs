@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>AI Creative Studio | SUBBHU AI LABS</title>
-  <link rel="stylesheet" href="css/style.css?v=70.0">
-  <link rel="stylesheet" href="css/animations.css?v=70.0">
+  <link rel="stylesheet" href="css/style.css?v=71.0">
+  <link rel="stylesheet" href="css/animations.css?v=71.0">
   <style>
     .studio-container {
       padding: 16px 18px 90px 18px;
@@ -13,7 +13,7 @@
     .prompt-box {
       width: 100%;
       min-height: 105px;
-      background: rgba(13, 20, 39, 0.8);
+      background: rgba(13, 20, 39, 0.85);
       border: 1px solid rgba(0, 242, 254, 0.25);
       border-radius: 14px;
       padding: 12px;
@@ -46,11 +46,6 @@
       font-weight: 600;
       white-space: nowrap;
       cursor: pointer;
-    }
-    .preset-chip.active {
-      background: rgba(0, 242, 254, 0.2);
-      border-color: #00f2fe;
-      color: #00f2fe;
     }
     .ratio-pills {
       display: flex;
@@ -92,33 +87,31 @@
 </head>
 <body>
 
-  <!-- Top App Header -->
   <header class="app-header glass">
     <div class="brand-wrap">
       <a href="index.html" style="color: #fff; text-decoration: none; font-size: 1.2rem;">←</a>
       <div class="brand-name">AI CREATIVE STUDIO</div>
     </div>
-    <span class="hero-badge">⚡ FLUX Pro Active</span>
+    <span class="hero-badge">⚡ Realism FLUX</span>
   </header>
 
   <div class="studio-container">
     <div style="font-size: 0.88rem; font-weight: 800; color: #fff;">Prompt Engine</div>
-    <textarea id="promptInput" class="prompt-box" placeholder="Describe the image scene (e.g. Cyberpunk sports bike on wet neon city street, hyperrealistic 8k render, glowing teal and purple lights...)"></textarea>
+    <textarea id="promptInput" class="prompt-box" placeholder="Describe the scene (e.g. Authentic portrait photograph of a young woman, real skin texture, shot on 85mm lens, natural daylight)"></textarea>
 
-    <!-- Quick Presets -->
+    <!-- Style presets -->
     <div class="presets-row">
-      <div class="preset-chip" onclick="applyPreset('🌆 Cyberpunk', 'neon cyberpunk city, glowing magenta and cyan rim light, highly detailed 8k octane render')">🌆 Cyberpunk</div>
-      <div class="preset-chip" onclick="applyPreset('🧴 Product Ad', 'commercial luxury product photography, floating on water splashes, studio lighting, hyperrealistic')">🧴 Product Ad</div>
-      <div class="preset-chip" onclick="applyPreset('🎌 Anime', 'Makoto Shinkai style anime landscape, vibrant colorful skies, studio ghibli aesthetic, masterpiece')">🎌 Anime</div>
-      <div class="preset-chip" onclick="applyPreset('🎬 Cinematic', 'cinematic 35mm portrait photograph, natural bokeh, dramatic golden hour film lighting')">🎬 Cinematic</div>
-      <div class="preset-chip" onclick="applyPreset('🏍️ Superbike', 'futuristic custom motorcycle parked on asphalt, dramatic night atmosphere, raytraced reflections')">🏍️ Superbike</div>
+      <div class="preset-chip" onclick="applyPreset('Real Portrait', 'Ultra-realistic candid portrait photograph, highly detailed natural skin texture, visible pores, subtle imperfections, 85mm lens f/1.8, bokeh, studio lighting')">📸 Real Portrait</div>
+      <div class="preset-chip" onclick="applyPreset('Cinematic', 'Cinematic 35mm film still, photorealistic, dramatic lighting, detailed face, award-winning photography')">🎬 Cinematic</div>
+      <div class="preset-chip" onclick="applyPreset('Cyberpunk', 'Cyberpunk street scene at night, neon reflections on wet street, authentic DSLR shot')">🌆 Cyberpunk</div>
+      <div class="preset-chip" onclick="applyPreset('Product Ad', 'Luxury commercial product shot on stone podium, natural light, 8k crisp details')">🧴 Product Ad</div>
     </div>
 
-    <!-- Aspect Ratio Selection -->
+    <!-- Aspect ratio selection -->
     <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">Aspect Ratio</div>
     <div class="ratio-pills">
       <div class="ratio-btn active" onclick="setRatio('1:1', this)">1:1 Square</div>
-      <div class="ratio-btn" onclick="setRatio('9:16', this)">9:16 Reel/Story</div>
+      <div class="ratio-btn" onclick="setRatio('9:16', this)">9:16 Portrait</div>
       <div class="ratio-btn" onclick="setRatio('16:9', this)">16:9 Wide</div>
     </div>
 
@@ -127,34 +120,33 @@
       ⚡ GENERATE CREATIVE
     </button>
 
-    <!-- Glowing Processing Loader -->
+    <!-- Neon Loader -->
     <div id="genLoader" class="neon-loader-card" style="display: none; padding: 14px; margin-top: 14px;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <div style="width: 10px; height: 10px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe;"></div>
-          <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">Rendering Neural Artwork...</span>
+          <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">Rendering Real Photo...</span>
         </div>
-        <span id="loaderPercent" style="font-size: 0.8rem; font-weight: 800; color: #00d2ff;">Generating</span>
+        <span style="font-size: 0.8rem; font-weight: 800; color: #00d2ff;">FLUX Engine</span>
       </div>
       <div class="neon-stream-bar"></div>
     </div>
 
     <!-- Result Artwork Card -->
     <div id="resultCard" class="result-card">
-      <img id="resultImage" class="result-img" src="" alt="Generated AI Artwork">
+      <img id="resultImage" class="result-img" src="" alt="AI Output">
       <div style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.75rem; font-weight: 700; color: #00f2fe;">4K Master Render</span>
-          <span style="font-size: 0.7rem; color: var(--text-muted);">FLUX Neural Model</span>
+          <span style="font-size: 0.75rem; font-weight: 700; color: #00f2fe;">Ultra HD Render</span>
+          <span style="font-size: 0.7rem; color: var(--text-muted);">Realism AI</span>
         </div>
-        <a id="saveImageBtn" href="#" download="subbhu_creative.jpg" class="btn-primary neon-download-btn" style="text-align: center; text-decoration: none; padding: 12px; border-radius: 10px;">
-          💾 SAVE FULL RESOLUTION
+        <a id="saveImageBtn" href="#" download="subbhu_realistic.jpg" class="btn-primary neon-download-btn" style="text-align: center; text-decoration: none; padding: 12px; border-radius: 10px;">
+          💾 SAVE TO DEVICE
         </a>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Nav -->
   <nav class="bottom-nav glass">
     <a href="index.html" class="nav-item">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -196,9 +188,10 @@
     }
 
     document.getElementById('generateBtn').addEventListener('click', async () => {
-      const promptText = document.getElementById('promptInput').value.trim();
-      if (!promptText) {
-        document.getElementById('promptInput').focus();
+      const promptInput = document.getElementById('promptInput');
+      let userPrompt = promptInput.value.trim();
+      if (!userPrompt) {
+        promptInput.focus();
         return;
       }
 
@@ -212,29 +205,35 @@
       loader.style.display = 'block';
       card.style.display = 'none';
 
-      // Safe seed and URL construction
-      const seed = Math.floor(Math.random() * 999999);
-      const encodedPrompt = encodeURIComponent(promptText);
-      // Auto inject high-end DSLR realism tokens
-      const photoRealisticPrompt = `${promptText}, ultra-realistic raw photo, authentic portrait, 85mm f/1.8 lens, natural human skin texture, visible pores, cinematic rim lighting, shallow depth of field, award-winning photography, highly detailed, no plastic smooth skin, 8k`;
-      const finalEncoded = encodeURIComponent(photoRealisticPrompt);
-      const targetUrl = `https://image.pollinations.ai/prompt/${finalEncoded}?width=${currentDimensions.width}&height=${currentDimensions.height}&seed=${seed}&model=flux-realism&nologo=true`;
+      // Photorealism booster tokens
+      const refinedPrompt = `${userPrompt}, authentic dslr photo, high resolution 35mm film portrait, natural skin texture, visible fine pores, soft natural lighting, hyperrealistic, sharp focus, 8k`;
+      const seed = Math.floor(Math.random() * 1000000);
+      const encoded = encodeURIComponent(refinedPrompt);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encoded}?width=${currentDimensions.width}&height=${currentDimensions.height}&seed=${seed}&model=flux&nologo=true`;
 
       try {
-        const response = await fetch(targetUrl);
-        const blob = await response.blob();
-        const objectUrl = URL.createObjectURL(blob);
+        const res = await fetch(imageUrl);
+        const contentType = res.headers.get("content-type");
+        
+        // Ensure we got an image, not an error text/json
+        if (contentType && contentType.includes("application/json")) {
+          throw new Error("Model rate limit, retrying direct...");
+        }
 
-        img.src = objectUrl;
-        downloadBtn.href = objectUrl;
-        downloadBtn.download = `subbhu_creative_${Date.now()}.jpg`;
+        const blob = await res.blob();
+        const objUrl = URL.createObjectURL(blob);
+
+        img.src = objUrl;
+        downloadBtn.href = objUrl;
+        downloadBtn.download = `subbhu_real_${Date.now()}.jpg`;
 
         loader.style.display = 'none';
         card.style.display = 'block';
       } catch (err) {
-        // Fallback directly via image tag
-        img.src = targetUrl;
-        downloadBtn.href = targetUrl;
+        // Direct image fallback
+        img.src = imageUrl;
+        downloadBtn.href = imageUrl;
+        downloadBtn.target = "_blank";
         loader.style.display = 'none';
         card.style.display = 'block';
       } finally {
