@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI Video Dubbing | SUBBHU AI LABS</title>
+  <link rel="stylesheet" href="css/style.css?v=60.0">
+  <link rel="stylesheet" href="css/animations.css?v=60.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .dub-card {
+      background: rgba(13, 20, 39, 0.75);
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .lang-selector-box {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 12px;
+      border-radius: 12px;
+      margin: 10px 0;
+    }
+    .lang-dropdown {
+      background: #090e1f;
+      color: #fff;
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 10px 8px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      width: 100%;
+    }
+    /* Bottom Sheet Modal for Searchable Languages */
+    .sheet-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      z-index: 300;
+      display: none;
+      align-items: flex-end;
+    }
+    .sheet-modal.active { display: flex; }
+    .sheet-content {
+      background: #0d1427;
+      width: 100%;
+      max-height: 70vh;
+      border-radius: 20px 20px 0 0;
+      padding: 16px;
+      border-top: 1px solid #00f2fe;
+      display: flex;
+      flex-direction: column;
+    }
+    .lang-item-row {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    .lang-item-row:active {
+      background: rgba(0, 242, 254, 0.15);
+    }
+  </style>
+</head>
+<body style="padding-bottom: 90px;">
+
+  <!-- Header -->
+  <header class="app-header glass">
+    <div class="brand-wrap">
+      <a href="index.html" style="color:#fff; text-decoration:none; font-size:1.2rem;">←</a>
+      <div class="brand-name">AI VIDEO DUBBING</div>
+    </div>
+    <span class="hero-badge">⚡ Credits: <b id="dubCredits">--</b></span>
+  </header>
+
+  <div style="padding: 16px;">
+    <!-- Upload Screen -->
+    <div class="dub-card" id="uploadStage">
+      <div style="font-size: 1rem; font-weight: 800; margin-bottom: 4px;">🎬 Upload Source Video</div>
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px;">Supports MP4, MOV, WEBM (Preserves Voice Tone & Sync)</div>
+
+      <div class="upload-box" id="dropArea" style="padding: 24px; border: 2px dashed rgba(0,242,254,0.4); border-radius: 14px; text-align: center; cursor: pointer;">
+        <div style="font-size: 2.2rem;">📤</div>
+        <div style="font-weight: 700; margin-top: 6px;">Tap to Select Video</div>
+        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">Max 50MB (Recommended under 5 mins)</div>
+        <input type="file" id="videoFileInput" accept="video/mp4,video/mov,video/webm" style="display: none;">
+      </div>
+
+      <!-- File Meta Info -->
+      <div id="fileInfoBox" style="display: none; margin-top: 12px; padding: 10px; background: rgba(0,242,254,0.08); border-radius: 10px; border: 1px solid rgba(0,242,254,0.3);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div id="vFileName" style="font-size: 0.8rem; font-weight: bold; color: #fff;">video.mp4</div>
+            <div id="vFileSize" style="font-size: 0.7rem; color: var(--text-muted);">0 MB</div>
+          </div>
+          <button id="vRemoveBtn" style="background: none; border: none; color: #ff0055; font-size: 0.75rem; font-weight: bold;">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language Selector Box -->
+    <div class="dub-card">
+      <div style="font-size: 0.88rem; font-weight: 800;">🌐 Select Dubbing Languages</div>
+      
+      <div class="lang-selector-box">
+        <div>
+          <div style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 4px;">SOURCE (ORIGINAL)</div>
+          <button id="sourceLangBtn" class="lang-dropdown" style="text-align: left;">Auto Detect ✨</button>
+        </div>
+        <div style="font-size: 1.2rem; color: #00f2fe; text-align: center;">➔</div>
+        <div>
+          <div style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 4px;">TARGET (DUBBED)</div>
+          <button id="targetLangBtn" class="lang-dropdown" style="text-align: left;">Hindi 🇮🇳</button>
+        </div>
+      </div>
+
+      <!-- Dubbing Settings -->
+      <div style="margin-top: 10px;">
+        <div style="font-size: 0.78rem; font-weight: 700; color: #fff; margin-bottom: 6px;">Speakers Detection</div>
+        <select id="speakerSelect" class="lang-dropdown">
+          <option value="0">Auto-Detect Multiple Speakers</option>
+          <option value="1">1 Speaker (Solo Dialogue)</option>
+          <option value="2">2 Speakers (Conversation)</option>
+          <option value="3">3+ Speakers</option>
+        </select>
+      </div>
+
+      <div style="margin-top: 10px; font-size: 0.72rem; color: #94a3b8;">
+        ℹ️ <i>Voice delivery, background sound, and lip timing will follow the official ElevenLabs Dubbing model.</i>
+      </div>
+    </div>
+
+    <!-- Live Execution Status Card -->
+    <div id="dubProgressCard" class="neon-loader-card" style="display: none; padding: 14px; margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span id="dubStatusTitle" style="font-size: 0.82rem; font-weight: 800; color: #fff;">1/3 Uploading to secure vault...</span>
+        <span id="dubPollDots" style="color: #00d2ff; font-weight: 800;">●</span>
+      </div>
+      <div id="dubStepDescription" style="font-size: 0.72rem; color: #ccc;">Communicating with ElevenLabs Dubbing v2...</div>
+      <div class="neon-stream-bar" style="position: relative; margin-top: 10px; width: 100%;"></div>
+    </div>
+
+    <!-- Output Preview & Download Player -->
+    <div id="dubOutputCard" class="dub-card" style="display: none;">
+      <div style="font-size: 0.95rem; font-weight: 800; color: #00f2fe; margin-bottom: 10px;">🎉 Dubbing Complete!</div>
+      <video id="dubbedVideoPlayer" controls playsinline style="width: 100%; border-radius: 12px; background: #000; max-height: 280px;"></video>
+      <a id="dubDownloadBtn" href="#" download="dubbed_video.mp4" class="btn-primary neon-download-btn" style="display: block; text-align: center; text-decoration: none; margin-top: 12px; padding: 12px;">
+        💾 DOWNLOAD DUBBED VIDEO (MP4)
+      </a>
+    </div>
+
+    <!-- Action Button -->
+    <button id="startDubBtn" class="btn-primary" style="width: 100%; padding: 14px;">
+      🎙️ START DUBBING (10 CREDITS)
+    </button>
+  </div>
+
+  <!-- Searchable Language Picker Bottom Sheet -->
+  <div class="sheet-modal" id="langPickerSheet">
+    <div class="sheet-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span style="font-weight: 800; font-size: 0.95rem;">Select Language</span>
+        <button onclick="closeLangPicker()" style="background: none; border: none; color: #fff; font-size: 1.2rem;">✕</button>
+      </div>
+      <input type="text" id="langSearchInput" placeholder="Search (e.g. Hindi, Chinese, Korean)..." style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(0,242,254,0.3); color: #fff; font-size: 0.85rem; margin-bottom: 10px;">
+      <div id="langListContainer" style="overflow-y: auto; flex: 1;"></div>
+    </div>
+  </div>
+
+  <script src="js/supabase-client.js?v=60.0"></script>
+  <script src="js/dubbingProvider.js?v=60.0"></script>
+  <script>
+    let selectedVideoFile = null;
+    let currentSourceLang = "auto";
+    let currentTargetLang = "hi";
+    let pickingType = "target"; // "source" or "target"
+    let currentSessionToken = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Session check
+      const user = await window.BackendAPI.getUser();
+      if (!user) {
+        alert("Please login first to use AI Dubbing.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      currentSessionToken = session?.access_token;
+
+      const { data: profile } = await window.BackendAPI.getProfile(user.id);
+      if (profile) document.getElementById('dubCredits').innerText = profile.credits;
+
+      // 2. Upload Listeners
+      const dropArea = document.getElementById('dropArea');
+      const fileInput = document.getElementById('videoFileInput');
+      const fileInfo = document.getElementById('fileInfoBox');
+      const removeBtn = document.getElementById('vRemoveBtn');
+
+      dropArea.onclick = () => fileInput.click();
+      fileInput.onchange = (e) => {
+        if (e.target.files[0]) {
+          selectedVideoFile = e.target.files[0];
+          document.getElementById('vFileName').innerText = selectedVideoFile.name;
+          document.getElementById('vFileSize').innerText = (selectedVideoFile.size / (1024 * 1024)).toFixed(1) + " MB";
+          fileInfo.style.display = 'block';
+          dropArea.style.display = 'none';
+        }
+      };
+
+      removeBtn.onclick = () => {
+        selectedVideoFile = null;
+        fileInput.value = '';
+        fileInfo.style.display = 'none';
+        dropArea.style.display = 'block';
+      };
+
+      // 3. Language Selector triggers
+      document.getElementById('sourceLangBtn').onclick = () => openLangPicker("source");
+      document.getElementById('targetLangBtn').onclick = () => openLangPicker("target");
+
+      // 4. Start Dubbing Execution
+      document.getElementById('startDubBtn').onclick = async () => {
+        if (!selectedVideoFile) {
+          alert("Please upload a video file first.");
+          return;
+        }
+
+        const btn = document.getElementById('startDubBtn');
+        const progressCard = document.getElementById('dubProgressCard');
+        const statusTitle = document.getElementById('dubStatusTitle');
+        const statusDesc = document.getElementById('dubStepDescription');
+        const outCard = document.getElementById('dubOutputCard');
+
+        try {
+          btn.disabled = true;
+          outCard.style.display = 'none';
+          progressCard.style.display = 'block';
+
+          // Step 1: Uploading video to Supabase Storage
+          statusTitle.innerText = "1/3 Uploading original media...";
+          statusDesc.innerText = "Storing encrypted file in storage vault...";
+          const uploadedPath = await window.BackendAPI.uploadMedia(selectedVideoFile, user.id);
+
+          // Step 2: Initialize Dubbing Job on ElevenLabs
+          statusTitle.innerText = "2/3 Initializing ElevenLabs Engine...";
+          statusDesc.innerText = `Translating to ${currentTargetLang.toUpperCase()} & syncing voice...`;
+          
+          const numSpeakers = document.getElementById('speakerSelect').value;
+          const initRes = await window.DubbingProvider.createDubbingJob({
+            inputFilePath: uploadedPath,
+            sourceLang: currentSourceLang,
+            targetLang: currentTargetLang,
+            numSpeakers: numSpeakers
+          }, currentSessionToken);
+
+          if (initRes.remainingCredits !== undefined) {
+            document.getElementById('dubCredits').innerText = initRes.remainingCredits;
+          }
+
+          // Step 3: Polling ElevenLabs Real Job Status
+          statusTitle.innerText = "3/3 Processing Dubbing on ElevenLabs...";
+          statusDesc.innerText = "Analyzing speakers, generating voices and syncing audio...";
+
+          const pollInterval = setInterval(async () => {
+            try {
+              const pollRes = await window.DubbingProvider.pollDubbingStatus(initRes.jobId, currentSessionToken);
+              
+              if (pollRes.status === "completed" && pollRes.output_file) {
+                clearInterval(pollInterval);
+                progressCard.style.display = 'none';
+                btn.disabled = false;
+
+                // Show player
+                const player = document.getElementById('dubbedVideoPlayer');
+                player.src = pollRes.output_file;
+                document.getElementById('dubDownloadBtn').href = pollRes.output_file;
+                outCard.style.display = 'block';
+                player.play();
+              } else if (pollRes.status === "failed") {
+                clearInterval(pollInterval);
+                progressCard.style.display = 'none';
+                btn.disabled = false;
+                alert(pollRes.error || "Dubbing process failed on provider.");
+              }
+            } catch (pollErr) {
+              console.warn("Poll tick error:", pollErr);
+            }
+          }, 8000); // Check every 8 seconds
+
+        } catch (err) {
+          alert(err.message);
+          progressCard.style.display = 'none';
+          btn.disabled = false;
+        }
+      };
+    });
+
+    // Searchable Language Sheet Helpers
+    function openLangPicker(type) {
+      pickingType = type;
+      document.getElementById('langPickerSheet').classList.add('active');
+      renderLangList("");
+    }
+
+    function closeLangPicker() {
+      document.getElementById('langPickerSheet').classList.remove('active');
+    }
+
+    function renderLangList(filterText) {
+      const container = document.getElementById('langListContainer');
+      container.innerHTML = '';
+
+      if (pickingType === "source") {
+        const autoRow = document.createElement('div');
+        autoRow.className = 'lang-item-row';
+        autoRow.innerHTML = `<span>✨ Auto Detect (Automatic)</span><span style="color:#00f2fe;">Select</span>`;
+        autoRow.onclick = () => {
+          currentSourceLang = "auto";
+          document.getElementById('sourceLangBtn').innerText = "Auto Detect ✨";
+          closeLangPicker();
+        };
+        container.appendChild(autoRow);
+      }
+
+      const list = window.DubbingProvider.languages.filter(l => 
+        l.name.toLowerCase().includes(filterText.toLowerCase()) || 
+        l.code.toLowerCase().includes(filterText.toLowerCase())
+      );
+
+      list.forEach(l => {
+        const row = document.createElement('div');
+        row.className = 'lang-item-row';
+        row.innerHTML = `<span>${l.flag} ${l.name} (${l.code})</span><span style="color:#00f2fe;">Select</span>`;
+        row.onclick = () => {
+          if (pickingType === "source") {
+            currentSourceLang = l.code;
+            document.getElementById('sourceLangBtn').innerText = `${l.name} ${l.flag}`;
+          } else {
+            currentTargetLang = l.code;
+            document.getElementById('targetLangBtn').innerText = `${l.name} ${l.flag}`;
+          }
+          closeLangPicker();
+        };
+        container.appendChild(row);
+      });
+    }
+
+    document.getElementById('langSearchInput').oninput = (e) => {
+      renderLangList(e.target.value.trim());
+    };
+  </script>
+</body>
+</html>
