@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Refer & Earn | SUBBHU BHAI LABS</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap");
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #040711;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      padding: 16px 16px 95px 16px;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 10%, rgba(0, 242, 254, 0.15), transparent 70%);
+    }
+
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .neon-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #00f2fe, #ff007f);
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: 1.5px;
+    }
+
+    /* 3D Glass Stat Box */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: rgba(13, 22, 45, 0.85);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .stat-val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #00f2fe;
+      margin-bottom: 4px;
+    }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Referral Box */
+    .earn-card {
+      background: rgba(13, 22, 45, 0.9);
+      border: 1.5px solid rgba(0, 242, 254, 0.35);
+      border-radius: 18px;
+      padding: 20px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+    }
+
+    .code-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 242, 254, 0.08);
+      border: 2px dashed #00f2fe;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin: 12px 0 16px 0;
+    }
+
+    .my-code {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: #ff007f;
+    }
+
+    .btn-share {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 0.85rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+    }
+
+    .btn-copy {
+      background: linear-gradient(135deg, #00f2fe, #ff007f);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    }
+
+    .input-code {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(7, 12, 24, 0.95);
+      border-top: 1px solid rgba(0, 242, 254, 0.25);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+    }
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #64748b;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+      gap: 4px;
+    }
+    .nav-btn.active { color: #00f2fe; }
+    .icon-cube {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-btn.active .icon-cube {
+      background: linear-gradient(135deg, #00f2fe, #ff007f);
+      color: #040711;
+      box-shadow: 0 0 15px rgba(0,242,254,0.8);
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=120.0"></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="app-header">
+    <a href="index.html" style="color: #00f2fe; text-decoration: none; font-size: 1.2rem; font-weight: 900;">←</a>
+    <div class="neon-title">REFER & EARN POINT</div>
+    <div style="font-size: 0.75rem; color: #fbbf24; font-family: 'Orbitron', sans-serif; font-weight: 800;">⚡ 50 CR / REF</div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div id="statRefs" class="stat-val">0</div>
+      <div class="stat-lbl">Friends Invited</div>
+    </div>
+    <div class="stat-card">
+      <div id="statCredits" class="stat-val">0</div>
+      <div class="stat-lbl">Credits Earned</div>
+    </div>
+  </div>
+
+  <!-- Referral Share Box -->
+  <div class="earn-card">
+    <div style="font-size: 0.95rem; font-weight: 800; font-family: 'Orbitron', sans-serif; color: #fff;">YOUR EXCLUSIVE REFERRAL CODE</div>
+    <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">Share your code. You get 50 credits and your friend gets 25 credits on joining!</div>
+
+    <div class="code-box">
+      <div id="displayRefCode" class="my-code">SUBBHU</div>
+      <span style="font-size: 0.75rem; color: #00f2fe; font-weight: 800;">TAP COPY ↓</span>
+    </div>
+
+    <button onclick="shareWhatsApp()" class="btn-share btn-whatsapp">
+      💬 SHARE ON WHATSAPP
+    </button>
+    <button onclick="copyRefLink()" class="btn-share btn-copy">
+      📋 COPY REFERRAL LINK
+    </button>
+    <div id="copyAlert" style="font-size: 0.75rem; text-align: center; color: #10b981; font-weight: 700; display: none;">Link copied to clipboard!</div>
+  </div>
+
+  <!-- Redeem Friend's Code -->
+  <div class="earn-card">
+    <div style="font-size: 0.9rem; font-weight: 800; font-family: 'Orbitron', sans-serif; color: #00f2fe;">HAVE A REFERRAL CODE?</div>
+    <div style="font-size: 0.72rem; color: #cbd5e1; margin: 4px 0 10px 0;">Enter your friend's code to get instant 25 credits.</div>
+
+    <input id="inputFriendCode" type="text" placeholder="ENTER 6-DIGIT CODE" class="input-code">
+    <button id="redeemBtn" onclick="claimFriendCode()" class="btn-share btn-copy" style="margin-bottom: 0;">
+      ⚡ CLAIM 25 CREDITS
+    </button>
+    <div id="claimResult" style="font-size: 0.78rem; text-align: center; font-weight: 700; margin-top: 8px; display: none;"></div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-btn">
+      <div class="icon-cube">⚡</div>
+      <span>Home</span>
+    </a>
+    <a href="create.html" class="nav-btn">
+      <div class="icon-cube">🎨</div>
+      <span>Create</span>
+    </a>
+    <a href="refer.html" class="nav-btn active">
+      <div class="icon-cube">🎁</div>
+      <span>Refer</span>
+    </a>
+    <a href="profile.html" class="nav-btn">
+      <div class="icon-cube">👤</div>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script>
+    let myCode = 'SUB777';
+
+    async function loadReferralData() {
+      try {
+        if (!window.sbClient) return;
+        const { data: { session } } = await window.sbClient.auth.getSession();
+        if (session && session.user) {
+          const { data, error } = await window.sbClient
+            .from('profiles')
+            .select('referral_code, total_referrals, referral_credits_earned')
+            .eq('id', session.user.id)
+            .single();
+
+          if (data && data.referral_code) {
+            myCode = data.referral_code;
+            document.getElementById('displayRefCode').innerText = myCode;
+            document.getElementById('statRefs').innerText = data.total_referrals || '0';
+            document.getElementById('statCredits').innerText = data.referral_credits_earned || '0';
+          }
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    function copyRefLink() {
+      const link = `https://subbhu7077.github.io/subbhu-ai-labs/?ref=${myCode}`;
+      navigator.clipboard.writeText(link).then(() => {
+        const a = document.getElementById('copyAlert');
+        a.style.display = 'block';
+        setTimeout(() => a.style.display = 'none', 2500);
+      });
+    }
+
+    function shareWhatsApp() {
+      const link = `https://subbhu7077.github.io/subbhu-ai-labs/?ref=${myCode}`;
+      const msg = encodeURIComponent(`🔥 Join SUBBHU BHAI AI LABS and get 25 Free Credits to generate 4K DSLR photos & dubbing! Use my code: ${myCode}\n\nJoin here: ${link}`);
+      window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
+    }
+
+    async function claimFriendCode() {
+      const code = document.getElementById('inputFriendCode').value.trim();
+      const resEl = document.getElementById('claimResult');
+      const btn = document.getElementById('redeemBtn');
+      if (!code) return;
+
+      btn.disabled = true;
+      resEl.style.display = 'none';
+
+      try {
+        if (!window.sbClient) throw new Error('Network error');
+        const { data: { session } } = await window.sbClient.auth.getSession();
+        if (!session || !session.user) {
+          throw new Error('Please login to claim referral bonus');
+        }
+
+        const { data, error } = await window.sbClient.rpc('claim_referral_code', {
+          p_user_id: session.user.id,
+          p_code: code
+        });
+
+        if (error) throw error;
+
+        if (data.success) {
+          resEl.style.color = '#10b981';
+          resEl.innerText = data.message;
+        } else {
+          resEl.style.color = '#ef4444';
+          resEl.innerText = data.message;
+        }
+      } catch (e) {
+        resEl.style.color = '#ef4444';
+        resEl.innerText = e.message || 'Error claiming code';
+      } finally {
+        resEl.style.display = 'block';
+        btn.disabled = false;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadReferralData, 500);
+    });
+  </script>
+</body>
+</html>
