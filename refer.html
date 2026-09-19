@@ -26,7 +26,7 @@
 
     .neon-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 900;
       background: linear-gradient(90deg, #00f2fe, #ff007f);
       -webkit-background-clip: text;
@@ -34,7 +34,6 @@
       letter-spacing: 1.5px;
     }
 
-    /* 3D Glass Stat Box */
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -66,7 +65,6 @@
       text-transform: uppercase;
     }
 
-    /* Referral Box */
     .earn-card {
       background: rgba(13, 22, 45, 0.9);
       border: 1.5px solid rgba(0, 242, 254, 0.35);
@@ -138,7 +136,6 @@
       margin-bottom: 10px;
     }
 
-    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -181,7 +178,6 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-client.js?v=120.0"></script>
 </head>
 <body>
 
@@ -210,7 +206,7 @@
     <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">Share your code. You get 50 credits and your friend gets 25 credits on joining!</div>
 
     <div class="code-box">
-      <div id="displayRefCode" class="my-code">SUBBHU</div>
+      <div id="displayRefCode" class="my-code">SUB707</div>
       <span style="font-size: 0.75rem; color: #00f2fe; font-weight: 800;">TAP COPY ↓</span>
     </div>
 
@@ -220,19 +216,19 @@
     <button onclick="copyRefLink()" class="btn-share btn-copy">
       📋 COPY REFERRAL LINK
     </button>
-    <div id="copyAlert" style="font-size: 0.75rem; text-align: center; color: #10b981; font-weight: 700; display: none;">Link copied to clipboard!</div>
+    <div id="copyAlert" style="font-size: 0.75rem; text-align: center; color: #10b981; font-weight: 700; display: none; margin-top: 4px;">Link copied to clipboard!</div>
   </div>
 
   <!-- Redeem Friend's Code -->
   <div class="earn-card">
-    <div style="font-size: 0.9rem; font-weight: 800; font-family: 'Orbitron', sans-serif; color: #00f2fe;">HAVE A REFERRAL CODE?</div>
-    <div style="font-size: 0.72rem; color: #cbd5e1; margin: 4px 0 10px 0;">Enter your friend's code to get instant 25 credits.</div>
+    <div style="font-size: 0.9rem; font-weight: 800; font-family: 'Orbitron', sans-serif; color: #00f2fe;">HAVE A FRIEND'S CODE?</div>
+    <div style="font-size: 0.72rem; color: #cbd5e1; margin: 4px 0 10px 0;">Enter your friend's referral code to get instant 25 credits.</div>
 
-    <input id="inputFriendCode" type="text" placeholder="ENTER 6-DIGIT CODE" class="input-code">
+    <input id="inputFriendCode" type="text" placeholder="ENTER FRIEND'S CODE" class="input-code">
     <button id="redeemBtn" onclick="claimFriendCode()" class="btn-share btn-copy" style="margin-bottom: 0;">
       ⚡ CLAIM 25 CREDITS
     </button>
-    <div id="claimResult" style="font-size: 0.78rem; text-align: center; font-weight: 700; margin-top: 8px; display: none;"></div>
+    <div id="claimResult" style="font-size: 0.8rem; text-align: center; font-weight: 700; margin-top: 10px; display: none;"></div>
   </div>
 
   <!-- Bottom Navigation -->
@@ -256,14 +252,18 @@
   </nav>
 
   <script>
-    let myCode = 'SUB777';
+    // Direct Self-Contained Supabase Client
+    const SUPABASE_URL = "https://pgvxbfvyzklqokehtxkx.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBndnhiZnZ5emtscW9rZWh0eGt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwNDQ5ODAsImV4cCI6MjA1NzYyMDk4MH0.Q7F6Zl4_mB11mQ4Z3yNq1y4i1jH-l1_P-n9mZkQk94A";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    let myCode = 'SUB707';
 
     async function loadReferralData() {
       try {
-        if (!window.sbClient) return;
-        const { data: { session } } = await window.sbClient.auth.getSession();
+        const { data: { session } } = await sb.auth.getSession();
         if (session && session.user) {
-          const { data, error } = await window.sbClient
+          const { data } = await sb
             .from('profiles')
             .select('referral_code, total_referrals, referral_credits_earned')
             .eq('id', session.user.id)
@@ -297,22 +297,34 @@
     }
 
     async function claimFriendCode() {
-      const code = document.getElementById('inputFriendCode').value.trim();
+      const code = document.getElementById('inputFriendCode').value.trim().toUpperCase();
       const resEl = document.getElementById('claimResult');
       const btn = document.getElementById('redeemBtn');
-      if (!code) return;
+
+      if (!code) {
+        resEl.style.color = '#ef4444';
+        resEl.innerText = 'Please enter a referral code';
+        resEl.style.display = 'block';
+        return;
+      }
+
+      if (code === myCode) {
+        resEl.style.color = '#ef4444';
+        resEl.innerText = 'You cannot use your own referral code!';
+        resEl.style.display = 'block';
+        return;
+      }
 
       btn.disabled = true;
       resEl.style.display = 'none';
 
       try {
-        if (!window.sbClient) throw new Error('Network error');
-        const { data: { session } } = await window.sbClient.auth.getSession();
+        const { data: { session } } = await sb.auth.getSession();
         if (!session || !session.user) {
-          throw new Error('Please login to claim referral bonus');
+          throw new Error('Please login to your account first!');
         }
 
-        const { data, error } = await window.sbClient.rpc('claim_referral_code', {
+        const { data, error } = await sb.rpc('claim_referral_code', {
           p_user_id: session.user.id,
           p_code: code
         });
@@ -321,23 +333,22 @@
 
         if (data.success) {
           resEl.style.color = '#10b981';
-          resEl.innerText = data.message;
+          resEl.innerText = '🎉 ' + data.message;
         } else {
           resEl.style.color = '#ef4444';
-          resEl.innerText = data.message;
+          resEl.innerText = '⚠️ ' + data.message;
         }
       } catch (e) {
         resEl.style.color = '#ef4444';
-        resEl.innerText = e.message || 'Error claiming code';
+        resEl.innerText = e.message || 'Operation failed';
       } finally {
         resEl.style.display = 'block';
         btn.disabled = false;
+        loadReferralData();
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(loadReferralData, 500);
-    });
+    window.addEventListener('DOMContentLoaded', loadReferralData);
   </script>
 </body>
 </html>
